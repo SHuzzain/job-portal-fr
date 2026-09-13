@@ -1,0 +1,35 @@
+# Talent Perak 2.0 - Frontend rules
+
+## 1. System architecture
+- Frontend: Next.js App Router, React 19, Tailwind CSS, shadcn/ui.
+- Backend: Hono on a separate origin (`NEXT_PUBLIC_API_URL`, default http://localhost:3001).
+- Auth: Better Auth on Hono, consumed only via `better-auth/react`.
+- Server state: TanStack Query v5. Transient wizards: Zustand.
+- UI copy: English (`en`) and Bahasa Melayu (`ms`) via next-intl.
+- Network boundary: `proxy.ts` at the project root (not `middleware.ts`).
+
+## 2. Connector (`connector/`)
+All API and auth traffic MUST go through `connector/` at the app root (same level as `app/`):
+- `auth.ts`: `createAuthClient` from `better-auth/react` with `organizationClient` + `adminClient`.
+- `client.ts`: browser fetcher with `credentials: "include"` and 401 handling.
+- `server.ts`: server fetcher with `await cookies()` forwarding and `next: { tags, revalidate }`.
+- Do NOT create `auth.server.ts` or `token-manager.ts`. Session cookies are HttpOnly and owned by Better Auth.
+- Import as `import { authClient, apiClient } from "@/connector"`.
+- Server fetchers import `apiServer` from `@/connector/server` so `next/headers` never enters a Client Component.
+- Permission checks: `authClient.organization.hasPermission(...)`. Never `role === "support"`.
+
+## 3. Feature layout (`features/<feature-name>/`)
+- `schema.ts`: Zod entity, form `.pick()`, HTTP contract.
+- `queries/keys.ts`: TanStack keys and Next.js cache tags (same root names).
+- `queries/options.ts`: `queryOptions()`.
+- `actions/*.query.client.ts` / `*.query.server.ts` / `*.mutate.ts`.
+- Mutations call `POST /api/revalidate` with `revalidateTag(tag, "max")`.
+- `stores/`: Zustand. `components/`: feature UI.
+
+## 4. SRS rules
+1. New organizations are `PENDING_APPROVAL`. Unapproved companies cannot post vacancies or view applicants.
+2. Vacancies start `PENDING_APPROVAL` until PASAK approves.
+3. TVET is `hasTvetCapability === true` on an employer account, not a separate login.
+4. An employer may own many companies. Staff: one user → one company.
+5. Platform `user.role` (admin plugin): `jobseeker` | `employer` | `admin` | `super_admin`. Company `member.role`: `owner` | `admin` | `hr` | `finance` plus dynamic `organization.createRole` names. No hardcoded `support` role.
+6. Page access uses `page` permissions (`seeker_portal`, `employer_portal`, `tvet_portal`, `pasak_portal`).
