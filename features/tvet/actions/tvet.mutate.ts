@@ -5,11 +5,13 @@ import { apiClient, ApiError } from "@/connector/client"
 import { tvetKeys } from "../queries/keys"
 import type {
   TvetAttendance,
+  TvetCertificate,
   TvetRfp,
   TvetRfpCreate,
   TvetScan,
   TvetSession,
   TvetSessionCreate,
+  TvetSurveySubmit,
 } from "../schema"
 
 export function tvetErrorMessage(error: unknown, fallback: string) {
@@ -46,13 +48,7 @@ export function useUpdateRfp() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({
-      id,
-      status,
-    }: {
-      id: string
-      status: "OPEN" | "CLOSED"
-    }) =>
+    mutationFn: ({ id, status }: { id: string; status: "OPEN" | "CLOSED" }) =>
       apiClient<TvetRfp, { status: "OPEN" | "CLOSED" }>(`/tvet/rfps/${id}`, {
         method: "PATCH",
         body: { status },
@@ -88,6 +84,25 @@ export function useScanSession() {
         body,
       }),
     onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: tvetKeys.attendance() })
+    },
+  })
+}
+
+export function useSubmitSurvey(id: string) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (body: TvetSurveySubmit) =>
+      apiClient<TvetCertificate, TvetSurveySubmit>(
+        `/tvet/sessions/${id}/survey`,
+        {
+          method: "POST",
+          body,
+        }
+      ),
+    onSuccess: async (certificate) => {
+      queryClient.setQueryData(tvetKeys.certificate(id), certificate)
       await queryClient.invalidateQueries({ queryKey: tvetKeys.attendance() })
     },
   })

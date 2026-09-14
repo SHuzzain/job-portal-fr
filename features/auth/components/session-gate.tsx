@@ -1,8 +1,7 @@
 "use client"
 
-import { useTranslations } from "next-intl"
+import { forbidden, unauthorized } from "next/navigation"
 import { authClient } from "@/connector"
-import { NavButton } from "@/components/nav-button"
 
 type Props = {
   children: React.ReactNode
@@ -10,8 +9,7 @@ type Props = {
   nextPath?: string
 }
 
-export function SessionGate({ children, roles, nextPath = "/employer" }: Props) {
-  const t = useTranslations("Auth")
+export function SessionGate({ children, roles }: Props) {
   const { data, isPending } = authClient.useSession()
 
   if (isPending) {
@@ -19,24 +17,12 @@ export function SessionGate({ children, roles, nextPath = "/employer" }: Props) 
   }
 
   if (!data) {
-    return (
-      <div className="grid gap-3 text-sm">
-        <p>{t("required")}</p>
-        <div className="flex flex-wrap gap-2">
-          <NavButton href={`/sign-in?next=${encodeURIComponent(nextPath)}`}>
-            {t("signIn")}
-          </NavButton>
-          <NavButton href="/sign-up" variant="outline">
-            {t("signUp")}
-          </NavButton>
-        </div>
-      </div>
-    )
+    unauthorized()
   }
 
   const role = typeof data.user.role === "string" ? data.user.role : ""
   if (roles && !roles.includes(role)) {
-    return <p className="text-sm">{t("forbidden")}</p>
+    forbidden()
   }
 
   return <>{children}</>

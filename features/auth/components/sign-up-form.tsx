@@ -25,7 +25,7 @@ export function SignUpForm() {
         setPending(true)
         const result = await authClient.signUp.email(
           { name, email, password },
-          { body: { role } },
+          { body: { accountType: role } },
         )
         setPending(false)
         if (result.error) {

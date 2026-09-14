@@ -1,7 +1,7 @@
 export class ApiError extends Error {
   constructor(
     public status: number,
-    message: string,
+    message: string
   ) {
     super(message)
     this.name = "ApiError"
@@ -25,7 +25,7 @@ function apiBase() {
 
 export async function apiClient<TResponse, TBody = undefined>(
   path: string,
-  options: ClientOptions<TBody> = {},
+  options: ClientOptions<TBody> = {}
 ): Promise<TResponse> {
   const response = await fetch(`${apiBase()}${path}`, {
     method: options.method ?? "GET",
@@ -52,4 +52,25 @@ export async function apiClient<TResponse, TBody = undefined>(
   }
 
   return (await response.json()) as TResponse
+}
+
+export async function apiClientBlob(
+  path: string,
+  timeoutMs = 15_000
+): Promise<Blob> {
+  const response = await fetch(`${apiBase()}${path}`, {
+    credentials: "include",
+    signal: AbortSignal.timeout(timeoutMs),
+  })
+
+  if (response.status === 401) {
+    throw new ApiError(401, "Unauthorized")
+  }
+
+  if (!response.ok) {
+    const message = await response.text()
+    throw new ApiError(response.status, message || response.statusText)
+  }
+
+  return response.blob()
 }

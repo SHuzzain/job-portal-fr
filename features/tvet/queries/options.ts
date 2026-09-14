@@ -1,5 +1,11 @@
 import { queryOptions } from "@tanstack/react-query"
-import { getSession, listMyAttendance, listRfps, listSessions } from "../actions/tvet.query.client"
+import {
+  getCertificate,
+  getSession,
+  listMyAttendance,
+  listRfps,
+  listSessions,
+} from "../actions/tvet.query.client"
 import { tvetKeys } from "./keys"
 
 export function rfpsQueryOptions() {
@@ -27,5 +33,12 @@ export function myAttendanceQueryOptions() {
   return queryOptions({
     queryKey: tvetKeys.attendance(),
     queryFn: listMyAttendance,
+  })
+}
+
+export function certificateQueryOptions(id: string) {
+  return queryOptions({
+    queryKey: tvetKeys.certificate(id),
+    queryFn: () => getCertificate(id),
   })
 }

@@ -10,7 +10,7 @@
 
 ## 2. Connector (`connector/`)
 All API and auth traffic MUST go through `connector/` at the app root (same level as `app/`):
-- `auth.ts`: `createAuthClient` from `better-auth/react` with `organizationClient` + `adminClient`.
+- `auth.ts`: `createAuthClient` from `better-auth/react` with `organizationClient` + `adminClient` + `i18nClient`. Send `x-locale` from `document.documentElement.lang`.
 - `client.ts`: browser fetcher with `credentials: "include"` and 401 handling.
 - `server.ts`: server fetcher with `await cookies()` forwarding and `next: { tags, revalidate }`.
 - Do NOT create `auth.server.ts` or `token-manager.ts`. Session cookies are HttpOnly and owned by Better Auth.
@@ -31,5 +31,5 @@ All API and auth traffic MUST go through `connector/` at the app root (same leve
 2. Vacancies start `PENDING_APPROVAL` until PASAK approves.
 3. TVET is `hasTvetCapability === true` on an employer account, not a separate login.
 4. An employer may own many companies. Staff: one user → one company.
-5. Platform `user.role` (admin plugin): `jobseeker` | `employer` | `admin` | `super_admin`. Company `member.role`: `owner` | `admin` | `hr` | `finance` plus dynamic `organization.createRole` names. No hardcoded `support` role.
+5. Platform `user.role` (admin plugin): `jobseeker` | `employer` | `admin` | `super_admin`. Company `member.role`: `owner` | `admin` plus dynamic `organization.createRole` names. No hardcoded `support` role.
 6. Page access uses `page` permissions (`seeker_portal`, `employer_portal`, `tvet_portal`, `pasak_portal`).
