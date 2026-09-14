@@ -22,6 +22,7 @@ export default async function PasakPage() {
           <NavButton href="/pasak/vacancies">{t("vacancies")}</NavButton>
           <NavButton href="/pasak/tvet">{t("tvet")}</NavButton>
           <NavButton href="/pasak/approvals">{t("approvals")}</NavButton>
+          <NavButton href="/pasak/access">{t("access")}</NavButton>
         </div>
       </SessionGate>
     </div>

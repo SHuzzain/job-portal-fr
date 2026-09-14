@@ -28,9 +28,9 @@ export const authClient = createAuthClient({
   plugins: [
     inferAdditionalFields({
       user: {
-        phoneNumber: { type: "string" },
-        hasTvetCapability: { type: "boolean" },
-        accountStatus: { type: "string" },
+        phoneNumber: { type: "string", required: false },
+        hasTvetCapability: { type: "boolean", required: false },
+        accountStatus: { type: "string", required: false },
       }
     }),
     i18nClient(),

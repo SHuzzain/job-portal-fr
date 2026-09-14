@@ -26,6 +26,9 @@ export default async function EmployerPage() {
           <NavButton href="/employer/tvet" variant="outline">
             {t("tvet")}
           </NavButton>
+          <NavButton href="/employer/access" variant="outline">
+            {t("access")}
+          </NavButton>
         </div>
       </SessionGate>
     </div>
