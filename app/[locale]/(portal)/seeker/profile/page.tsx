@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import { NavButton } from "@/components/nav-button"
-import { SessionGate } from "@/features/auth/components/session-gate"
+import { PermissionGate } from "@/features/auth/components/permission-gate"
 import { ProfileWizard } from "@/features/profile/components/profile-wizard"
 
 export default async function SeekerProfilePage() {
@@ -17,9 +17,9 @@ export default async function SeekerProfilePage() {
         <h1 className="font-medium">{t("pageTitle")}</h1>
         <p className="text-muted-foreground mt-1 text-sm">{t("pageHint")}</p>
       </div>
-      <SessionGate roles={["jobseeker", "admin", "super_admin"]} nextPath="/seeker/profile">
+      <PermissionGate resource="seeker_profile" action="view">
         <ProfileWizard />
-      </SessionGate>
+      </PermissionGate>
     </div>
   )
 }

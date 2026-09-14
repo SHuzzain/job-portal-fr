@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import { NavButton } from "@/components/nav-button"
-import { SessionGate } from "@/features/auth/components/session-gate"
+import { PermissionGate } from "@/features/auth/components/permission-gate"
 import { PasakClaims } from "@/features/tvet-claims/components/pasak-claims"
 
 export default async function PasakApprovalsPage() {
@@ -19,7 +19,7 @@ export default async function PasakApprovalsPage() {
           {t("approvalsHint")}
         </p>
       </div>
-      <SessionGate roles={["admin", "super_admin"]} nextPath="/pasak/approvals">
+      <PermissionGate resource="claim_review" action="view">
         <nav className="flex flex-wrap gap-2" aria-label={t("approvalTabs")}>
           <NavButton href="/pasak/companies" variant="outline">
             {t("companiesTab")}
@@ -30,7 +30,7 @@ export default async function PasakApprovalsPage() {
           <NavButton href="/pasak/approvals">{t("claimsTab")}</NavButton>
         </nav>
         <PasakClaims />
-      </SessionGate>
+      </PermissionGate>
     </div>
   )
 }

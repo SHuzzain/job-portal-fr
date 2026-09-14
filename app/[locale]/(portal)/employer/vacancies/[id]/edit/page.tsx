@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import { NavButton } from "@/components/nav-button"
-import { SessionGate } from "@/features/auth/components/session-gate"
+import { PermissionGate } from "@/features/auth/components/permission-gate"
 import { CompanySwitcher } from "@/features/companies/components/company-switcher"
 import { EditVacancyForm } from "@/features/vacancies/components/edit-vacancy-form"
 
@@ -23,13 +23,10 @@ export default async function EditVacancyPage({ params }: Props) {
         <h1 className="font-medium">{t("editTitle")}</h1>
         <p className="text-muted-foreground mt-1 text-sm">{t("editHint")}</p>
       </div>
-      <SessionGate
-        roles={["employer", "admin", "super_admin"]}
-        nextPath={`/employer/vacancies/${id}/edit`}
-      >
+      <PermissionGate resource="vacancy" action="update">
         <CompanySwitcher />
         <EditVacancyForm vacancyId={id} />
-      </SessionGate>
+      </PermissionGate>
     </div>
   )
 }

@@ -2,14 +2,19 @@
 
 import { useTranslations } from "next-intl"
 import { authClient } from "@/connector"
-import { SessionGate } from "@/features/auth/components/session-gate"
+import { PermissionGate } from "@/features/auth/components/permission-gate"
 
 type Props = {
   children: React.ReactNode
-  nextPath?: string
+  resource?: string
+  action?: string
 }
 
-export function TvetGate({ children, nextPath = "/employer/tvet" }: Props) {
+export function TvetGate({
+  children,
+  resource = "tvet_rfp",
+  action = "view",
+}: Props) {
   const t = useTranslations("TvetPage")
   const { data, isPending } = authClient.useSession()
   const role = typeof data?.user.role === "string" ? data.user.role : ""
@@ -21,7 +26,7 @@ export function TvetGate({ children, nextPath = "/employer/tvet" }: Props) {
   const blocked = role === "employer" && !capable
 
   return (
-    <SessionGate roles={["employer", "admin", "super_admin"]} nextPath={nextPath}>
+    <PermissionGate resource={resource} action={action}>
       {isPending ? (
         <p className="text-muted-foreground text-sm">…</p>
       ) : blocked ? (
@@ -29,6 +34,6 @@ export function TvetGate({ children, nextPath = "/employer/tvet" }: Props) {
       ) : (
         children
       )}
-    </SessionGate>
+    </PermissionGate>
   )
 }

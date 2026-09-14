@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import { NavButton } from "@/components/nav-button"
-import { SessionGate } from "@/features/auth/components/session-gate"
+import { PermissionGate } from "@/features/auth/components/permission-gate"
 import { ResumeManager } from "@/features/resumes/components/resume-manager"
 
 export default async function SeekerResumesPage() {
@@ -17,9 +17,9 @@ export default async function SeekerResumesPage() {
         <h1 className="font-medium">{t("pageTitle")}</h1>
         <p className="text-muted-foreground mt-1 text-sm">{t("pageHint")}</p>
       </div>
-      <SessionGate roles={["jobseeker", "admin", "super_admin"]} nextPath="/seeker/resumes">
+      <PermissionGate resource="resume" action="view">
         <ResumeManager />
-      </SessionGate>
+      </PermissionGate>
     </div>
   )
 }

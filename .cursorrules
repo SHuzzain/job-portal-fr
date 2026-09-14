@@ -31,5 +31,5 @@ All API and auth traffic MUST go through `connector/` at the app root (same leve
 2. Vacancies start `PENDING_APPROVAL` until PASAK approves.
 3. TVET is `hasTvetCapability === true` on an employer account, not a separate login.
 4. An employer may own many companies. Staff: one user → one company.
-5. Platform `user.role` (admin plugin): `jobseeker` | `employer` | `admin` | `super_admin`. Company `member.role`: `owner` | `admin` plus dynamic `organization.createRole` names. No hardcoded `support` role.
-6. Page access uses `page` permissions (`seeker_portal`, `employer_portal`, `tvet_portal`, `pasak_portal`).
+5. Platform `user.role` names a row in the API's `platform_role` table; `jobseeker`, `employer`, `admin` and `super_admin` are seeded as system roles and more can be created. Company `member.role`: `owner` | `admin` | `member` plus dynamic `organization.createRole` names.
+6. Access is `resource:action` from `connector/access/catalog.ts` (for example `vacancy` create, `tvet_claim` upload_signed). Gate pages with `PermissionGate resource action`, never with role-name lists.

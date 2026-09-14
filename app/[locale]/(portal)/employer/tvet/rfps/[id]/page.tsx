@@ -21,7 +21,7 @@ export default async function TvetRfpPage({ params }: Props) {
       <div>
         <h1 className="font-medium">{t("rfpDetail")}</h1>
       </div>
-      <TvetGate nextPath={`/employer/tvet/rfps/${id}`}>
+      <TvetGate resource="tvet_rfp" action="view">
         <RfpDetail rfpId={id} />
       </TvetGate>
     </div>

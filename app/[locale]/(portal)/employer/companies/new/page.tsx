@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import { NavButton } from "@/components/nav-button"
-import { SessionGate } from "@/features/auth/components/session-gate"
+import { PermissionGate } from "@/features/auth/components/permission-gate"
 import { RegisterCompanyForm } from "@/features/companies/components/register-company-form"
 
 export default async function RegisterCompanyPage() {
@@ -17,9 +17,9 @@ export default async function RegisterCompanyPage() {
         <h1 className="font-medium">{t("pageTitle")}</h1>
         <p className="text-muted-foreground mt-1 text-sm">{t("pageHint")}</p>
       </div>
-      <SessionGate roles={["employer", "admin", "super_admin"]} nextPath="/employer/companies/new">
+      <PermissionGate resource="company" action="create">
         <RegisterCompanyForm />
-      </SessionGate>
+      </PermissionGate>
     </div>
   )
 }

@@ -18,7 +18,7 @@ export default async function TvetPage() {
         <h1 className="font-medium">{t("title")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
       </div>
-      <TvetGate nextPath="/employer/tvet">
+      <TvetGate resource="tvet_rfp" action="view">
         <div>
           <NavButton href="/employer/tvet/claims" variant="outline">
             {t("financeClaims")}

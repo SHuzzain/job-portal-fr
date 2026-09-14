@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import { NavButton } from "@/components/nav-button"
-import { SessionGate } from "@/features/auth/components/session-gate"
+import { PermissionGate } from "@/features/auth/components/permission-gate"
 import { CompanySwitcher } from "@/features/companies/components/company-switcher"
 import { VacancyWizard } from "@/features/vacancies/components/vacancy-wizard"
 
@@ -18,13 +18,10 @@ export default async function NewVacancyPage() {
         <h1 className="font-medium">{t("pageTitle")}</h1>
         <p className="text-muted-foreground mt-1 text-sm">{t("pageHint")}</p>
       </div>
-      <SessionGate
-        roles={["employer", "admin", "super_admin"]}
-        nextPath="/employer/vacancies/new"
-      >
+      <PermissionGate resource="vacancy" action="create">
         <CompanySwitcher />
         <VacancyWizard />
-      </SessionGate>
+      </PermissionGate>
     </div>
   )
 }

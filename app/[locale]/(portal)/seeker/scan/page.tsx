@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import { NavButton } from "@/components/nav-button"
-import { SessionGate } from "@/features/auth/components/session-gate"
+import { PermissionGate } from "@/features/auth/components/permission-gate"
 import { ScanForm } from "@/features/tvet/components/scan-form"
 
 export default async function SeekerScanPage() {
@@ -17,12 +17,9 @@ export default async function SeekerScanPage() {
         <h1 className="font-medium">{t("title")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{t("hint")}</p>
       </div>
-      <SessionGate
-        roles={["jobseeker", "admin", "super_admin"]}
-        nextPath="/seeker/scan"
-      >
+      <PermissionGate resource="tvet_attendance" action="scan">
         <ScanForm />
-      </SessionGate>
+      </PermissionGate>
     </div>
   )
 }

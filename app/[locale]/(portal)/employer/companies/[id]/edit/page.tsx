@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import { NavButton } from "@/components/nav-button"
-import { SessionGate } from "@/features/auth/components/session-gate"
+import { PermissionGate } from "@/features/auth/components/permission-gate"
 import { EditCompanyForm } from "@/features/companies/components/edit-company-form"
 
 type Props = {
@@ -22,12 +22,9 @@ export default async function EditCompanyPage({ params }: Props) {
         <h1 className="font-medium">{t("editTitle")}</h1>
         <p className="text-muted-foreground mt-1 text-sm">{t("editHint")}</p>
       </div>
-      <SessionGate
-        roles={["employer", "admin", "super_admin"]}
-        nextPath={`/employer/companies/${id}/edit`}
-      >
+      <PermissionGate resource="company" action="update">
         <EditCompanyForm organizationId={id} />
-      </SessionGate>
+      </PermissionGate>
     </div>
   )
 }

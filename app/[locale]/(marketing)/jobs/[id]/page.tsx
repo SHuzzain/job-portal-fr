@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server"
 import { notFound } from "next/navigation"
 import { NavButton } from "@/components/nav-button"
-import { SessionGate } from "@/features/auth/components/session-gate"
+import { PermissionGate } from "@/features/auth/components/permission-gate"
 import { ApplyForm } from "@/features/applications/components/apply-form"
 import { getVacancy } from "@/features/vacancies/actions/vacancy.query.server"
 
@@ -31,12 +31,9 @@ export default async function JobDetailPage({ params }: Props) {
         <p>{vacancy.employmentType}</p>
         <p className="leading-relaxed">{vacancy.description}</p>
       </article>
-      <SessionGate
-        roles={["jobseeker", "admin", "super_admin"]}
-        nextPath={`/jobs/${id}`}
-      >
+      <PermissionGate resource="seeker_application" action="create">
         <ApplyForm vacancy={vacancy} />
-      </SessionGate>
+      </PermissionGate>
     </div>
   )
 }

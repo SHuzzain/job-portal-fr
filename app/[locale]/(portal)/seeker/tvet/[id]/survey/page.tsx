@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import { NavButton } from "@/components/nav-button"
-import { SessionGate } from "@/features/auth/components/session-gate"
+import { PermissionGate } from "@/features/auth/components/permission-gate"
 import { TvetSurveyForm } from "@/features/tvet/components/tvet-survey-form"
 
 type Props = {
@@ -22,12 +22,9 @@ export default async function TvetSurveyPage({ params }: Props) {
         <h1 className="font-medium">{t("title")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{t("hint")}</p>
       </div>
-      <SessionGate
-        roles={["jobseeker", "admin", "super_admin"]}
-        nextPath={`/seeker/tvet/${id}/survey`}
-      >
+      <PermissionGate resource="tvet_certificate" action="submit_survey">
         <TvetSurveyForm sessionId={id} />
-      </SessionGate>
+      </PermissionGate>
     </div>
   )
 }

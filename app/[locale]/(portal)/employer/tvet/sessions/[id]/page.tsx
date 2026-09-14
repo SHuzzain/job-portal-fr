@@ -21,7 +21,7 @@ export default async function TvetSessionPage({ params }: Props) {
       <div>
         <h1 className="font-medium">{t("sessionDetail")}</h1>
       </div>
-      <TvetGate nextPath={`/employer/tvet/sessions/${id}`}>
+      <TvetGate resource="tvet_session" action="view">
         <SessionDetail sessionId={id} />
       </TvetGate>
     </div>

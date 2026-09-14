@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import { NavButton } from "@/components/nav-button"
-import { SessionGate } from "@/features/auth/components/session-gate"
+import { PermissionGate } from "@/features/auth/components/permission-gate"
 import { TvetCertificateView } from "@/features/tvet/components/tvet-certificate-view"
 
 type Props = {
@@ -18,12 +18,9 @@ export default async function TvetCertificatePage({ params }: Props) {
           {t("back")}
         </NavButton>
       </div>
-      <SessionGate
-        roles={["jobseeker", "admin", "super_admin"]}
-        nextPath={`/seeker/tvet/${id}/certificate`}
-      >
+      <PermissionGate resource="tvet_certificate" action="view">
         <TvetCertificateView sessionId={id} />
-      </SessionGate>
+      </PermissionGate>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import { NavButton } from "@/components/nav-button"
-import { SessionGate } from "@/features/auth/components/session-gate"
+import { PermissionGate } from "@/features/auth/components/permission-gate"
 import { NotificationList } from "@/features/notifications/components/notification-list"
 
 export default async function NotificationsPage() {
@@ -17,9 +17,9 @@ export default async function NotificationsPage() {
         <h1 className="font-medium">{t("title")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{t("hint")}</p>
       </div>
-      <SessionGate nextPath="/notifications">
+      <PermissionGate resource="notification" action="view">
         <NotificationList />
-      </SessionGate>
+      </PermissionGate>
     </div>
   )
 }

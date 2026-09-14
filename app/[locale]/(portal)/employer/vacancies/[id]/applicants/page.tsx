@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import { NavButton } from "@/components/nav-button"
-import { SessionGate } from "@/features/auth/components/session-gate"
+import { PermissionGate } from "@/features/auth/components/permission-gate"
 import { VacancyApplicantList } from "@/features/applications/components/vacancy-applicant-list"
 
 type Props = {
@@ -22,12 +22,9 @@ export default async function VacancyApplicantsPage({ params }: Props) {
         <h1 className="font-medium">{t("title")}</h1>
         <p className="text-muted-foreground mt-1 text-sm">{t("hint")}</p>
       </div>
-      <SessionGate
-        roles={["employer", "admin", "super_admin"]}
-        nextPath={`/employer/vacancies/${id}/applicants`}
-      >
+      <PermissionGate resource="applicant" action="view">
         <VacancyApplicantList vacancyId={id} />
-      </SessionGate>
+      </PermissionGate>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import { NavButton } from "@/components/nav-button"
-import { SessionGate } from "@/features/auth/components/session-gate"
+import { PermissionGate } from "@/features/auth/components/permission-gate"
 
 export default async function SeekerPage() {
   const t = await getTranslations("SeekerPage")
@@ -16,10 +16,7 @@ export default async function SeekerPage() {
         <h1 className="font-medium">{t("title")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
       </div>
-      <SessionGate
-        roles={["jobseeker", "admin", "super_admin"]}
-        nextPath="/seeker"
-      >
+      <PermissionGate resource="seeker_profile" action="view">
         <div className="flex flex-wrap gap-2">
           <NavButton href="/seeker/profile">{t("profile")}</NavButton>
           <NavButton href="/seeker/resumes">{t("resumes")}</NavButton>
@@ -29,7 +26,7 @@ export default async function SeekerPage() {
             {t("jobs")}
           </NavButton>
         </div>
-      </SessionGate>
+      </PermissionGate>
     </div>
   )
 }

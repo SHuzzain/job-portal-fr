@@ -19,7 +19,7 @@ export default async function EmployerTvetClaimsPage() {
           {t("providerHint")}
         </p>
       </div>
-      <TvetGate nextPath="/employer/tvet/claims">
+      <TvetGate resource="tvet_claim" action="view">
         <ProviderClaims />
       </TvetGate>
     </div>

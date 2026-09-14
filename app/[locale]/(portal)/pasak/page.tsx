@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import { NavButton } from "@/components/nav-button"
-import { SessionGate } from "@/features/auth/components/session-gate"
+import { PermissionGate } from "@/features/auth/components/permission-gate"
 
 export default async function PasakPage() {
   const t = await getTranslations("Pasak")
@@ -16,7 +16,7 @@ export default async function PasakPage() {
         <h1 className="font-medium">{t("title")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
       </div>
-      <SessionGate roles={["admin", "super_admin"]} nextPath="/pasak">
+      <PermissionGate resource="company_review" action="view">
         <div className="flex flex-wrap gap-2">
           <NavButton href="/pasak/companies">{t("companies")}</NavButton>
           <NavButton href="/pasak/vacancies">{t("vacancies")}</NavButton>
@@ -24,7 +24,7 @@ export default async function PasakPage() {
           <NavButton href="/pasak/approvals">{t("approvals")}</NavButton>
           <NavButton href="/pasak/access">{t("access")}</NavButton>
         </div>
-      </SessionGate>
+      </PermissionGate>
     </div>
   )
 }

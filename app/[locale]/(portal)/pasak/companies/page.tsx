@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import { NavButton } from "@/components/nav-button"
-import { SessionGate } from "@/features/auth/components/session-gate"
+import { PermissionGate } from "@/features/auth/components/permission-gate"
 import { CompanyQueue } from "@/features/pasak/components/company-queue"
 
 export default async function PasakCompaniesPage() {
@@ -17,9 +17,9 @@ export default async function PasakCompaniesPage() {
         <h1 className="font-medium">{t("companiesTitle")}</h1>
         <p className="text-muted-foreground mt-1 text-sm">{t("companiesHint")}</p>
       </div>
-      <SessionGate roles={["admin", "super_admin"]} nextPath="/pasak/companies">
+      <PermissionGate resource="company_review" action="view">
         <CompanyQueue />
-      </SessionGate>
+      </PermissionGate>
     </div>
   )
 }
