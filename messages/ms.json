@@ -1,4 +1,20 @@
 {
+  "Nav": {
+    "public": "Awam",
+    "portal": "Portal",
+    "home": "Laman utama",
+    "jobs": "Pekerjaan",
+    "seeker": "Pencari kerja",
+    "employer": "Majikan",
+    "pasak": "PASAK",
+    "signIn": "Log masuk",
+    "signUp": "Cipta akaun"
+  },
+  "NotFound": {
+    "title": "Halaman tidak dijumpai",
+    "hint": "Halaman ini tidak wujud atau belum dibina dalam fasa produk ini.",
+    "home": "Laman utama"
+  },
   "HomePage": {
     "title": "Talent Perak 2.0",
     "subtitle": "Pekerjaan, TVET, dan pembangunan bakat untuk Perak.",

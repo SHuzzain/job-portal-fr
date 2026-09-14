@@ -4,6 +4,7 @@ import {
   adminClient,
   inferOrgAdditionalFields,
   organizationClient,
+  inferAdditionalFields
 } from "better-auth/client/plugins"
 import { platformAc, platformRoles } from "./access/admin"
 import { organizationAc, organizationRoles } from "./access/organization"
@@ -23,7 +24,15 @@ export const authClient = createAuthClient({
       return context
     },
   },
+
   plugins: [
+    inferAdditionalFields({
+      user: {
+        phoneNumber: { type: "string" },
+        hasTvetCapability: { type: "boolean" },
+        accountStatus: { type: "string" },
+      }
+    }),
     i18nClient(),
     organizationClient({
       ac: organizationAc,
@@ -31,6 +40,7 @@ export const authClient = createAuthClient({
       dynamicAccessControl: {
         enabled: true,
       },
+      
       schema: inferOrgAdditionalFields({
         organization: {
           additionalFields: {

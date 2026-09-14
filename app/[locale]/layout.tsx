@@ -1,31 +1,40 @@
-import { hasLocale, NextIntlClientProvider } from "next-intl"
-import { getMessages, setRequestLocale } from "next-intl/server"
-import { notFound } from "next/navigation"
-import { QueryProvider } from "@/components/query-provider"
+import { Geist_Mono, Inter } from "next/font/google"
+import { getLocale, getMessages } from "next-intl/server"
+import { Providers } from "@/components/provider/providers"
 import { routing } from "@/i18n/routing"
+import { cn } from "@/lib/utils"
+import "../globals.css"
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
+
+const fontMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+})
 
 type Props = {
   children: React.ReactNode
-  params: Promise<{ locale: string }>
 }
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
 }
 
-export default async function LocaleLayout({ children, params }: Props) {
-  const { locale } = await params
-
-  if (!hasLocale(routing.locales, locale)) {
-    notFound()
-  }
-
-  setRequestLocale(locale)
+export default async function LocaleLayout({ children }: Props) {
+  const locale = await getLocale()
   const messages = await getMessages()
 
   return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
-      <QueryProvider>{children}</QueryProvider>
-    </NextIntlClientProvider>
+    <html
+      lang={locale}
+      suppressHydrationWarning
+      className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
+    >
+      <body>
+        <Providers locale={locale} messages={messages}>
+          {children}
+        </Providers>
+      </body>
+    </html>
   )
 }

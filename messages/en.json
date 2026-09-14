@@ -1,4 +1,20 @@
 {
+  "Nav": {
+    "public": "Public",
+    "portal": "Portals",
+    "home": "Home",
+    "jobs": "Jobs",
+    "seeker": "Job seeker",
+    "employer": "Employer",
+    "pasak": "PASAK",
+    "signIn": "Sign in",
+    "signUp": "Create account"
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "hint": "This page does not exist or is not in this phase of the product yet.",
+    "home": "Home"
+  },
   "HomePage": {
     "title": "Talent Perak 2.0",
     "subtitle": "Employment, TVET, and talent development for Perak.",
