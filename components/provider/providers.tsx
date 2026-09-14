@@ -9,12 +9,13 @@ type ProvidersProps = {
   children: React.ReactNode
   locale: Locale
   messages: ComponentProps<typeof NextIntlClientProvider>["messages"]
+  timeZone: string
 }
 
-export function Providers({ children, locale, messages }: ProvidersProps) {
+export function Providers({ children, locale, messages, timeZone }: ProvidersProps) {
   return (
     <ThemeProvider>
-      <NextIntlClientProvider locale={locale} messages={messages}>
+      <NextIntlClientProvider locale={locale} messages={messages} timeZone={timeZone}>
         <QueryProvider>{children}</QueryProvider>
       </NextIntlClientProvider>
     </ThemeProvider>

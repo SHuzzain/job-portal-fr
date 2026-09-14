@@ -1,5 +1,5 @@
 import { Geist_Mono, Inter } from "next/font/google"
-import { getLocale, getMessages } from "next-intl/server"
+import { getLocale, getMessages, getTimeZone } from "next-intl/server"
 import { Providers } from "@/components/provider/providers"
 import { routing } from "@/i18n/routing"
 import { cn } from "@/lib/utils"
@@ -23,6 +23,7 @@ export function generateStaticParams() {
 export default async function LocaleLayout({ children }: Props) {
   const locale = await getLocale()
   const messages = await getMessages()
+  const timeZone = await getTimeZone()
 
   return (
     <html
@@ -31,7 +32,7 @@ export default async function LocaleLayout({ children }: Props) {
       className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
     >
       <body>
-        <Providers locale={locale} messages={messages}>
+        <Providers locale={locale} messages={messages} timeZone={timeZone}>
           {children}
         </Providers>
       </body>
