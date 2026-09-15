@@ -2,6 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { apiClient } from "@/connector/client"
+import { pasakKeys } from "@/features/pasak/queries/keys"
 import type { PasakCompany } from "@/features/pasak/schema"
 
 export function useResubmitCompany() {
@@ -13,7 +14,7 @@ export function useResubmitCompany() {
         method: "POST",
       }),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["pasak", "companies"] })
+      await queryClient.invalidateQueries({ queryKey: pasakKeys.companies() })
     },
   })
 }

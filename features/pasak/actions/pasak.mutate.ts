@@ -3,19 +3,29 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { apiClient } from "@/connector/client"
 import type { Vacancy } from "@/features/vacancies/schema"
+import { pasakKeys } from "../queries/keys"
 import type { PasakCompany, PasakEmployer, PasakReviewAction } from "../schema"
 
 export function useSetCompanyStatus() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ id, status }: { id: string; status: "APPROVED" | "REJECTED" }) =>
-      apiClient<PasakCompany, { status: "APPROVED" | "REJECTED" }>(`/pasak/companies/${id}`, {
-        method: "PATCH",
-        body: { status },
-      }),
+    mutationFn: ({
+      id,
+      status,
+    }: {
+      id: string
+      status: "APPROVED" | "REJECTED"
+    }) =>
+      apiClient<PasakCompany, { status: "APPROVED" | "REJECTED" }>(
+        `/pasak/companies/${id}`,
+        {
+          method: "PATCH",
+          body: { status },
+        }
+      ),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["pasak", "companies"] })
+      await queryClient.invalidateQueries({ queryKey: pasakKeys.companies() })
     },
   })
 }
@@ -38,10 +48,10 @@ export function useReviewCompany() {
         {
           method: "POST",
           body: { action, comments },
-        },
+        }
       ),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["pasak", "companies"] })
+      await queryClient.invalidateQueries({ queryKey: pasakKeys.companies() })
     },
   })
 }
@@ -64,10 +74,10 @@ export function useReviewVacancy() {
         {
           method: "POST",
           body: { action, comments },
-        },
+        }
       ),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["pasak", "vacancies"] })
+      await queryClient.invalidateQueries({ queryKey: pasakKeys.vacancies() })
     },
   })
 }
@@ -83,12 +93,15 @@ export function useSetTvetCapability() {
       id: string
       hasTvetCapability: boolean
     }) =>
-      apiClient<PasakEmployer, { hasTvetCapability: boolean }>(`/pasak/employers/${id}`, {
-        method: "PATCH",
-        body: { hasTvetCapability },
-      }),
+      apiClient<PasakEmployer, { hasTvetCapability: boolean }>(
+        `/pasak/employers/${id}`,
+        {
+          method: "PATCH",
+          body: { hasTvetCapability },
+        }
+      ),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["pasak", "employers"] })
+      await queryClient.invalidateQueries({ queryKey: pasakKeys.employers() })
     },
   })
 }
@@ -97,13 +110,22 @@ export function useSetVacancyStatus() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ id, status }: { id: string; status: "APPROVED" | "REJECTED" }) =>
-      apiClient<Vacancy, { status: "APPROVED" | "REJECTED" }>(`/pasak/vacancies/${id}`, {
-        method: "PATCH",
-        body: { status },
-      }),
+    mutationFn: ({
+      id,
+      status,
+    }: {
+      id: string
+      status: "APPROVED" | "REJECTED"
+    }) =>
+      apiClient<Vacancy, { status: "APPROVED" | "REJECTED" }>(
+        `/pasak/vacancies/${id}`,
+        {
+          method: "PATCH",
+          body: { status },
+        }
+      ),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["pasak", "vacancies"] })
+      await queryClient.invalidateQueries({ queryKey: pasakKeys.vacancies() })
     },
   })
 }

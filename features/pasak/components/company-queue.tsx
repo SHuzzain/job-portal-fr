@@ -4,9 +4,8 @@ import { useQuery } from "@tanstack/react-query"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { apiClient } from "@/connector/client"
 import { useReviewCompany, useSetCompanyStatus } from "../actions/pasak.mutate"
-import type { PasakCompany } from "../schema"
+import { pendingCompaniesQueryOptions } from "../queries/options"
 import { ReviewCommentsModal } from "./review-comments-modal"
 
 export function CompanyQueue() {
@@ -15,18 +14,16 @@ export function CompanyQueue() {
   const review = useReviewCompany()
   const [returnId, setReturnId] = useState<string | null>(null)
   const [comments, setComments] = useState("")
-  const { data, isPending, isError } = useQuery({
-    queryKey: ["pasak", "companies", "PENDING_APPROVAL"],
-    queryFn: () =>
-      apiClient<PasakCompany[]>("/pasak/companies?status=PENDING_APPROVAL"),
-  })
+  const { data, isPending, isError } = useQuery(pendingCompaniesQueryOptions())
 
   if (isPending) {
-    return <p className="text-muted-foreground text-sm">…</p>
+    return <p className="text-sm text-muted-foreground">…</p>
   }
 
   if (isError || !data?.length) {
-    return <p className="text-muted-foreground text-sm">{t("companiesEmpty")}</p>
+    return (
+      <p className="text-sm text-muted-foreground">{t("companiesEmpty")}</p>
+    )
   }
 
   const busy = setStatus.isPending || review.isPending
@@ -34,11 +31,19 @@ export function CompanyQueue() {
   return (
     <div className="grid gap-3">
       {data.map((company) => (
-        <article key={company.id} className="grid gap-2 rounded-lg border border-border p-4 text-sm">
+        <article
+          key={company.id}
+          className="grid gap-2 rounded-lg border border-border p-4 text-sm"
+        >
           <h2 className="font-medium">{company.name}</h2>
           <p>{company.ssmNumber}</p>
           {company.ssmDocumentUrl ? (
-            <a className="underline" href={company.ssmDocumentUrl} target="_blank" rel="noreferrer">
+            <a
+              className="underline"
+              href={company.ssmDocumentUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
               {t("ssmLink")}
             </a>
           ) : null}
@@ -46,7 +51,9 @@ export function CompanyQueue() {
             <Button
               size="sm"
               disabled={busy}
-              onClick={() => setStatus.mutate({ id: company.id, status: "APPROVED" })}
+              onClick={() =>
+                setStatus.mutate({ id: company.id, status: "APPROVED" })
+              }
             >
               {t("approve")}
             </Button>
@@ -54,7 +61,9 @@ export function CompanyQueue() {
               size="sm"
               variant="outline"
               disabled={busy}
-              onClick={() => setStatus.mutate({ id: company.id, status: "REJECTED" })}
+              onClick={() =>
+                setStatus.mutate({ id: company.id, status: "REJECTED" })
+              }
             >
               {t("reject")}
             </Button>
@@ -89,8 +98,12 @@ export function CompanyQueue() {
             return
           }
           review.mutate(
-            { id: returnId, action: "RETURN_FOR_CORRECTION", comments: comments.trim() },
-            { onSuccess: () => setReturnId(null) },
+            {
+              id: returnId,
+              action: "RETURN_FOR_CORRECTION",
+              comments: comments.trim(),
+            },
+            { onSuccess: () => setReturnId(null) }
           )
         }}
       />

@@ -4,9 +4,8 @@ import { useQuery } from "@tanstack/react-query"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { apiClient } from "@/connector/client"
-import type { Vacancy } from "@/features/vacancies/schema"
 import { useReviewVacancy, useSetVacancyStatus } from "../actions/pasak.mutate"
+import { pendingVacanciesQueryOptions } from "../queries/options"
 import { ReviewCommentsModal } from "./review-comments-modal"
 
 export function VacancyQueue() {
@@ -15,17 +14,16 @@ export function VacancyQueue() {
   const review = useReviewVacancy()
   const [returnId, setReturnId] = useState<string | null>(null)
   const [comments, setComments] = useState("")
-  const { data, isPending, isError } = useQuery({
-    queryKey: ["pasak", "vacancies", "PENDING_APPROVAL"],
-    queryFn: () => apiClient<Vacancy[]>("/pasak/vacancies?status=PENDING_APPROVAL"),
-  })
+  const { data, isPending, isError } = useQuery(pendingVacanciesQueryOptions())
 
   if (isPending) {
-    return <p className="text-muted-foreground text-sm">…</p>
+    return <p className="text-sm text-muted-foreground">…</p>
   }
 
   if (isError || !data?.length) {
-    return <p className="text-muted-foreground text-sm">{t("vacanciesEmpty")}</p>
+    return (
+      <p className="text-sm text-muted-foreground">{t("vacanciesEmpty")}</p>
+    )
   }
 
   const busy = setStatus.isPending || review.isPending
@@ -33,7 +31,10 @@ export function VacancyQueue() {
   return (
     <div className="grid gap-3">
       {data.map((vacancy) => (
-        <article key={vacancy.id} className="grid gap-2 rounded-lg border border-border p-4 text-sm">
+        <article
+          key={vacancy.id}
+          className="grid gap-2 rounded-lg border border-border p-4 text-sm"
+        >
           <h2 className="font-medium">{vacancy.title}</h2>
           <p>{vacancy.location}</p>
           <p className="text-muted-foreground">{vacancy.description}</p>
@@ -41,7 +42,9 @@ export function VacancyQueue() {
             <Button
               size="sm"
               disabled={busy}
-              onClick={() => setStatus.mutate({ id: vacancy.id, status: "APPROVED" })}
+              onClick={() =>
+                setStatus.mutate({ id: vacancy.id, status: "APPROVED" })
+              }
             >
               {t("approve")}
             </Button>
@@ -49,7 +52,9 @@ export function VacancyQueue() {
               size="sm"
               variant="outline"
               disabled={busy}
-              onClick={() => setStatus.mutate({ id: vacancy.id, status: "REJECTED" })}
+              onClick={() =>
+                setStatus.mutate({ id: vacancy.id, status: "REJECTED" })
+              }
             >
               {t("reject")}
             </Button>
@@ -84,8 +89,12 @@ export function VacancyQueue() {
             return
           }
           review.mutate(
-            { id: returnId, action: "RETURN_FOR_CORRECTION", comments: comments.trim() },
-            { onSuccess: () => setReturnId(null) },
+            {
+              id: returnId,
+              action: "RETURN_FOR_CORRECTION",
+              comments: comments.trim(),
+            },
+            { onSuccess: () => setReturnId(null) }
           )
         }}
       />
