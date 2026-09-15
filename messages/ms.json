@@ -8,7 +8,8 @@
     "employer": "Majikan",
     "pasak": "PASAK",
     "signIn": "Log masuk",
-    "signUp": "Cipta akaun"
+    "signUp": "Cipta akaun",
+    "settings": "Tetapan"
   },
   "NotFound": {
     "title": "Halaman tidak dijumpai",
@@ -263,7 +264,10 @@
     "forbidden": "Portal ini tidak tersedia untuk akaun anda.",
     "needAccount": "Cipta akaun",
     "haveAccount": "Sudah mempunyai akaun",
-    "home": "Laman utama"
+    "home": "Laman utama",
+    "addAccount": "Tambah akaun",
+    "addAccountTitle": "Tambah akaun lain",
+    "addAccountHint": "Log masuk dengan akaun berbeza. Akaun itu kekal dalam pelayar ini supaya anda boleh tukar tanpa masukkan kata laluan semula."
   },
   "Pasak": {
     "title": "PASAK",
@@ -574,5 +578,46 @@
     "bellCount": "Peti masuk ({count})",
     "markAll": "Tanda semua dibaca",
     "home": "Laman utama"
+  },
+  "Settings": {
+    "title": "Tetapan",
+    "hint": "Urus peranti akaun ini, dan akaun lain yang dilog masuk dalam pelayar ini.",
+    "back": "Laman utama",
+    "open": "Tetapan",
+    "tab_sessions": "Pengurusan sesi",
+    "tab_accounts": "Berbilang sesi",
+    "sessionsTitle": "Pengurusan sesi",
+    "sessionsHint": "Ini ialah peranti yang dilog masuk untuk akaun ini. Tarik balik sesi untuk log keluar peranti itu.",
+    "accountsTitle": "Berbilang sesi",
+    "accountsHint": "Akaun yang disimpan dalam pelayar ini. Tambah, tukar, atau buang tanpa menjejaskan peranti lain.",
+    "sameBrowser": "Pelayar yang sama",
+    "laptop": "Komputer riba",
+    "phone": "Telefon",
+    "tablet": "Tablet",
+    "current": "Semasa",
+    "currentSession": "Sesi ini",
+    "otherSession": "Dilog masuk di tempat lain",
+    "revoke": "Tarik balik",
+    "revoking": "Menarik balik…",
+    "emptySessions": "Tiada sesi dijumpai untuk akaun ini.",
+    "emptyAccounts": "Hanya akaun ini dilog masuk di sini.",
+    "loadError": "Data sesi tidak dapat dimuatkan.",
+    "revokeError": "Sesi itu tidak dapat ditarik balik.",
+    "switchError": "Akaun tidak dapat ditukar.",
+    "removeError": "Akaun itu tidak dapat dibuang.",
+    "addAccount": "Tambah akaun",
+    "switchAccount": "Tukar akaun",
+    "removeAccount": "Buang akaun",
+    "signOutCurrent": "Log keluar akaun semasa",
+    "signOutAll": "Log keluar semua akaun",
+    "ip": "IP {value}",
+    "ipUnknown": "IP tidak diketahui",
+    "created": "Bermula {value}",
+    "expires": "Tamat {value}",
+    "accountLimit": "Pelayar ini sudah mempunyai lima akaun. Buang satu sebelum menambah yang lain.",
+    "confirmRevoke": "Tarik balik sesi ini? Peranti itu akan dilog keluar.",
+    "confirmRemove": "Buang akaun ini daripada pelayar ini?",
+    "confirmSignOutCurrent": "Log keluar akaun ini dalam pelayar ini? Akaun lain kekal dilog masuk.",
+    "confirmSignOutAll": "Log keluar setiap akaun dalam pelayar ini?"
   }
 }

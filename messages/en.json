@@ -8,7 +8,8 @@
     "employer": "Employer",
     "pasak": "PASAK",
     "signIn": "Sign in",
-    "signUp": "Create account"
+    "signUp": "Create account",
+    "settings": "Settings"
   },
   "NotFound": {
     "title": "Page not found",
@@ -263,7 +264,10 @@
     "forbidden": "This portal is not available for your account.",
     "needAccount": "Create an account",
     "haveAccount": "Already have an account",
-    "home": "Home"
+    "home": "Home",
+    "addAccount": "Add account",
+    "addAccountTitle": "Add another account",
+    "addAccountHint": "Sign in with a different account. It stays available in this browser so you can switch without entering a password again."
   },
   "Pasak": {
     "title": "PASAK",
@@ -574,5 +578,46 @@
     "bellCount": "Inbox ({count})",
     "markAll": "Mark all read",
     "home": "Home"
+  },
+  "Settings": {
+    "title": "Settings",
+    "hint": "Manage this account's devices, and other accounts signed in on this browser.",
+    "back": "Home",
+    "open": "Settings",
+    "tab_sessions": "Session management",
+    "tab_accounts": "Multi session",
+    "sessionsTitle": "Session management",
+    "sessionsHint": "These are this account's signed-in devices. Revoke a session to sign it out.",
+    "accountsTitle": "Multi session",
+    "accountsHint": "Accounts kept in this browser. Add, switch, or remove them without affecting other devices.",
+    "sameBrowser": "Same browser",
+    "laptop": "Laptop",
+    "phone": "Phone",
+    "tablet": "Tablet",
+    "current": "Current",
+    "currentSession": "This session",
+    "otherSession": "Signed in elsewhere",
+    "revoke": "Revoke",
+    "revoking": "Revoking…",
+    "emptySessions": "No sessions found for this account.",
+    "emptyAccounts": "Only this account is signed in here.",
+    "loadError": "Could not load session data.",
+    "revokeError": "Could not revoke that session.",
+    "switchError": "Could not switch account.",
+    "removeError": "Could not remove that account.",
+    "addAccount": "Add account",
+    "switchAccount": "Switch account",
+    "removeAccount": "Remove account",
+    "signOutCurrent": "Sign out current account",
+    "signOutAll": "Sign out all accounts",
+    "ip": "IP {value}",
+    "ipUnknown": "IP unknown",
+    "created": "Started {value}",
+    "expires": "Expires {value}",
+    "accountLimit": "This browser already has five accounts. Remove one before adding another.",
+    "confirmRevoke": "Revoke this session? That device will be signed out.",
+    "confirmRemove": "Remove this account from this browser?",
+    "confirmSignOutCurrent": "Sign out of this account on this browser? Other accounts stay signed in.",
+    "confirmSignOutAll": "Sign out every account on this browser?"
   }
 }

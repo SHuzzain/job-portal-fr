@@ -5,14 +5,27 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { authClient } from "@/connector"
 import { useRouter } from "@/i18n/navigation"
+import { useDeviceAccounts } from "../hooks/use-device-accounts"
 
-export function SignInForm({ nextPath = "/employer" }: { nextPath?: string }) {
+export function SignInForm({
+  addAccount = false,
+  nextPath = "/employer",
+}: {
+  addAccount?: boolean
+  nextPath?: string
+}) {
   const t = useTranslations("Auth")
+  const settings = useTranslations("Settings")
   const router = useRouter()
+  const { atLimit, isPending: accountsPending } = useDeviceAccounts()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
+
+  if (addAccount && !accountsPending && atLimit) {
+    return <p className="text-sm text-muted-foreground">{settings("accountLimit")}</p>
+  }
 
   return (
     <form
@@ -28,6 +41,7 @@ export function SignInForm({ nextPath = "/employer" }: { nextPath?: string }) {
           return
         }
         router.push(nextPath)
+        router.refresh()
       }}
     >
       <label className="grid gap-1">
@@ -52,7 +66,7 @@ export function SignInForm({ nextPath = "/employer" }: { nextPath?: string }) {
         />
       </label>
       <Button type="submit" disabled={pending}>
-        {pending ? t("signingIn") : t("signIn")}
+        {pending ? t("signingIn") : addAccount ? t("addAccount") : t("signIn")}
       </Button>
       {error ? <p className="text-destructive">{error}</p> : null}
     </form>

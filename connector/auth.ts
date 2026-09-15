@@ -2,9 +2,10 @@ import { i18nClient } from "@better-auth/i18n/client"
 import { createAuthClient } from "better-auth/react"
 import {
   adminClient,
+  inferAdditionalFields,
   inferOrgAdditionalFields,
+  multiSessionClient,
   organizationClient,
-  inferAdditionalFields
 } from "better-auth/client/plugins"
 import { platformAc, platformRoles } from "./access/admin"
 import { organizationAc, organizationRoles } from "./access/organization"
@@ -60,5 +61,6 @@ export const authClient = createAuthClient({
       ac: platformAc,
       roles: platformRoles,
     }),
+    multiSessionClient(),
   ],
 })
