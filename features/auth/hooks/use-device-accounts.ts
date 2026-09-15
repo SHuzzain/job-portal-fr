@@ -116,7 +116,12 @@ export function useDeviceAccounts() {
       "role" in next.data.user && typeof next.data.user.role === "string"
         ? next.data.user.role
         : undefined
-    router.push(portalHomeForRole(role))
+    const workspace =
+      "activeWorkspace" in next.data.user &&
+      typeof next.data.user.activeWorkspace === "string"
+        ? next.data.user.activeWorkspace
+        : undefined
+    router.push(portalHomeForRole(role, workspace))
   }, [queryClient, refetch, router])
 
   const switchAccount = useCallback(

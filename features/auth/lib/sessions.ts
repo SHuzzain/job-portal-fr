@@ -21,9 +21,9 @@ export type UserSession = {
   device: DeviceKind
 }
 
-export function portalHomeForRole(role?: string | null) {
+export function portalHomeForRole(role?: string | null, workspace?: string | null) {
   if (role === "employer") {
-    return "/employer"
+    return workspace === "training_provider" ? "/employer/tvet" : "/employer"
   }
 
   if (role === "admin" || role === "super_admin") {

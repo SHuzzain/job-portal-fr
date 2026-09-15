@@ -32,6 +32,7 @@ export const authClient = createAuthClient({
         phoneNumber: { type: "string", required: false },
         hasTvetCapability: { type: "boolean", required: false },
         accountStatus: { type: "string", required: false },
+        activeWorkspace: { type: "string", required: false },
       }
     }),
     i18nClient(),

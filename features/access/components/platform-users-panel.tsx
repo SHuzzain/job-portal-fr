@@ -25,7 +25,9 @@ export function PlatformUsersPanel() {
   const [role, setRole] = useState("")
   const [error, setError] = useState<string | null>(null)
 
-  const roleOptions = roles.data ?? []
+  const roleOptions = (roles.data ?? []).filter(
+    (item) => item.name !== "training_provider",
+  )
   const selectedRole = role || roleOptions[0]?.name || ""
 
   return (

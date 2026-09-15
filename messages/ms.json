@@ -9,7 +9,8 @@
     "pasak": "PASAK",
     "signIn": "Log masuk",
     "signUp": "Cipta akaun",
-    "settings": "Tetapan"
+    "settings": "Tetapan",
+    "trainingProvider": "Pembekal Latihan"
   },
   "NotFound": {
     "title": "Halaman tidak dijumpai",
@@ -163,6 +164,7 @@
     "vacancies": "Kekosongan saya",
     "newVacancy": "Iklan kekosongan",
     "tvet": "TVET",
+    "tvetClaims": "Tuntutan kewangan",
     "access": "Kakitangan dan peranan",
     "back": "Laman utama"
   },
@@ -308,6 +310,7 @@
     "back": "Majikan",
     "backTvet": "TVET",
     "needCapability": "PASAK belum memberikan keupayaan TVET pada akaun majikan ini.",
+    "needWorkspace": "Tukar ke ruang kerja Pembekal Latihan untuk mengurus TVET.",
     "rfpTitle": "Tajuk RFP",
     "rfpDescription": "Penerangan",
     "createRfp": "Cipta RFP",
@@ -619,5 +622,13 @@
     "confirmRemove": "Buang akaun ini daripada pelayar ini?",
     "confirmSignOutCurrent": "Log keluar akaun ini dalam pelayar ini? Akaun lain kekal dilog masuk.",
     "confirmSignOutAll": "Log keluar setiap akaun dalam pelayar ini?"
+  },
+  "Workspace": {
+    "employer": "Majikan",
+    "trainingProvider": "Pembekal Latihan",
+    "switchToProvider": "Tukar ke Pembekal Latihan",
+    "switchToEmployer": "Tukar ke Majikan",
+    "switching": "Menukar…",
+    "switchError": "Ruang kerja tidak dapat ditukar."
   }
 }

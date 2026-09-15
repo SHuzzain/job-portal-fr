@@ -7,6 +7,10 @@ import {
   ORGANIZATION_RESOURCE_KEYS,
   type PermissionMap,
 } from "@/connector/access/catalog"
+import { activeWorkspaceOf } from "../lib/workspace"
+
+const tvetWorkspaceResources = new Set(["tvet_rfp", "tvet_session", "tvet_claim"])
+const employerWorkspaceResources = new Set(["vacancy", "applicant", "interview"])
 
 const organizationResources = new Set<string>(ORGANIZATION_RESOURCE_KEYS)
 
@@ -74,6 +78,20 @@ export function usePermission(resource: string, action = "view"): PermissionStat
 
   if (!session) {
     return { allowed: false, isPending: false, authenticated: false }
+  }
+
+  const role =
+    "role" in session.user && typeof session.user.role === "string"
+      ? session.user.role
+      : ""
+  if (role !== "admin" && role !== "super_admin") {
+    const workspace = activeWorkspaceOf(session.user)
+    if (tvetWorkspaceResources.has(resource) && workspace !== "training_provider") {
+      return { allowed: false, isPending: false, authenticated: true }
+    }
+    if (employerWorkspaceResources.has(resource) && workspace !== "employer") {
+      return { allowed: false, isPending: false, authenticated: true }
+    }
   }
 
   if (platformAllowed) {

@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl"
 import { authClient } from "@/connector"
 import { PermissionGate } from "@/features/auth/components/permission-gate"
+import { activeWorkspaceOf, canSwitchWorkspace } from "@/features/auth/lib/workspace"
 
 type Props = {
   children: React.ReactNode
@@ -17,20 +18,18 @@ export function TvetGate({
 }: Props) {
   const t = useTranslations("TvetPage")
   const { data, isPending } = authClient.useSession()
-  const role = typeof data?.user.role === "string" ? data.user.role : ""
-  const capable =
-    data?.user &&
-    typeof data.user === "object" &&
-    "hasTvetCapability" in data.user &&
-    data.user.hasTvetCapability === true
-  const blocked = role === "employer" && !capable
+  const capable = canSwitchWorkspace(data?.user)
+  const inProviderWorkspace = activeWorkspaceOf(data?.user) === "training_provider"
+  const blocked = !capable || !inProviderWorkspace
 
   return (
     <PermissionGate resource={resource} action={action}>
       {isPending ? (
         <p className="text-muted-foreground text-sm">…</p>
       ) : blocked ? (
-        <p className="text-sm">{t("needCapability")}</p>
+        <p className="text-sm">
+          {capable ? t("needWorkspace") : t("needCapability")}
+        </p>
       ) : (
         children
       )}

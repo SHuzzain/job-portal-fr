@@ -27,11 +27,16 @@ const employerPermissions = {
   vacancy: ["view", "create", "update", "delete", "resubmit"],
   applicant: ["view", "shortlist", "reject", "hire", "follow_up"],
   interview: ["view", "schedule"],
+  org_member: ["view", "invite", "update_role", "remove"],
+  org_role: ["view", "create", "update", "delete"],
+  notification: ["view", "mark_read"],
+} as const
+
+const trainingProviderPermissions = {
+  company: ["view", "update"],
   tvet_rfp: ["view", "create", "update", "close"],
   tvet_session: ["view", "create"],
   tvet_claim: ["view", "create", "upload_signed", "download"],
-  org_member: ["view", "invite", "update_role", "remove"],
-  org_role: ["view", "create", "update", "delete"],
   notification: ["view", "mark_read"],
 } as const
 
@@ -89,6 +94,7 @@ export const platformRoles = {
 export const SYSTEM_PLATFORM_PERMISSIONS: Record<string, PermissionMap> = {
   jobseeker: fullPermissions(jobseekerPermissions),
   employer: fullPermissions(employerPermissions),
+  training_provider: fullPermissions(trainingProviderPermissions),
   admin: fullPermissions(adminPermissions),
   super_admin: fullPermissions(platformResourceStatements),
 }
@@ -96,6 +102,7 @@ export const SYSTEM_PLATFORM_PERMISSIONS: Record<string, PermissionMap> = {
 export const SYSTEM_PLATFORM_ROLES = [
   "jobseeker",
   "employer",
+  "training_provider",
   "admin",
   "super_admin",
 ] as const

@@ -9,7 +9,8 @@
     "pasak": "PASAK",
     "signIn": "Sign in",
     "signUp": "Create account",
-    "settings": "Settings"
+    "settings": "Settings",
+    "trainingProvider": "Training Provider"
   },
   "NotFound": {
     "title": "Page not found",
@@ -163,6 +164,7 @@
     "vacancies": "My vacancies",
     "newVacancy": "Post a vacancy",
     "tvet": "TVET",
+    "tvetClaims": "Finance claims",
     "access": "Staff and roles",
     "back": "Home"
   },
@@ -308,6 +310,7 @@
     "back": "Employer",
     "backTvet": "TVET",
     "needCapability": "PASAK has not granted TVET capability on this employer account.",
+    "needWorkspace": "Switch to the Training Provider workspace to manage TVET.",
     "rfpTitle": "RFP title",
     "rfpDescription": "Description",
     "createRfp": "Create RFP",
@@ -619,5 +622,13 @@
     "confirmRemove": "Remove this account from this browser?",
     "confirmSignOutCurrent": "Sign out of this account on this browser? Other accounts stay signed in.",
     "confirmSignOutAll": "Sign out every account on this browser?"
+  },
+  "Workspace": {
+    "employer": "Employer",
+    "trainingProvider": "Training Provider",
+    "switchToProvider": "Switch to Training Provider",
+    "switchToEmployer": "Switch to Employer",
+    "switching": "Switching…",
+    "switchError": "Could not switch workspace."
   }
 }

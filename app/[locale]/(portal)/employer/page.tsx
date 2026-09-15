@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server"
 import { NavButton } from "@/components/nav-button"
 import { PermissionGate } from "@/features/auth/components/permission-gate"
 import { CompanySwitcher } from "@/features/companies/components/company-switcher"
+import { EmployerShortcuts } from "@/features/companies/components/employer-shortcuts"
 
 export default async function EmployerPage() {
   const t = await getTranslations("EmployerPage")
@@ -19,17 +20,7 @@ export default async function EmployerPage() {
       </div>
       <PermissionGate resource="company" action="view">
         <CompanySwitcher />
-        <div className="flex flex-wrap gap-2">
-          <NavButton href="/employer/companies/new">{t("registerCompany")}</NavButton>
-          <NavButton href="/employer/vacancies">{t("vacancies")}</NavButton>
-          <NavButton href="/employer/vacancies/new">{t("newVacancy")}</NavButton>
-          <NavButton href="/employer/tvet" variant="outline">
-            {t("tvet")}
-          </NavButton>
-          <NavButton href="/employer/access" variant="outline">
-            {t("access")}
-          </NavButton>
-        </div>
+        <EmployerShortcuts />
       </PermissionGate>
     </div>
   )
