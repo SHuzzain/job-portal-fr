@@ -1,2 +1,2 @@
-export { authClient } from "./auth"
-export { apiClient, ApiError } from "./client"
+export { authClient } from "./auth";
+export { apiClient, ApiError } from "./client";

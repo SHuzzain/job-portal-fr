@@ -1,15 +1,16 @@
-"use client"
+"use client";
 
-import { authClient } from "@/connector"
-import { NotificationBell } from "@/features/notifications/components/notification-bell"
-import { AccountMenu } from "./account-menu"
-import { WorkspaceSwitcher } from "./workspace-switcher"
+import { authClient } from "@/connector";
+import { NotificationBell } from "@/features/notifications/components/notification-bell";
+
+import { AccountMenu } from "./account-menu";
+import { WorkspaceSwitcher } from "./workspace-switcher";
 
 export function SessionActions() {
-  const { data } = authClient.useSession()
+  const { data } = authClient.useSession();
 
   if (!data) {
-    return null
+    return null;
   }
 
   return (
@@ -18,5 +19,5 @@ export function SessionActions() {
       <WorkspaceSwitcher />
       <AccountMenu />
     </div>
-  )
+  );
 }

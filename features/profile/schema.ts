@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "zod";
 
 export const seekerProfileSchema = z.object({
   id: z.string(),
@@ -17,7 +17,7 @@ export const seekerProfileSchema = z.object({
   isMalaysian: z.boolean(),
   hasWorkPermit: z.boolean(),
   complete: z.boolean(),
-})
+});
 
 export const seekerProfileUpdateSchema = z.object({
   displayName: z.string().min(1).optional(),
@@ -30,10 +30,12 @@ export const seekerProfileUpdateSchema = z.object({
   yearsOfExperience: z.number().int().min(0).optional(),
   skills: z.string().min(1).optional(),
   preferredLocation: z.string().min(1).optional(),
-  preferredEmploymentType: z.enum(["FULL_TIME", "PART_TIME", "CONTRACT", "INTERNSHIP"]).optional(),
+  preferredEmploymentType: z
+    .enum(["FULL_TIME", "PART_TIME", "CONTRACT", "INTERNSHIP"])
+    .optional(),
   isMalaysian: z.boolean().optional(),
   hasWorkPermit: z.boolean().optional(),
-})
+});
 
-export type SeekerProfile = z.infer<typeof seekerProfileSchema>
-export type SeekerProfileUpdate = z.infer<typeof seekerProfileUpdateSchema>
+export type SeekerProfile = z.infer<typeof seekerProfileSchema>;
+export type SeekerProfileUpdate = z.infer<typeof seekerProfileUpdateSchema>;

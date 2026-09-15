@@ -1,32 +1,35 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { tvetErrorMessage, useCreateSession } from "../actions/tvet.mutate"
+import { useState } from "react";
+
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+
+import { tvetErrorMessage, useCreateSession } from "../actions/tvet.mutate";
 
 type Props = {
-  rfpId: string
-}
+  rfpId: string;
+};
 
 function toIso(value: string) {
-  const date = new Date(value)
-  return Number.isNaN(date.getTime()) ? value : date.toISOString()
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? value : date.toISOString();
 }
 
 export function CreateSessionForm({ rfpId }: Props) {
-  const t = useTranslations("TvetPage")
-  const createSession = useCreateSession()
-  const [title, setTitle] = useState("")
-  const [venue, setVenue] = useState("")
-  const [startsAt, setStartsAt] = useState("")
-  const [endsAt, setEndsAt] = useState("")
+  const t = useTranslations("TvetPage");
+  const createSession = useCreateSession();
+  const [title, setTitle] = useState("");
+  const [venue, setVenue] = useState("");
+  const [startsAt, setStartsAt] = useState("");
+  const [endsAt, setEndsAt] = useState("");
 
   return (
     <form
       className="grid max-w-md gap-3 text-sm"
       onSubmit={(event) => {
-        event.preventDefault()
+        event.preventDefault();
         createSession.mutate(
           {
             rfpId,
@@ -37,20 +40,20 @@ export function CreateSessionForm({ rfpId }: Props) {
           },
           {
             onSuccess: () => {
-              setTitle("")
-              setVenue("")
-              setStartsAt("")
-              setEndsAt("")
+              setTitle("");
+              setVenue("");
+              setStartsAt("");
+              setEndsAt("");
             },
-          },
-        )
+          }
+        );
       }}
     >
       <label className="grid gap-1">
         <span>{t("sessionTitle")}</span>
         <input
           required
-          className="border-input bg-background rounded-md border px-2 py-1.5"
+          className="rounded-md border border-input bg-background px-2 py-1.5"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
         />
@@ -59,7 +62,7 @@ export function CreateSessionForm({ rfpId }: Props) {
         <span>{t("venue")}</span>
         <input
           required
-          className="border-input bg-background rounded-md border px-2 py-1.5"
+          className="rounded-md border border-input bg-background px-2 py-1.5"
           value={venue}
           onChange={(event) => setVenue(event.target.value)}
         />
@@ -69,7 +72,7 @@ export function CreateSessionForm({ rfpId }: Props) {
         <input
           required
           type="datetime-local"
-          className="border-input bg-background rounded-md border px-2 py-1.5"
+          className="rounded-md border border-input bg-background px-2 py-1.5"
           value={startsAt}
           onChange={(event) => setStartsAt(event.target.value)}
         />
@@ -79,7 +82,7 @@ export function CreateSessionForm({ rfpId }: Props) {
         <input
           required
           type="datetime-local"
-          className="border-input bg-background rounded-md border px-2 py-1.5"
+          className="rounded-md border border-input bg-background px-2 py-1.5"
           value={endsAt}
           onChange={(event) => setEndsAt(event.target.value)}
         />
@@ -88,10 +91,10 @@ export function CreateSessionForm({ rfpId }: Props) {
         {createSession.isPending ? t("saving") : t("createSession")}
       </Button>
       {createSession.isError ? (
-        <p className="text-destructive text-sm">
+        <p className="text-sm text-destructive">
           {tvetErrorMessage(createSession.error, t("error"))}
         </p>
       ) : null}
     </form>
-  )
+  );
 }

@@ -1,46 +1,49 @@
-"use client"
+"use client";
 
-import { useQuery } from "@tanstack/react-query"
-import { useTranslations } from "next-intl"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+
+import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+
 import {
   useSubmitClaim,
   useUploadSignedClaim,
-} from "../actions/tvet-claims.mutate"
-import { downloadClaimDocument } from "../actions/tvet-claims.query.client"
+} from "../actions/tvet-claims.mutate";
+import { downloadClaimDocument } from "../actions/tvet-claims.query.client";
 import {
   eligibleCoursesQueryOptions,
   providerClaimsQueryOptions,
-} from "../queries/options"
+} from "../queries/options";
 
 function saveBlob(blob: Blob, filename: string) {
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement("a")
-  link.href = url
-  link.download = filename
-  link.click()
-  URL.revokeObjectURL(url)
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
 }
 
 export function ProviderClaims() {
-  const t = useTranslations("TvetClaims")
-  const claims = useQuery(providerClaimsQueryOptions())
-  const eligible = useQuery(eligibleCoursesQueryOptions())
-  const submit = useSubmitClaim()
-  const upload = useUploadSignedClaim()
-  const [courseId, setCourseId] = useState("")
-  const [amount, setAmount] = useState("")
-  const [claimUrl, setClaimUrl] = useState("")
-  const [signedUrls, setSignedUrls] = useState<Record<string, string>>({})
-  const [downloadError, setDownloadError] = useState("")
+  const t = useTranslations("TvetClaims");
+  const claims = useQuery(providerClaimsQueryOptions());
+  const eligible = useQuery(eligibleCoursesQueryOptions());
+  const submit = useSubmitClaim();
+  const upload = useUploadSignedClaim();
+  const [courseId, setCourseId] = useState("");
+  const [amount, setAmount] = useState("");
+  const [claimUrl, setClaimUrl] = useState("");
+  const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
+  const [downloadError, setDownloadError] = useState("");
 
   async function download(path: string, filename: string) {
-    setDownloadError("")
+    setDownloadError("");
     try {
-      saveBlob(await downloadClaimDocument(path), filename)
+      saveBlob(await downloadClaimDocument(path), filename);
     } catch {
-      setDownloadError(t("downloadError"))
+      setDownloadError(t("downloadError"));
     }
   }
 
@@ -49,7 +52,7 @@ export function ProviderClaims() {
       <form
         className="grid gap-3 rounded-lg border border-border p-4"
         onSubmit={(event) => {
-          event.preventDefault()
+          event.preventDefault();
           submit.mutate(
             {
               courseId,
@@ -58,12 +61,12 @@ export function ProviderClaims() {
             },
             {
               onSuccess: () => {
-                setCourseId("")
-                setAmount("")
-                setClaimUrl("")
+                setCourseId("");
+                setAmount("");
+                setClaimUrl("");
               },
             }
-          )
+          );
         }}
       >
         <h2 className="font-medium">{t("submitTitle")}</h2>
@@ -211,5 +214,5 @@ export function ProviderClaims() {
         ) : null}
       </section>
     </div>
-  )
+  );
 }

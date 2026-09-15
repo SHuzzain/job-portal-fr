@@ -1,10 +1,11 @@
-import { getTranslations } from "next-intl/server"
-import { LocaleSwitcher } from "@/components/locale-switcher"
-import { NavButton } from "@/components/nav-button"
-import { SessionActions } from "@/features/auth/components/session-actions"
+import { getTranslations } from "next-intl/server";
+
+import { LocaleSwitcher } from "@/components/locale-switcher";
+import { NavButton } from "@/components/nav-button";
+import { SessionActions } from "@/features/auth/components/session-actions";
 
 export default async function ForbiddenPage() {
-  const t = await getTranslations("Auth")
+  const t = await getTranslations("Auth");
 
   return (
     <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
@@ -22,5 +23,5 @@ export default async function ForbiddenPage() {
         <p>{t("forbidden")}</p>
       </div>
     </div>
-  )
+  );
 }

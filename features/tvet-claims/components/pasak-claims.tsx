@@ -1,26 +1,32 @@
-"use client"
+"use client";
 
-import { useQuery } from "@tanstack/react-query"
-import { useTranslations } from "next-intl"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { useFinalizeClaim, useReviewClaim } from "../actions/tvet-claims.mutate"
-import { pasakClaimsQueryOptions } from "../queries/options"
+import { useState } from "react";
+
+import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+
+import {
+  useFinalizeClaim,
+  useReviewClaim,
+} from "../actions/tvet-claims.mutate";
+import { pasakClaimsQueryOptions } from "../queries/options";
 
 export function PasakClaims() {
-  const t = useTranslations("TvetClaims")
-  const claims = useQuery(pasakClaimsQueryOptions())
-  const review = useReviewClaim()
-  const finalize = useFinalizeClaim()
-  const [rejectNotes, setRejectNotes] = useState<Record<string, string>>({})
-  const busy = review.isPending || finalize.isPending
+  const t = useTranslations("TvetClaims");
+  const claims = useQuery(pasakClaimsQueryOptions());
+  const review = useReviewClaim();
+  const finalize = useFinalizeClaim();
+  const [rejectNotes, setRejectNotes] = useState<Record<string, string>>({});
+  const busy = review.isPending || finalize.isPending;
 
   if (claims.isPending) {
-    return <p className="text-sm text-muted-foreground">…</p>
+    return <p className="text-sm text-muted-foreground">…</p>;
   }
 
   if (!claims.data?.length) {
-    return <p className="text-sm text-muted-foreground">{t("empty")}</p>
+    return <p className="text-sm text-muted-foreground">{t("empty")}</p>;
   }
 
   return (
@@ -113,5 +119,5 @@ export function PasakClaims() {
         </article>
       ))}
     </div>
-  )
+  );
 }

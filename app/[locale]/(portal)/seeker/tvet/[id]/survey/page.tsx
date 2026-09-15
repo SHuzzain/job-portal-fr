@@ -1,1 +1,1 @@
-export { default } from "@/features/tvet/pages/tvet-survey-page"
+export { default } from "@/features/tvet/pages/tvet-survey-page";

@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "zod";
 
 export const vacancyStatusSchema = z.enum([
   "PENDING_APPROVAL",
@@ -6,14 +6,14 @@ export const vacancyStatusSchema = z.enum([
   "RETURNED_FOR_CORRECTION",
   "REJECTED",
   "CLOSED",
-])
+]);
 
 export const vacancyEmploymentTypeSchema = z.enum([
   "FULL_TIME",
   "PART_TIME",
   "CONTRACT",
   "INTERNSHIP",
-])
+]);
 
 export const vacancySchema = z.object({
   id: z.string(),
@@ -29,7 +29,7 @@ export const vacancySchema = z.object({
   status: vacancyStatusSchema,
   reviewNotes: z.string().nullable(),
   createdAt: z.string(),
-})
+});
 
 export const vacancyCreateSchema = vacancySchema
   .pick({
@@ -43,8 +43,8 @@ export const vacancyCreateSchema = vacancySchema
     preferredGender: z.enum(["MALE", "FEMALE"]).optional(),
     minAge: z.number().int().optional(),
     maxAge: z.number().int().optional(),
-  })
+  });
 
-export type Vacancy = z.infer<typeof vacancySchema>
-export type VacancyCreate = z.infer<typeof vacancyCreateSchema>
-export type VacancyStatus = z.infer<typeof vacancyStatusSchema>
+export type Vacancy = z.infer<typeof vacancySchema>;
+export type VacancyCreate = z.infer<typeof vacancyCreateSchema>;
+export type VacancyStatus = z.infer<typeof vacancyStatusSchema>;

@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 export function ReviewCommentsModal({
   open,
@@ -16,21 +16,21 @@ export function ReviewCommentsModal({
   onCancel,
   onConfirm,
 }: {
-  open: boolean
-  title: string
-  comments: string
-  commentsLabel: string
-  commentsPlaceholder: string
-  requiredHint: string
-  confirmLabel: string
-  cancelLabel: string
-  pending: boolean
-  onCommentsChange: (value: string) => void
-  onCancel: () => void
-  onConfirm: () => void
+  open: boolean;
+  title: string;
+  comments: string;
+  commentsLabel: string;
+  commentsPlaceholder: string;
+  requiredHint: string;
+  confirmLabel: string;
+  cancelLabel: string;
+  pending: boolean;
+  onCommentsChange: (value: string) => void;
+  onCancel: () => void;
+  onConfirm: () => void;
 }) {
   if (!open) {
-    return null
+    return null;
   }
 
   return (
@@ -38,29 +38,40 @@ export function ReviewCommentsModal({
       <div
         role="dialog"
         aria-modal="true"
-        className="bg-background grid w-full max-w-md gap-3 rounded-lg border border-border p-4 shadow-lg"
+        className="grid w-full max-w-md gap-3 rounded-lg border border-border bg-background p-4 shadow-lg"
       >
         <h2 className="font-medium">{title}</h2>
         <label className="grid gap-1 text-sm">
           <span>{commentsLabel}</span>
           <textarea
             required
-            className="border-input bg-background min-h-28 rounded-md border px-2 py-1.5"
+            className="min-h-28 rounded-md border border-input bg-background px-2 py-1.5"
             value={comments}
             placeholder={commentsPlaceholder}
             onChange={(event) => onCommentsChange(event.target.value)}
           />
         </label>
-        {!comments.trim() ? <p className="text-destructive text-sm">{requiredHint}</p> : null}
+        {!comments.trim() ? (
+          <p className="text-sm text-destructive">{requiredHint}</p>
+        ) : null}
         <div className="flex justify-end gap-2">
-          <Button type="button" variant="outline" disabled={pending} onClick={onCancel}>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={pending}
+            onClick={onCancel}
+          >
             {cancelLabel}
           </Button>
-          <Button type="button" disabled={pending || !comments.trim()} onClick={onConfirm}>
+          <Button
+            type="button"
+            disabled={pending || !comments.trim()}
+            onClick={onConfirm}
+          >
             {confirmLabel}
           </Button>
         </div>
       </div>
     </div>
-  )
+  );
 }

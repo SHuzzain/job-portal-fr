@@ -1,12 +1,13 @@
-"use client"
+"use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { apiClient } from "@/connector/client"
-import { pasakKeys } from "@/features/pasak/queries/keys"
-import type { PasakCompany } from "@/features/pasak/schema"
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { apiClient } from "@/connector/client";
+import { pasakKeys } from "@/features/pasak/queries/keys";
+import type { PasakCompany } from "@/features/pasak/schema";
 
 export function useResubmitCompany() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (id: string) =>
@@ -14,7 +15,7 @@ export function useResubmitCompany() {
         method: "POST",
       }),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: pasakKeys.companies() })
+      await queryClient.invalidateQueries({ queryKey: pasakKeys.companies() });
     },
-  })
+  });
 }

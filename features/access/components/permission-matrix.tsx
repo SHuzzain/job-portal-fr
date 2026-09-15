@@ -1,45 +1,50 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
+import { useTranslations } from "next-intl";
+
 import {
+  type AccessScope,
+  type PermissionMap,
   actionColumns,
   actionsFor,
   hasPermission,
   modulesForScope,
-  toggleResource,
   togglePermission,
-  type AccessScope,
-  type PermissionMap,
-} from "@/connector/access/catalog"
+  toggleResource,
+} from "@/connector/access/catalog";
 
 type Props = {
-  scope: AccessScope
-  value: PermissionMap
-  onChange?: (permissions: PermissionMap) => void
-  readOnly?: boolean
-}
+  scope: AccessScope;
+  value: PermissionMap;
+  onChange?: (permissions: PermissionMap) => void;
+  readOnly?: boolean;
+};
 
 export function PermissionMatrix({ scope, value, onChange, readOnly }: Props) {
-  const t = useTranslations("Access")
-  const disabled = readOnly || !onChange
+  const t = useTranslations("Access");
+  const disabled = readOnly || !onChange;
 
   function update(next: PermissionMap) {
-    onChange?.(next)
+    onChange?.(next);
   }
 
   return (
     <div className="grid gap-6">
       {modulesForScope(scope).map((group) => {
-        const columns = actionColumns(group.resources)
+        const columns = actionColumns(group.resources);
 
         return (
           <section key={group.module} className="grid gap-2">
-            <h3 className="text-sm font-medium">{t(`module_${group.module}`)}</h3>
+            <h3 className="text-sm font-medium">
+              {t(`module_${group.module}`)}
+            </h3>
             <div className="overflow-x-auto rounded-md border border-border">
               <table className="w-full min-w-3xl border-collapse text-sm">
                 <thead className="border-b border-border bg-muted/40">
                   <tr>
-                    <th className="px-3 py-2 text-left font-medium">{t("resource")}</th>
+                    <th className="px-3 py-2 text-left font-medium">
+                      {t("resource")}
+                    </th>
                     {columns.map((action) => (
                       <th
                         key={action}
@@ -49,19 +54,25 @@ export function PermissionMatrix({ scope, value, onChange, readOnly }: Props) {
                       </th>
                     ))}
                     {disabled ? null : (
-                      <th className="px-3 py-2 text-center font-medium">{t("all")}</th>
+                      <th className="px-3 py-2 text-center font-medium">
+                        {t("all")}
+                      </th>
                     )}
                   </tr>
                 </thead>
                 <tbody>
                   {group.resources.map((resource) => {
-                    const supported = actionsFor(resource)
-                    const granted = value[resource] ?? []
+                    const supported = actionsFor(resource);
+                    const granted = value[resource] ?? [];
                     const allGranted =
-                      supported.length > 0 && granted.length === supported.length
+                      supported.length > 0 &&
+                      granted.length === supported.length;
 
                     return (
-                      <tr key={resource} className="border-b border-border last:border-0">
+                      <tr
+                        key={resource}
+                        className="border-b border-border last:border-0"
+                      >
                         <th className="px-3 py-2 text-left font-normal whitespace-nowrap">
                           {t(`resource_${resource}`)}
                         </th>
@@ -71,11 +82,11 @@ export function PermissionMatrix({ scope, value, onChange, readOnly }: Props) {
                               <td
                                 key={action}
                                 aria-hidden
-                                className="text-muted-foreground px-3 py-2 text-center"
+                                className="px-3 py-2 text-center text-muted-foreground"
                               >
                                 –
                               </td>
-                            )
+                            );
                           }
 
                           return (
@@ -91,13 +102,13 @@ export function PermissionMatrix({ scope, value, onChange, readOnly }: Props) {
                                       value,
                                       resource,
                                       action,
-                                      event.target.checked,
-                                    ),
+                                      event.target.checked
+                                    )
                                   )
                                 }
                               />
                             </td>
-                          )
+                          );
                         })}
                         {disabled ? null : (
                           <td className="px-3 py-2 text-center">
@@ -107,21 +118,25 @@ export function PermissionMatrix({ scope, value, onChange, readOnly }: Props) {
                               checked={allGranted}
                               onChange={(event) =>
                                 update(
-                                  toggleResource(value, resource, event.target.checked),
+                                  toggleResource(
+                                    value,
+                                    resource,
+                                    event.target.checked
+                                  )
                                 )
                               }
                             />
                           </td>
                         )}
                       </tr>
-                    )
+                    );
                   })}
                 </tbody>
               </table>
             </div>
           </section>
-        )
+        );
       })}
     </div>
-  )
+  );
 }

@@ -1,26 +1,32 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { countPermissions, type PermissionMap } from "@/connector/access/catalog"
-import { useRouter } from "@/i18n/navigation"
+import { useState } from "react";
+
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+import {
+  type PermissionMap,
+  countPermissions,
+} from "@/connector/access/catalog";
+import { useRouter } from "@/i18n/navigation";
+
 import {
   accessErrorMessage,
   useCreatePlatformRole,
   useUpdatePlatformRole,
-} from "../actions/access.mutate"
-import { platformRoleFormSchema } from "../schema"
-import { PermissionMatrix } from "./permission-matrix"
+} from "../actions/access.mutate";
+import { platformRoleFormSchema } from "../schema";
+import { PermissionMatrix } from "./permission-matrix";
 
 type Props = {
   role?: {
-    id: string
-    name: string
-    label: string
-    permissions: PermissionMap
-  }
-}
+    id: string;
+    name: string;
+    label: string;
+    permissions: PermissionMap;
+  };
+};
 
 /** Keeps typed role names in the slug shape the API accepts. */
 function toRoleName(value: string) {
@@ -28,49 +34,51 @@ function toRoleName(value: string) {
     .toLowerCase()
     .replace(/[^a-z0-9_]/g, "_")
     .replace(/^_+/, "")
-    .slice(0, 40)
+    .slice(0, 40);
 }
 
 export function PlatformRoleForm({ role }: Props) {
-  const t = useTranslations("Access")
-  const router = useRouter()
-  const [name, setName] = useState(role?.name ?? "")
-  const [label, setLabel] = useState(role?.label ?? "")
-  const [permissions, setPermissions] = useState<PermissionMap>(role?.permissions ?? {})
-  const [error, setError] = useState<string | null>(null)
+  const t = useTranslations("Access");
+  const router = useRouter();
+  const [name, setName] = useState(role?.name ?? "");
+  const [label, setLabel] = useState(role?.label ?? "");
+  const [permissions, setPermissions] = useState<PermissionMap>(
+    role?.permissions ?? {}
+  );
+  const [error, setError] = useState<string | null>(null);
 
-  const createRole = useCreatePlatformRole()
-  const updateRole = useUpdatePlatformRole(role?.id ?? "")
-  const pending = createRole.isPending || updateRole.isPending
+  const createRole = useCreatePlatformRole();
+  const updateRole = useUpdatePlatformRole(role?.id ?? "");
+  const pending = createRole.isPending || updateRole.isPending;
 
   async function submit(event: React.FormEvent) {
-    event.preventDefault()
-    setError(null)
+    event.preventDefault();
+    setError(null);
 
     const parsed = platformRoleFormSchema.safeParse({
       name: role?.name ?? name,
       label,
       permissions,
-    })
+    });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? t("invalidRole"))
-      return
+      setError(parsed.error.issues[0]?.message ?? t("invalidRole"));
+      return;
     }
 
     try {
       if (role) {
-        await updateRole.mutateAsync({ label: parsed.data.label, permissions })
+        await updateRole.mutateAsync({ label: parsed.data.label, permissions });
       } else {
-        await createRole.mutateAsync(parsed.data)
+        await createRole.mutateAsync(parsed.data);
       }
-      router.push("/pasak/access")
+      router.push("/pasak/access");
     } catch (mutationError) {
       setError(
         accessErrorMessage(
           mutationError,
-          role ? t("saveRoleError") : t("createRoleError"),
-        ),
-      )
+          role ? t("saveRoleError") : t("createRoleError")
+        )
+      );
     }
   }
 
@@ -82,20 +90,22 @@ export function PlatformRoleForm({ role }: Props) {
           <input
             required
             readOnly={Boolean(role)}
-            className="border-input bg-background rounded-md border px-2 py-1.5 read-only:opacity-60"
+            className="rounded-md border border-input bg-background px-2 py-1.5 read-only:opacity-60"
             value={name}
             placeholder="finance_officer"
             onChange={(event) => setName(toRoleName(event.target.value))}
           />
           {role ? null : (
-            <span className="text-muted-foreground text-xs">{t("roleNameHint")}</span>
+            <span className="text-xs text-muted-foreground">
+              {t("roleNameHint")}
+            </span>
           )}
         </label>
         <label className="grid gap-1">
           <span>{t("roleLabel")}</span>
           <input
             required
-            className="border-input bg-background rounded-md border px-2 py-1.5"
+            className="rounded-md border border-input bg-background px-2 py-1.5"
             value={label}
             placeholder="Finance officer"
             onChange={(event) => setLabel(event.target.value)}
@@ -103,18 +113,22 @@ export function PlatformRoleForm({ role }: Props) {
         </label>
       </div>
 
-      <PermissionMatrix scope="platform" value={permissions} onChange={setPermissions} />
+      <PermissionMatrix
+        scope="platform"
+        value={permissions}
+        onChange={setPermissions}
+      />
 
       <div className="flex items-center gap-3">
         <Button type="submit" disabled={pending}>
           {pending ? t("saving") : role ? t("saveRole") : t("createRole")}
         </Button>
-        <span className="text-muted-foreground text-sm">
+        <span className="text-sm text-muted-foreground">
           {t("permissionCount", { count: countPermissions(permissions) })}
         </span>
       </div>
 
-      {error ? <p className="text-destructive text-sm">{error}</p> : null}
+      {error ? <p className="text-sm text-destructive">{error}</p> : null}
     </form>
-  )
+  );
 }

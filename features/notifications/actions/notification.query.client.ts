@@ -1,10 +1,11 @@
-import { apiClient } from "@/connector/client"
-import type { Notification, UnreadCount } from "../schema"
+import { apiClient } from "@/connector/client";
+
+import type { Notification, UnreadCount } from "../schema";
 
 export function listNotifications() {
-  return apiClient<Notification[]>("/notifications")
+  return apiClient<Notification[]>("/notifications");
 }
 
 export function getUnreadCount() {
-  return apiClient<UnreadCount>("/notifications/unread-count")
+  return apiClient<UnreadCount>("/notifications/unread-count");
 }

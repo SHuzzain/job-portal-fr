@@ -1,39 +1,44 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
-import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { authClient } from "@/connector"
-import { RESERVED_ORG_ROLES } from "@/connector/access/organization"
+import { useEffect, useState } from "react";
+
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+import { authClient } from "@/connector";
+import { RESERVED_ORG_ROLES } from "@/connector/access/organization";
 
 type OrgMember = {
-  id: string
-  role: string
-  user?: { email?: string; name?: string }
-}
+  id: string;
+  role: string;
+  user?: { email?: string; name?: string };
+};
 
 function asMembers(payload: unknown): OrgMember[] {
   if (!payload || typeof payload !== "object") {
-    return []
+    return [];
   }
-  const members = "members" in payload ? payload.members : payload
+  const members = "members" in payload ? payload.members : payload;
   if (!Array.isArray(members)) {
-    return []
+    return [];
   }
   return members.filter((member): member is OrgMember =>
-    Boolean(member && typeof member === "object" && "id" in member),
-  )
+    Boolean(member && typeof member === "object" && "id" in member)
+  );
 }
 
 function asRoleNames(payload: unknown): string[] {
   if (Array.isArray(payload)) {
     return payload
       .map((role) =>
-        role && typeof role === "object" && "role" in role && typeof role.role === "string"
+        role &&
+        typeof role === "object" &&
+        "role" in role &&
+        typeof role.role === "string"
           ? role.role
-          : null,
+          : null
       )
-      .filter((role): role is string => Boolean(role))
+      .filter((role): role is string => Boolean(role));
   }
   if (
     payload &&
@@ -41,71 +46,75 @@ function asRoleNames(payload: unknown): string[] {
     "roles" in payload &&
     Array.isArray(payload.roles)
   ) {
-    return asRoleNames(payload.roles)
+    return asRoleNames(payload.roles);
   }
-  return []
+  return [];
 }
 
-export function OrgMembersPanel({ organizationId }: { organizationId: string }) {
-  const t = useTranslations("Access")
-  const [members, setMembers] = useState<OrgMember[]>([])
-  const [roleNames, setRoleNames] = useState<string[]>([])
-  const [inviteEmail, setInviteEmail] = useState("")
-  const [inviteRole, setInviteRole] = useState("admin")
-  const [loading, setLoading] = useState(true)
-  const [pending, setPending] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+export function OrgMembersPanel({
+  organizationId,
+}: {
+  organizationId: string;
+}) {
+  const t = useTranslations("Access");
+  const [members, setMembers] = useState<OrgMember[]>([]);
+  const [roleNames, setRoleNames] = useState<string[]>([]);
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteRole, setInviteRole] = useState("admin");
+  const [loading, setLoading] = useState(true);
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const roleOptions = [
     ...RESERVED_ORG_ROLES.filter((role) => role !== "owner"),
     ...roleNames,
-  ]
+  ];
 
   async function refresh() {
-    setLoading(true)
+    setLoading(true);
     const [memberResult, roleResult] = await Promise.all([
       authClient.organization.listMembers(),
       authClient.organization.listRoles(),
-    ])
-    setLoading(false)
+    ]);
+    setLoading(false);
     if (memberResult.error) {
-      setError(memberResult.error.message ?? t("loadError"))
+      setError(memberResult.error.message ?? t("loadError"));
     } else {
-      setMembers(asMembers(memberResult.data))
+      setMembers(asMembers(memberResult.data));
     }
     if (!roleResult.error) {
-      setRoleNames(asRoleNames(roleResult.data))
+      setRoleNames(asRoleNames(roleResult.data));
     }
   }
 
   useEffect(() => {
-    void refresh()
-  }, [organizationId])
+    void refresh();
+  }, [organizationId]);
 
   return (
     <div className="grid gap-8">
       <section className="grid gap-3">
         <div>
           <h2 className="font-medium">{t("inviteMember")}</h2>
-          <p className="text-muted-foreground text-sm">{t("inviteHint")}</p>
+          <p className="text-sm text-muted-foreground">{t("inviteHint")}</p>
         </div>
         <form
           className="grid max-w-md gap-3 text-sm"
           onSubmit={async (event) => {
-            event.preventDefault()
-            setError(null)
-            setPending(true)
+            event.preventDefault();
+            setError(null);
+            setPending(true);
             const result = await authClient.organization.inviteMember({
               email: inviteEmail,
               role: inviteRole,
-            })
-            setPending(false)
+            });
+            setPending(false);
             if (result.error) {
-              setError(result.error.message ?? t("inviteError"))
-              return
+              setError(result.error.message ?? t("inviteError"));
+              return;
             }
-            setInviteEmail("")
-            await refresh()
+            setInviteEmail("");
+            await refresh();
           }}
         >
           <label className="grid gap-1">
@@ -113,7 +122,7 @@ export function OrgMembersPanel({ organizationId }: { organizationId: string }) 
             <input
               required
               type="email"
-              className="border-input bg-background rounded-md border px-2 py-1.5"
+              className="rounded-md border border-input bg-background px-2 py-1.5"
               value={inviteEmail}
               onChange={(event) => setInviteEmail(event.target.value)}
             />
@@ -121,7 +130,7 @@ export function OrgMembersPanel({ organizationId }: { organizationId: string }) 
           <label className="grid gap-1">
             <span>{t("orgRole")}</span>
             <select
-              className="border-input bg-background rounded-md border px-2 py-1.5"
+              className="rounded-md border border-input bg-background px-2 py-1.5"
               value={inviteRole}
               onChange={(event) => setInviteRole(event.target.value)}
             >
@@ -140,9 +149,9 @@ export function OrgMembersPanel({ organizationId }: { organizationId: string }) 
 
       <section className="grid gap-3">
         <h2 className="font-medium">{t("members")}</h2>
-        {loading ? <p className="text-muted-foreground text-sm">…</p> : null}
+        {loading ? <p className="text-sm text-muted-foreground">…</p> : null}
         {!loading && members.length === 0 ? (
-          <p className="text-muted-foreground text-sm">{t("membersEmpty")}</p>
+          <p className="text-sm text-muted-foreground">{t("membersEmpty")}</p>
         ) : (
           <ul className="grid gap-2 text-sm">
             {members.map((member) => (
@@ -155,19 +164,20 @@ export function OrgMembersPanel({ organizationId }: { organizationId: string }) 
                 <label className="grid gap-1">
                   <span>{t("orgRole")}</span>
                   <select
-                    className="border-input bg-background rounded-md border px-2 py-1.5"
+                    className="rounded-md border border-input bg-background px-2 py-1.5"
                     value={member.role}
                     onChange={async (event) => {
-                      setError(null)
-                      const result = await authClient.organization.updateMemberRole({
-                        memberId: member.id,
-                        role: event.target.value,
-                      })
+                      setError(null);
+                      const result =
+                        await authClient.organization.updateMemberRole({
+                          memberId: member.id,
+                          role: event.target.value,
+                        });
                       if (result.error) {
-                        setError(result.error.message ?? t("setRoleError"))
-                        return
+                        setError(result.error.message ?? t("setRoleError"));
+                        return;
                       }
-                      await refresh()
+                      await refresh();
                     }}
                   >
                     {[member.role, ...roleOptions]
@@ -185,7 +195,7 @@ export function OrgMembersPanel({ organizationId }: { organizationId: string }) 
         )}
       </section>
 
-      {error ? <p className="text-destructive text-sm">{error}</p> : null}
+      {error ? <p className="text-sm text-destructive">{error}</p> : null}
     </div>
-  )
+  );
 }

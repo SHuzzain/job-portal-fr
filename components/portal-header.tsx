@@ -1,10 +1,11 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { LocaleSwitcher } from "@/components/locale-switcher"
-import { SessionActions } from "@/features/auth/components/session-actions"
+import { getTranslations } from "next-intl/server";
+
+import { LocaleSwitcher } from "@/components/locale-switcher";
+import { NavButton } from "@/components/nav-button";
+import { SessionActions } from "@/features/auth/components/session-actions";
 
 export async function PortalHeader() {
-  const t = await getTranslations("Nav")
+  const t = await getTranslations("Nav");
 
   return (
     <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-6 py-4">
@@ -30,5 +31,5 @@ export async function PortalHeader() {
         <LocaleSwitcher />
       </div>
     </header>
-  )
+  );
 }

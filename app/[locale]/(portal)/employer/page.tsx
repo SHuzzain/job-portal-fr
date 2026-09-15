@@ -1,11 +1,12 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { PermissionGate } from "@/features/auth/components/permission-gate"
-import { CompanySwitcher } from "@/features/companies/components/company-switcher"
-import { EmployerShortcuts } from "@/features/companies/components/employer-shortcuts"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
+import { CompanySwitcher } from "@/features/companies/components/company-switcher";
+import { EmployerShortcuts } from "@/features/companies/components/employer-shortcuts";
 
 export default async function EmployerPage() {
-  const t = await getTranslations("EmployerPage")
+  const t = await getTranslations("EmployerPage");
 
   return (
     <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
@@ -23,5 +24,5 @@ export default async function EmployerPage() {
         <EmployerShortcuts />
       </PermissionGate>
     </div>
-  )
+  );
 }

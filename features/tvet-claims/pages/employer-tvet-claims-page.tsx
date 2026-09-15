@@ -1,10 +1,11 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { ProviderClaims } from "@/features/tvet-claims/components/provider-claims"
-import { TvetGate } from "@/features/tvet/components/tvet-gate"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { ProviderClaims } from "@/features/tvet-claims/components/provider-claims";
+import { TvetGate } from "@/features/tvet/components/tvet-gate";
 
 export default async function EmployerTvetClaimsPage() {
-  const t = await getTranslations("TvetClaims")
+  const t = await getTranslations("TvetClaims");
 
   return (
     <div className="mx-auto flex min-h-svh max-w-3xl flex-col gap-6 p-6">
@@ -23,5 +24,5 @@ export default async function EmployerTvetClaimsPage() {
         <ProviderClaims />
       </TvetGate>
     </div>
-  )
+  );
 }

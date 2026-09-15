@@ -1,57 +1,69 @@
-"use client"
+"use client";
 
-import { useQuery } from "@tanstack/react-query"
-import { useTranslations } from "next-intl"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { useRouter } from "@/i18n/navigation"
-import { useResubmitVacancy, useUpdateVacancy } from "../actions/vacancy.mutate"
-import { mineVacancyQueryOptions } from "../queries/options"
-import { vacancyEmploymentTypeSchema } from "../schema"
+import { useState } from "react";
 
-const employmentTypes = vacancyEmploymentTypeSchema.options
+import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+import { useRouter } from "@/i18n/navigation";
+
+import {
+  useResubmitVacancy,
+  useUpdateVacancy,
+} from "../actions/vacancy.mutate";
+import { mineVacancyQueryOptions } from "../queries/options";
+import { vacancyEmploymentTypeSchema } from "../schema";
+
+const employmentTypes = vacancyEmploymentTypeSchema.options;
 
 export function EditVacancyForm({ vacancyId }: { vacancyId: string }) {
-  const t = useTranslations("EmployerVacancies")
-  const createT = useTranslations("CreateVacancy")
-  const router = useRouter()
-  const { data, isPending, isError } = useQuery(mineVacancyQueryOptions(vacancyId))
-  const updateVacancy = useUpdateVacancy()
-  const resubmit = useResubmitVacancy()
-  const [title, setTitle] = useState<string | null>(null)
-  const [description, setDescription] = useState<string | null>(null)
-  const [location, setLocation] = useState<string | null>(null)
-  const [employmentType, setEmploymentType] = useState<string | null>(null)
-  const [minQualification, setMinQualification] = useState<string | null>(null)
-  const [preferredGender, setPreferredGender] = useState<string | null>(null)
-  const [minAge, setMinAge] = useState<string | null>(null)
-  const [maxAge, setMaxAge] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const t = useTranslations("EmployerVacancies");
+  const createT = useTranslations("CreateVacancy");
+  const router = useRouter();
+  const { data, isPending, isError } = useQuery(
+    mineVacancyQueryOptions(vacancyId)
+  );
+  const updateVacancy = useUpdateVacancy();
+  const resubmit = useResubmitVacancy();
+  const [title, setTitle] = useState<string | null>(null);
+  const [description, setDescription] = useState<string | null>(null);
+  const [location, setLocation] = useState<string | null>(null);
+  const [employmentType, setEmploymentType] = useState<string | null>(null);
+  const [minQualification, setMinQualification] = useState<string | null>(null);
+  const [preferredGender, setPreferredGender] = useState<string | null>(null);
+  const [minAge, setMinAge] = useState<string | null>(null);
+  const [maxAge, setMaxAge] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   if (isPending) {
-    return <p className="text-muted-foreground text-sm">…</p>
+    return <p className="text-sm text-muted-foreground">…</p>;
   }
 
   if (isError || !data) {
-    return <p className="text-muted-foreground text-sm">{t("empty")}</p>
+    return <p className="text-sm text-muted-foreground">{t("empty")}</p>;
   }
 
-  const currentTitle = title ?? data.title
-  const currentDescription = description ?? data.description
-  const currentLocation = location ?? data.location
-  const currentType = vacancyEmploymentTypeSchema.parse(employmentType ?? data.employmentType)
-  const currentQualification = minQualification ?? data.minQualification ?? ""
-  const currentGender = preferredGender ?? data.preferredGender ?? ""
-  const currentMinAge = minAge ?? (data.minAge !== null ? String(data.minAge) : "")
-  const currentMaxAge = maxAge ?? (data.maxAge !== null ? String(data.maxAge) : "")
-  const busy = updateVacancy.isPending || resubmit.isPending
+  const currentTitle = title ?? data.title;
+  const currentDescription = description ?? data.description;
+  const currentLocation = location ?? data.location;
+  const currentType = vacancyEmploymentTypeSchema.parse(
+    employmentType ?? data.employmentType
+  );
+  const currentQualification = minQualification ?? data.minQualification ?? "";
+  const currentGender = preferredGender ?? data.preferredGender ?? "";
+  const currentMinAge =
+    minAge ?? (data.minAge !== null ? String(data.minAge) : "");
+  const currentMaxAge =
+    maxAge ?? (data.maxAge !== null ? String(data.maxAge) : "");
+  const busy = updateVacancy.isPending || resubmit.isPending;
 
   return (
     <form
       className="grid max-w-md gap-3 text-sm"
       onSubmit={async (event) => {
-        event.preventDefault()
-        setError(null)
+        event.preventDefault();
+        setError(null);
         try {
           await updateVacancy.mutateAsync({
             id: vacancyId,
@@ -61,15 +73,16 @@ export function EditVacancyForm({ vacancyId }: { vacancyId: string }) {
               location: currentLocation,
               employmentType: currentType,
               minQualification: currentQualification.trim() || undefined,
-              preferredGender: (currentGender || undefined) as "MALE" | "FEMALE" | undefined,
+              preferredGender: (currentGender || undefined) as
+                "MALE" | "FEMALE" | undefined,
               minAge: currentMinAge ? Number(currentMinAge) : undefined,
               maxAge: currentMaxAge ? Number(currentMaxAge) : undefined,
             },
-          })
-          await resubmit.mutateAsync(vacancyId)
-          router.push("/employer/vacancies")
+          });
+          await resubmit.mutateAsync(vacancyId);
+          router.push("/employer/vacancies");
         } catch {
-          setError(t("resubmitError"))
+          setError(t("resubmitError"));
         }
       }}
     >
@@ -82,7 +95,7 @@ export function EditVacancyForm({ vacancyId }: { vacancyId: string }) {
         <span>{createT("title")}</span>
         <input
           required
-          className="border-input bg-background rounded-md border px-2 py-1.5"
+          className="rounded-md border border-input bg-background px-2 py-1.5"
           value={currentTitle}
           onChange={(event) => setTitle(event.target.value)}
         />
@@ -91,7 +104,7 @@ export function EditVacancyForm({ vacancyId }: { vacancyId: string }) {
         <span>{createT("description")}</span>
         <textarea
           required
-          className="border-input bg-background min-h-24 rounded-md border px-2 py-1.5"
+          className="min-h-24 rounded-md border border-input bg-background px-2 py-1.5"
           value={currentDescription}
           onChange={(event) => setDescription(event.target.value)}
         />
@@ -100,7 +113,7 @@ export function EditVacancyForm({ vacancyId }: { vacancyId: string }) {
         <span>{createT("location")}</span>
         <input
           required
-          className="border-input bg-background rounded-md border px-2 py-1.5"
+          className="rounded-md border border-input bg-background px-2 py-1.5"
           value={currentLocation}
           onChange={(event) => setLocation(event.target.value)}
         />
@@ -108,7 +121,7 @@ export function EditVacancyForm({ vacancyId }: { vacancyId: string }) {
       <label className="grid gap-1">
         <span>{createT("employmentType")}</span>
         <select
-          className="border-input bg-background rounded-md border px-2 py-1.5"
+          className="rounded-md border border-input bg-background px-2 py-1.5"
           value={currentType}
           onChange={(event) => setEmploymentType(event.target.value)}
         >
@@ -122,7 +135,7 @@ export function EditVacancyForm({ vacancyId }: { vacancyId: string }) {
       <label className="grid gap-1">
         <span>{createT("minQualification")}</span>
         <input
-          className="border-input bg-background rounded-md border px-2 py-1.5"
+          className="rounded-md border border-input bg-background px-2 py-1.5"
           value={currentQualification}
           onChange={(event) => setMinQualification(event.target.value)}
         />
@@ -130,7 +143,7 @@ export function EditVacancyForm({ vacancyId }: { vacancyId: string }) {
       <label className="grid gap-1">
         <span>{createT("preferredGender")}</span>
         <select
-          className="border-input bg-background rounded-md border px-2 py-1.5"
+          className="rounded-md border border-input bg-background px-2 py-1.5"
           value={currentGender}
           onChange={(event) => setPreferredGender(event.target.value)}
         >
@@ -146,7 +159,7 @@ export function EditVacancyForm({ vacancyId }: { vacancyId: string }) {
             type="number"
             min={16}
             max={80}
-            className="border-input bg-background rounded-md border px-2 py-1.5"
+            className="rounded-md border border-input bg-background px-2 py-1.5"
             value={currentMinAge}
             onChange={(event) => setMinAge(event.target.value)}
           />
@@ -157,7 +170,7 @@ export function EditVacancyForm({ vacancyId }: { vacancyId: string }) {
             type="number"
             min={16}
             max={80}
-            className="border-input bg-background rounded-md border px-2 py-1.5"
+            className="rounded-md border border-input bg-background px-2 py-1.5"
             value={currentMaxAge}
             onChange={(event) => setMaxAge(event.target.value)}
           />
@@ -168,5 +181,5 @@ export function EditVacancyForm({ vacancyId }: { vacancyId: string }) {
       </Button>
       {error ? <p className="text-destructive">{error}</p> : null}
     </form>
-  )
+  );
 }

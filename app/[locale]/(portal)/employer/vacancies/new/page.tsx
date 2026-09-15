@@ -1,1 +1,1 @@
-export { default } from "@/features/vacancies/pages/new-vacancy-page"
+export { default } from "@/features/vacancies/pages/new-vacancy-page";

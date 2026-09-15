@@ -1,1 +1,1 @@
-export { default } from "@/features/settings/pages/settings-page"
+export { default } from "@/features/settings/pages/settings-page";

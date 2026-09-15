@@ -1,1 +1,1 @@
-export { default } from "@/features/applications/pages/vacancy-applicants-page"
+export { default } from "@/features/applications/pages/vacancy-applicants-page";

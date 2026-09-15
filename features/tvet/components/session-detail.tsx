@@ -1,23 +1,24 @@
-"use client"
+"use client";
 
-import { useQuery } from "@tanstack/react-query"
-import { useTranslations } from "next-intl"
-import { sessionQueryOptions } from "../queries/options"
+import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
+
+import { sessionQueryOptions } from "../queries/options";
 
 type Props = {
-  sessionId: string
-}
+  sessionId: string;
+};
 
 export function SessionDetail({ sessionId }: Props) {
-  const t = useTranslations("TvetPage")
-  const { data, isPending, isError } = useQuery(sessionQueryOptions(sessionId))
+  const t = useTranslations("TvetPage");
+  const { data, isPending, isError } = useQuery(sessionQueryOptions(sessionId));
 
   if (isPending) {
-    return <p className="text-muted-foreground text-sm">…</p>
+    return <p className="text-sm text-muted-foreground">…</p>;
   }
 
   if (isError || !data) {
-    return <p className="text-sm">{t("sessionMissing")}</p>
+    return <p className="text-sm">{t("sessionMissing")}</p>;
   }
 
   return (
@@ -48,5 +49,5 @@ export function SessionDetail({ sessionId }: Props) {
         )}
       </div>
     </div>
-  )
+  );
 }

@@ -1,15 +1,16 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { PermissionGate } from "@/features/auth/components/permission-gate"
-import { VacancyApplicantList } from "@/features/applications/components/vacancy-applicant-list"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { VacancyApplicantList } from "@/features/applications/components/vacancy-applicant-list";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
 
 type Props = {
-  params: Promise<{ id: string }>
-}
+  params: Promise<{ id: string }>;
+};
 
 export default async function VacancyApplicantsPage({ params }: Props) {
-  const t = await getTranslations("EmployerApplicants")
-  const { id } = await params
+  const t = await getTranslations("EmployerApplicants");
+  const { id } = await params;
 
   return (
     <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
@@ -26,5 +27,5 @@ export default async function VacancyApplicantsPage({ params }: Props) {
         <VacancyApplicantList vacancyId={id} />
       </PermissionGate>
     </div>
-  )
+  );
 }

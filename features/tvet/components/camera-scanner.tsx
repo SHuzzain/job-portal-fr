@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import { useEffect, useId, useRef, useState } from "react"
+import { useEffect, useId, useRef, useState } from "react";
 
-const ATTENDANCE_CODE_PATTERN = /^TP-[A-F0-9]{12}$/
+const ATTENDANCE_CODE_PATTERN = /^TP-[A-F0-9]{12}$/;
 
 type CameraScannerProps = {
-  onDetected: (barcode: string) => void
-  onInvalid: () => void
-  onUnavailable: () => void
-  initializingLabel: string
-  instructionsLabel: string
-}
+  onDetected: (barcode: string) => void;
+  onInvalid: () => void;
+  onUnavailable: () => void;
+  initializingLabel: string;
+  instructionsLabel: string;
+};
 
 export function CameraScanner({
   onDetected,
@@ -19,25 +19,25 @@ export function CameraScanner({
   initializingLabel,
   instructionsLabel,
 }: CameraScannerProps) {
-  const scannerId = `tvet-camera-${useId().replaceAll(":", "")}`
-  const detectedRef = useRef(false)
-  const [isReady, setIsReady] = useState(false)
+  const scannerId = `tvet-camera-${useId().replaceAll(":", "")}`;
+  const detectedRef = useRef(false);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    let cancelled = false
-    let scanner: import("html5-qrcode").Html5Qrcode | null = null
+    let cancelled = false;
+    let scanner: import("html5-qrcode").Html5Qrcode | null = null;
 
     async function stopAndClear() {
-      if (!scanner) return
+      if (!scanner) return;
 
       try {
-        await scanner.stop()
+        await scanner.stop();
       } catch {
         // The scanner may not have finished starting.
       }
 
       try {
-        scanner.clear()
+        scanner.clear();
       } catch {
         // The element may already have been removed during unmount.
       }
@@ -45,15 +45,15 @@ export function CameraScanner({
 
     async function startScanner() {
       if (!navigator.mediaDevices?.getUserMedia) {
-        onUnavailable()
-        return
+        onUnavailable();
+        return;
       }
 
       try {
-        const { Html5Qrcode } = await import("html5-qrcode")
-        if (cancelled) return
+        const { Html5Qrcode } = await import("html5-qrcode");
+        if (cancelled) return;
 
-        scanner = new Html5Qrcode(scannerId, false)
+        scanner = new Html5Qrcode(scannerId, false);
         await scanner.start(
           { facingMode: "environment" },
           {
@@ -61,44 +61,44 @@ export function CameraScanner({
             qrbox: { width: 250, height: 250 },
           },
           (decodedText) => {
-            if (detectedRef.current) return
+            if (detectedRef.current) return;
 
-            const barcode = decodedText.trim()
+            const barcode = decodedText.trim();
             if (!ATTENDANCE_CODE_PATTERN.test(barcode)) {
-              onInvalid()
-              return
+              onInvalid();
+              return;
             }
 
-            detectedRef.current = true
+            detectedRef.current = true;
             void stopAndClear().finally(() => {
-              if (!cancelled) onDetected(barcode)
-            })
+              if (!cancelled) onDetected(barcode);
+            });
           },
           () => {
             // Decode misses are expected while the camera is moving.
           }
-        )
+        );
 
         if (cancelled) {
-          await stopAndClear()
-          return
+          await stopAndClear();
+          return;
         }
 
-        setIsReady(true)
+        setIsReady(true);
       } catch {
-        if (!cancelled) onUnavailable()
-        await stopAndClear()
+        if (!cancelled) onUnavailable();
+        await stopAndClear();
       }
     }
 
-    void startScanner()
+    void startScanner();
 
     return () => {
-      cancelled = true
-      detectedRef.current = true
-      void stopAndClear()
-    }
-  }, [onDetected, onInvalid, onUnavailable, scannerId])
+      cancelled = true;
+      detectedRef.current = true;
+      void stopAndClear();
+    };
+  }, [onDetected, onInvalid, onUnavailable, scannerId]);
 
   return (
     <div className="grid gap-3">
@@ -110,5 +110,5 @@ export function CameraScanner({
         {isReady ? instructionsLabel : initializingLabel}
       </p>
     </div>
-  )
+  );
 }

@@ -1,21 +1,25 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
-import { Button } from "@/components/ui/button"
-import { vacancyEmploymentTypeSchema } from "../schema"
-import { useCreateVacancy } from "../actions/vacancy.mutate"
-import { useVacancyWizard } from "../stores/vacancy-wizard"
+import { useTranslations } from "next-intl";
 
-const employmentTypes = vacancyEmploymentTypeSchema.options
+import { Button } from "@/components/ui/button";
+
+import { useCreateVacancy } from "../actions/vacancy.mutate";
+import { vacancyEmploymentTypeSchema } from "../schema";
+import { useVacancyWizard } from "../stores/vacancy-wizard";
+
+const employmentTypes = vacancyEmploymentTypeSchema.options;
 
 export function VacancyWizard() {
-  const t = useTranslations("CreateVacancy")
-  const { step, draft, setStep, updateDraft, reset } = useVacancyWizard()
-  const createVacancy = useCreateVacancy()
+  const t = useTranslations("CreateVacancy");
+  const { step, draft, setStep, updateDraft, reset } = useVacancyWizard();
+  const createVacancy = useCreateVacancy();
 
   return (
     <div className="grid max-w-md gap-4 text-sm">
-      <p className="text-muted-foreground">{t("step", { current: step, total: 3 })}</p>
+      <p className="text-muted-foreground">
+        {t("step", { current: step, total: 3 })}
+      </p>
 
       {step === 1 ? (
         <div className="grid gap-3">
@@ -23,7 +27,7 @@ export function VacancyWizard() {
             <span>{t("title")}</span>
             <input
               required
-              className="border-input bg-background rounded-md border px-2 py-1.5"
+              className="rounded-md border border-input bg-background px-2 py-1.5"
               value={draft.title}
               onChange={(event) => updateDraft({ title: event.target.value })}
             />
@@ -32,9 +36,11 @@ export function VacancyWizard() {
             <span>{t("description")}</span>
             <textarea
               required
-              className="border-input bg-background min-h-24 rounded-md border px-2 py-1.5"
+              className="min-h-24 rounded-md border border-input bg-background px-2 py-1.5"
               value={draft.description}
-              onChange={(event) => updateDraft({ description: event.target.value })}
+              onChange={(event) =>
+                updateDraft({ description: event.target.value })
+              }
             />
           </label>
           <Button
@@ -53,19 +59,22 @@ export function VacancyWizard() {
             <span>{t("location")}</span>
             <input
               required
-              className="border-input bg-background rounded-md border px-2 py-1.5"
+              className="rounded-md border border-input bg-background px-2 py-1.5"
               value={draft.location}
-              onChange={(event) => updateDraft({ location: event.target.value })}
+              onChange={(event) =>
+                updateDraft({ location: event.target.value })
+              }
             />
           </label>
           <label className="grid gap-1">
             <span>{t("employmentType")}</span>
             <select
-              className="border-input bg-background rounded-md border px-2 py-1.5"
+              className="rounded-md border border-input bg-background px-2 py-1.5"
               value={draft.employmentType}
               onChange={(event) =>
                 updateDraft({
-                  employmentType: event.target.value as typeof draft.employmentType,
+                  employmentType: event.target
+                    .value as typeof draft.employmentType,
                 })
               }
             >
@@ -79,22 +88,22 @@ export function VacancyWizard() {
           <label className="grid gap-1">
             <span>{t("minQualification")}</span>
             <input
-              className="border-input bg-background rounded-md border px-2 py-1.5"
+              className="rounded-md border border-input bg-background px-2 py-1.5"
               value={draft.minQualification ?? ""}
-              onChange={(event) => updateDraft({ minQualification: event.target.value })}
+              onChange={(event) =>
+                updateDraft({ minQualification: event.target.value })
+              }
             />
           </label>
           <label className="grid gap-1">
             <span>{t("preferredGender")}</span>
             <select
-              className="border-input bg-background rounded-md border px-2 py-1.5"
+              className="rounded-md border border-input bg-background px-2 py-1.5"
               value={draft.preferredGender ?? ""}
               onChange={(event) =>
                 updateDraft({
                   preferredGender: (event.target.value || undefined) as
-                    | "MALE"
-                    | "FEMALE"
-                    | undefined,
+                    "MALE" | "FEMALE" | undefined,
                 })
               }
             >
@@ -110,11 +119,13 @@ export function VacancyWizard() {
                 type="number"
                 min={16}
                 max={80}
-                className="border-input bg-background rounded-md border px-2 py-1.5"
+                className="rounded-md border border-input bg-background px-2 py-1.5"
                 value={draft.minAge ?? ""}
                 onChange={(event) =>
                   updateDraft({
-                    minAge: event.target.value ? Number(event.target.value) : undefined,
+                    minAge: event.target.value
+                      ? Number(event.target.value)
+                      : undefined,
                   })
                 }
               />
@@ -125,11 +136,13 @@ export function VacancyWizard() {
                 type="number"
                 min={16}
                 max={80}
-                className="border-input bg-background rounded-md border px-2 py-1.5"
+                className="rounded-md border border-input bg-background px-2 py-1.5"
                 value={draft.maxAge ?? ""}
                 onChange={(event) =>
                   updateDraft({
-                    maxAge: event.target.value ? Number(event.target.value) : undefined,
+                    maxAge: event.target.value
+                      ? Number(event.target.value)
+                      : undefined,
                   })
                 }
               />
@@ -139,7 +152,11 @@ export function VacancyWizard() {
             <Button type="button" variant="outline" onClick={() => setStep(1)}>
               {t("backStep")}
             </Button>
-            <Button type="button" disabled={!draft.location} onClick={() => setStep(3)}>
+            <Button
+              type="button"
+              disabled={!draft.location}
+              onClick={() => setStep(3)}
+            >
               {t("next")}
             </Button>
           </div>
@@ -177,24 +194,27 @@ export function VacancyWizard() {
                 createVacancy.mutate(
                   {
                     ...draft,
-                    minQualification: draft.minQualification?.trim() || undefined,
+                    minQualification:
+                      draft.minQualification?.trim() || undefined,
                     preferredGender: draft.preferredGender || undefined,
                   },
                   {
                     onSuccess: () => reset(),
-                  },
+                  }
                 )
               }
             >
               {createVacancy.isPending ? t("saving") : t("submit")}
             </Button>
           </div>
-          {createVacancy.isError ? <p className="text-destructive">{t("error")}</p> : null}
+          {createVacancy.isError ? (
+            <p className="text-destructive">{t("error")}</p>
+          ) : null}
           {createVacancy.isSuccess ? (
             <p className="text-muted-foreground">{t("success")}</p>
           ) : null}
         </div>
       ) : null}
     </div>
-  )
+  );
 }

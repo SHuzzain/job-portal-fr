@@ -1,27 +1,30 @@
-"use client"
+"use client";
 
-import { useQuery } from "@tanstack/react-query"
-import { Download } from "lucide-react"
-import { useLocale, useTranslations } from "next-intl"
-import { useState } from "react"
-import { NavButton } from "@/components/nav-button"
-import { Button } from "@/components/ui/button"
-import { downloadCertificate } from "../actions/tvet.query.client"
-import { certificateQueryOptions } from "../queries/options"
+import { useState } from "react";
+
+import { useQuery } from "@tanstack/react-query";
+import { Download } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+
+import { NavButton } from "@/components/nav-button";
+import { Button } from "@/components/ui/button";
+
+import { downloadCertificate } from "../actions/tvet.query.client";
+import { certificateQueryOptions } from "../queries/options";
 
 type Props = {
-  sessionId: string
-}
+  sessionId: string;
+};
 
 export function TvetCertificateView({ sessionId }: Props) {
-  const t = useTranslations("TvetCertificate")
-  const locale = useLocale()
-  const certificate = useQuery(certificateQueryOptions(sessionId))
-  const [downloading, setDownloading] = useState(false)
-  const [downloadError, setDownloadError] = useState(false)
+  const t = useTranslations("TvetCertificate");
+  const locale = useLocale();
+  const certificate = useQuery(certificateQueryOptions(sessionId));
+  const [downloading, setDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState(false);
 
   if (certificate.isPending) {
-    return <p className="text-sm text-muted-foreground">…</p>
+    return <p className="text-sm text-muted-foreground">…</p>;
   }
 
   if (certificate.isError) {
@@ -34,16 +37,16 @@ export function TvetCertificateView({ sessionId }: Props) {
           </NavButton>
         </div>
       </div>
-    )
+    );
   }
 
-  const data = certificate.data
+  const data = certificate.data;
   const formatDate = (value: string) =>
     new Intl.DateTimeFormat(locale, {
       day: "numeric",
       month: "long",
       year: "numeric",
-    }).format(new Date(value))
+    }).format(new Date(value));
 
   return (
     <div className="grid gap-6">
@@ -84,22 +87,22 @@ export function TvetCertificateView({ sessionId }: Props) {
           <Button
             disabled={downloading || !data.downloadAuthorized}
             onClick={async () => {
-              setDownloading(true)
-              setDownloadError(false)
+              setDownloading(true);
+              setDownloadError(false);
               try {
-                const blob = await downloadCertificate(data.downloadUrl)
-                const url = URL.createObjectURL(blob)
-                const anchor = document.createElement("a")
-                anchor.href = url
-                anchor.download = `tvet-certificate-${data.certificateCode}.pdf`
-                document.body.appendChild(anchor)
-                anchor.click()
-                anchor.remove()
-                URL.revokeObjectURL(url)
+                const blob = await downloadCertificate(data.downloadUrl);
+                const url = URL.createObjectURL(blob);
+                const anchor = document.createElement("a");
+                anchor.href = url;
+                anchor.download = `tvet-certificate-${data.certificateCode}.pdf`;
+                document.body.appendChild(anchor);
+                anchor.click();
+                anchor.remove();
+                URL.revokeObjectURL(url);
               } catch {
-                setDownloadError(true)
+                setDownloadError(true);
               } finally {
-                setDownloading(false)
+                setDownloading(false);
               }
             }}
           >
@@ -112,5 +115,5 @@ export function TvetCertificateView({ sessionId }: Props) {
         ) : null}
       </div>
     </div>
-  )
+  );
 }

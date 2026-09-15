@@ -1,9 +1,10 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { SignUpForm } from "@/features/auth/components/sign-up-form"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { SignUpForm } from "@/features/auth/components/sign-up-form";
 
 export default async function SignUpPage() {
-  const t = await getTranslations("Auth")
+  const t = await getTranslations("Auth");
 
   return (
     <div className="flex flex-col gap-6">
@@ -16,5 +17,5 @@ export default async function SignUpPage() {
         {t("haveAccount")}
       </NavButton>
     </div>
-  )
+  );
 }

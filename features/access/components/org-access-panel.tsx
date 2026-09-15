@@ -1,25 +1,28 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { authClient } from "@/connector"
-import { OrgMembersPanel } from "./org-members-panel"
-import { OrgRolesPanel } from "./org-roles-panel"
+import { useState } from "react";
 
-const tabs = ["members", "roles"] as const
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+import { authClient } from "@/connector";
+
+import { OrgMembersPanel } from "./org-members-panel";
+import { OrgRolesPanel } from "./org-roles-panel";
+
+const tabs = ["members", "roles"] as const;
 
 export function OrgAccessPanel() {
-  const t = useTranslations("Access")
-  const { data: active, isPending } = authClient.useActiveOrganization()
-  const [tab, setTab] = useState<(typeof tabs)[number]>("members")
+  const t = useTranslations("Access");
+  const { data: active, isPending } = authClient.useActiveOrganization();
+  const [tab, setTab] = useState<(typeof tabs)[number]>("members");
 
   if (isPending) {
-    return <p className="text-muted-foreground text-sm">…</p>
+    return <p className="text-sm text-muted-foreground">…</p>;
   }
 
   if (!active?.id) {
-    return <p className="text-muted-foreground text-sm">{t("needCompany")}</p>
+    return <p className="text-sm text-muted-foreground">{t("needCompany")}</p>;
   }
 
   return (
@@ -43,5 +46,5 @@ export function OrgAccessPanel() {
         <OrgRolesPanel organizationId={active.id} />
       )}
     </div>
-  )
+  );
 }

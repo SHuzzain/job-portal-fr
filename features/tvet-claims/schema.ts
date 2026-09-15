@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "zod";
 
 export const tvetClaimStatusSchema = z.enum([
   "SUBMITTED",
@@ -6,7 +6,7 @@ export const tvetClaimStatusSchema = z.enum([
   "SIGNED_DOC_SUBMITTED",
   "PAID",
   "REJECTED",
-])
+]);
 
 export const tvetClaimSchema = z.object({
   id: z.string(),
@@ -27,7 +27,7 @@ export const tvetClaimSchema = z.object({
   providerName: z.string(),
   paymentVoucherDownloadUrl: z.string(),
   borangAkuanDownloadUrl: z.string(),
-})
+});
 
 export const eligibleCourseSchema = z.object({
   id: z.string(),
@@ -35,8 +35,8 @@ export const eligibleCourseSchema = z.object({
   venue: z.string(),
   startsAt: z.string(),
   endsAt: z.string(),
-})
+});
 
-export type TvetClaim = z.infer<typeof tvetClaimSchema>
-export type TvetClaimStatus = z.infer<typeof tvetClaimStatusSchema>
-export type EligibleTvetCourse = z.infer<typeof eligibleCourseSchema>
+export type TvetClaim = z.infer<typeof tvetClaimSchema>;
+export type TvetClaimStatus = z.infer<typeof tvetClaimStatusSchema>;
+export type EligibleTvetCourse = z.infer<typeof eligibleCourseSchema>;

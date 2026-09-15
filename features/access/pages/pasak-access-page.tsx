@@ -1,10 +1,11 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { PermissionGate } from "@/features/auth/components/permission-gate"
-import { AdminAccessPanel } from "@/features/access/components/admin-access-panel"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { AdminAccessPanel } from "@/features/access/components/admin-access-panel";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
 
 export default async function PasakAccessPage() {
-  const t = await getTranslations("Access")
+  const t = await getTranslations("Access");
 
   return (
     <div className="mx-auto flex min-h-svh max-w-5xl flex-col gap-6 p-6">
@@ -21,5 +22,5 @@ export default async function PasakAccessPage() {
         <AdminAccessPanel />
       </PermissionGate>
     </div>
-  )
+  );
 }

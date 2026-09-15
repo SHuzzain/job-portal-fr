@@ -1,21 +1,23 @@
-"use client"
+"use client";
 
-import { useQuery } from "@tanstack/react-query"
-import { useTranslations } from "next-intl"
-import { NavButton } from "@/components/nav-button"
-import { mineVacanciesQueryOptions } from "../queries/options"
-import { VacancyCard } from "./vacancy-card"
+import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
+
+import { NavButton } from "@/components/nav-button";
+
+import { mineVacanciesQueryOptions } from "../queries/options";
+import { VacancyCard } from "./vacancy-card";
 
 export function EmployerVacancyList() {
-  const t = useTranslations("EmployerVacancies")
-  const { data, isPending, isError } = useQuery(mineVacanciesQueryOptions())
+  const t = useTranslations("EmployerVacancies");
+  const { data, isPending, isError } = useQuery(mineVacanciesQueryOptions());
 
   if (isPending) {
-    return <p className="text-muted-foreground text-sm">…</p>
+    return <p className="text-sm text-muted-foreground">…</p>;
   }
 
   if (isError || !data?.length) {
-    return <p className="text-muted-foreground text-sm">{t("empty")}</p>
+    return <p className="text-sm text-muted-foreground">{t("empty")}</p>;
   }
 
   return (
@@ -30,16 +32,23 @@ export function EmployerVacancyList() {
                 <p>{t("returnedFeedback", { notes: vacancy.reviewNotes })}</p>
               ) : null}
               <div>
-                <NavButton href={`/employer/vacancies/${vacancy.id}/edit`} size="xs">
+                <NavButton
+                  href={`/employer/vacancies/${vacancy.id}/edit`}
+                  size="xs"
+                >
                   {t("editResubmit")}
                 </NavButton>
               </div>
             </div>
           ) : null}
           <div className="flex items-center justify-between gap-2">
-            <p className="text-muted-foreground text-xs">{vacancy.status}</p>
+            <p className="text-xs text-muted-foreground">{vacancy.status}</p>
             {vacancy.status === "APPROVED" ? (
-              <NavButton href={`/employer/vacancies/${vacancy.id}/applicants`} size="xs" variant="outline">
+              <NavButton
+                href={`/employer/vacancies/${vacancy.id}/applicants`}
+                size="xs"
+                variant="outline"
+              >
                 {t("applicants")}
               </NavButton>
             ) : null}
@@ -47,5 +56,5 @@ export function EmployerVacancyList() {
         </div>
       ))}
     </div>
-  )
+  );
 }

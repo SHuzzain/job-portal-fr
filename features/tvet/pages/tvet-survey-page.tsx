@@ -1,15 +1,16 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { PermissionGate } from "@/features/auth/components/permission-gate"
-import { TvetSurveyForm } from "@/features/tvet/components/tvet-survey-form"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
+import { TvetSurveyForm } from "@/features/tvet/components/tvet-survey-form";
 
 type Props = {
-  params: Promise<{ id: string }>
-}
+  params: Promise<{ id: string }>;
+};
 
 export default async function TvetSurveyPage({ params }: Props) {
-  const { id } = await params
-  const t = await getTranslations("TvetSurvey")
+  const { id } = await params;
+  const t = await getTranslations("TvetSurvey");
 
   return (
     <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
@@ -26,5 +27,5 @@ export default async function TvetSurveyPage({ params }: Props) {
         <TvetSurveyForm sessionId={id} />
       </PermissionGate>
     </div>
-  )
+  );
 }

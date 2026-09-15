@@ -1,21 +1,22 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { listApprovedVacancies } from "@/features/vacancies/actions/vacancy.query.server"
-import { JobFilters } from "@/features/vacancies/components/job-filters"
-import { VacancyCard } from "@/features/vacancies/components/vacancy-card"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { listApprovedVacancies } from "@/features/vacancies/actions/vacancy.query.server";
+import { JobFilters } from "@/features/vacancies/components/job-filters";
+import { VacancyCard } from "@/features/vacancies/components/vacancy-card";
 
 type Props = {
   searchParams: Promise<{
-    q?: string
-    location?: string
-    employmentType?: string
-  }>
-}
+    q?: string;
+    location?: string;
+    employmentType?: string;
+  }>;
+};
 
 export default async function JobsPage({ searchParams }: Props) {
-  const t = await getTranslations("JobsPage")
-  const filters = await searchParams
-  const vacancies = await listApprovedVacancies(filters).catch(() => [])
+  const t = await getTranslations("JobsPage");
+  const filters = await searchParams;
+  const vacancies = await listApprovedVacancies(filters).catch(() => []);
 
   return (
     <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
@@ -45,5 +46,5 @@ export default async function JobsPage({ searchParams }: Props) {
         </div>
       ) : null}
     </div>
-  )
+  );
 }

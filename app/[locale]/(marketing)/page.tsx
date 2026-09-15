@@ -1,8 +1,9 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
 
 export default async function HomePage() {
-  const t = await getTranslations("HomePage")
+  const t = await getTranslations("HomePage");
 
   return (
     <div className="p-6">
@@ -28,5 +29,5 @@ export default async function HomePage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

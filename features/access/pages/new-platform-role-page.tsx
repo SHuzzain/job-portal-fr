@@ -1,10 +1,11 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { PlatformRoleForm } from "@/features/access/components/platform-role-form"
-import { PermissionGate } from "@/features/auth/components/permission-gate"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { PlatformRoleForm } from "@/features/access/components/platform-role-form";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
 
 export default async function NewPlatformRolePage() {
-  const t = await getTranslations("Access")
+  const t = await getTranslations("Access");
 
   return (
     <div className="mx-auto flex min-h-svh max-w-5xl flex-col gap-6 p-6">
@@ -23,5 +24,5 @@ export default async function NewPlatformRolePage() {
         <PlatformRoleForm />
       </PermissionGate>
     </div>
-  )
+  );
 }

@@ -1,43 +1,46 @@
-"use client"
+"use client";
 
-import { Star } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { useRouter } from "@/i18n/navigation"
-import { tvetErrorMessage, useSubmitSurvey } from "../actions/tvet.mutate"
+import { useState } from "react";
+
+import { Star } from "lucide-react";
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+import { useRouter } from "@/i18n/navigation";
+
+import { tvetErrorMessage, useSubmitSurvey } from "../actions/tvet.mutate";
 
 type Props = {
-  sessionId: string
-}
+  sessionId: string;
+};
 
 export function TvetSurveyForm({ sessionId }: Props) {
-  const t = useTranslations("TvetSurvey")
-  const router = useRouter()
-  const survey = useSubmitSurvey(sessionId)
-  const [rating, setRating] = useState(0)
-  const [feedback, setFeedback] = useState("")
-  const [validationError, setValidationError] = useState<string | null>(null)
+  const t = useTranslations("TvetSurvey");
+  const router = useRouter();
+  const survey = useSubmitSurvey(sessionId);
+  const [rating, setRating] = useState(0);
+  const [feedback, setFeedback] = useState("");
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   return (
     <form
       className="grid max-w-xl gap-6 text-sm"
       onSubmit={(event) => {
-        event.preventDefault()
+        event.preventDefault();
         if (rating < 1) {
-          setValidationError(t("ratingRequired"))
-          return
+          setValidationError(t("ratingRequired"));
+          return;
         }
 
-        setValidationError(null)
+        setValidationError(null);
         survey.mutate(
           { rating, feedback: feedback.trim() || undefined },
           {
             onSuccess: () => {
-              router.push(`/seeker/tvet/${sessionId}/certificate`)
+              router.push(`/seeker/tvet/${sessionId}/certificate`);
             },
           }
-        )
+        );
       }}
     >
       <fieldset className="grid gap-2">
@@ -53,8 +56,8 @@ export function TvetSurveyForm({ sessionId }: Props) {
               aria-label={t("starLabel", { value })}
               className="rounded-md p-1 focus-visible:outline-2 focus-visible:outline-offset-2"
               onClick={() => {
-                setRating(value)
-                setValidationError(null)
+                setRating(value);
+                setValidationError(null);
               }}
             >
               <Star
@@ -98,5 +101,5 @@ export function TvetSurveyForm({ sessionId }: Props) {
         </Button>
       </div>
     </form>
-  )
+  );
 }

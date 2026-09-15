@@ -1,14 +1,15 @@
-import { i18nClient } from "@better-auth/i18n/client"
-import { createAuthClient } from "better-auth/react"
+import { i18nClient } from "@better-auth/i18n/client";
 import {
   adminClient,
   inferAdditionalFields,
   inferOrgAdditionalFields,
   multiSessionClient,
   organizationClient,
-} from "better-auth/client/plugins"
-import { platformAc, platformRoles } from "./access/admin"
-import { organizationAc, organizationRoles } from "./access/organization"
+} from "better-auth/client/plugins";
+import { createAuthClient } from "better-auth/react";
+
+import { platformAc, platformRoles } from "./access/admin";
+import { organizationAc, organizationRoles } from "./access/organization";
 
 export const authClient = createAuthClient({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -16,13 +17,15 @@ export const authClient = createAuthClient({
     credentials: "include",
     onRequest(context) {
       const locale =
-        typeof document !== "undefined" ? document.documentElement.lang : undefined
+        typeof document !== "undefined"
+          ? document.documentElement.lang
+          : undefined;
       if (locale === "en" || locale === "ms") {
-        const headers = new Headers(context.headers)
-        headers.set("x-locale", locale)
-        context.headers = headers
+        const headers = new Headers(context.headers);
+        headers.set("x-locale", locale);
+        context.headers = headers;
       }
-      return context
+      return context;
     },
   },
 
@@ -33,7 +36,7 @@ export const authClient = createAuthClient({
         hasTvetCapability: { type: "boolean", required: false },
         accountStatus: { type: "string", required: false },
         activeWorkspace: { type: "string", required: false },
-      }
+      },
     }),
     i18nClient(),
     organizationClient({
@@ -42,7 +45,7 @@ export const authClient = createAuthClient({
       dynamicAccessControl: {
         enabled: true,
       },
-      
+
       schema: inferOrgAdditionalFields({
         organization: {
           additionalFields: {
@@ -64,4 +67,4 @@ export const authClient = createAuthClient({
     }),
     multiSessionClient(),
   ],
-})
+});

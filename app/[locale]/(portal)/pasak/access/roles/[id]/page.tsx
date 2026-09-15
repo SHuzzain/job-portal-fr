@@ -1,1 +1,1 @@
-export { default } from "@/features/access/pages/edit-platform-role-page"
+export { default } from "@/features/access/pages/edit-platform-role-page";

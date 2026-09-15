@@ -1,22 +1,24 @@
-"use client"
+"use client";
 
-import { useQuery } from "@tanstack/react-query"
-import { useTranslations } from "next-intl"
-import { Button } from "@/components/ui/button"
-import { useSetTvetCapability } from "../actions/pasak.mutate"
-import { employersQueryOptions } from "../queries/options"
+import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+
+import { useSetTvetCapability } from "../actions/pasak.mutate";
+import { employersQueryOptions } from "../queries/options";
 
 export function TvetCapabilityQueue() {
-  const t = useTranslations("Pasak")
-  const setCapability = useSetTvetCapability()
-  const { data, isPending, isError } = useQuery(employersQueryOptions())
+  const t = useTranslations("Pasak");
+  const setCapability = useSetTvetCapability();
+  const { data, isPending, isError } = useQuery(employersQueryOptions());
 
   if (isPending) {
-    return <p className="text-sm text-muted-foreground">…</p>
+    return <p className="text-sm text-muted-foreground">…</p>;
   }
 
   if (isError || !data?.length) {
-    return <p className="text-sm text-muted-foreground">{t("tvetEmpty")}</p>
+    return <p className="text-sm text-muted-foreground">{t("tvetEmpty")}</p>;
   }
 
   return (
@@ -47,5 +49,5 @@ export function TvetCapabilityQueue() {
         </article>
       ))}
     </div>
-  )
+  );
 }

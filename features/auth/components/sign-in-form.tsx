@@ -1,47 +1,54 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { authClient } from "@/connector"
-import { useRouter } from "@/i18n/navigation"
-import { useDeviceAccounts } from "../hooks/use-device-accounts"
+import { useState } from "react";
+
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+import { authClient } from "@/connector";
+import { useRouter } from "@/i18n/navigation";
+
+import { useDeviceAccounts } from "../hooks/use-device-accounts";
 
 export function SignInForm({
   addAccount = false,
   nextPath = "/employer",
 }: {
-  addAccount?: boolean
-  nextPath?: string
+  addAccount?: boolean;
+  nextPath?: string;
 }) {
-  const t = useTranslations("Auth")
-  const settings = useTranslations("Settings")
-  const router = useRouter()
-  const { atLimit, isPending: accountsPending } = useDeviceAccounts()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [pending, setPending] = useState(false)
+  const t = useTranslations("Auth");
+  const settings = useTranslations("Settings");
+  const router = useRouter();
+  const { atLimit, isPending: accountsPending } = useDeviceAccounts();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
 
   if (addAccount && !accountsPending && atLimit) {
-    return <p className="text-sm text-muted-foreground">{settings("accountLimit")}</p>
+    return (
+      <p className="text-sm text-muted-foreground">
+        {settings("accountLimit")}
+      </p>
+    );
   }
 
   return (
     <form
       className="grid max-w-md gap-3 text-sm"
       onSubmit={async (event) => {
-        event.preventDefault()
-        setError(null)
-        setPending(true)
-        const result = await authClient.signIn.email({ email, password })
-        setPending(false)
+        event.preventDefault();
+        setError(null);
+        setPending(true);
+        const result = await authClient.signIn.email({ email, password });
+        setPending(false);
         if (result.error) {
-          setError(result.error.message ?? t("signInError"))
-          return
+          setError(result.error.message ?? t("signInError"));
+          return;
         }
-        router.push(nextPath)
-        router.refresh()
+        router.push(nextPath);
+        router.refresh();
       }}
     >
       <label className="grid gap-1">
@@ -49,7 +56,7 @@ export function SignInForm({
         <input
           required
           type="email"
-          className="border-input bg-background rounded-md border px-2 py-1.5"
+          className="rounded-md border border-input bg-background px-2 py-1.5"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
@@ -60,7 +67,7 @@ export function SignInForm({
           required
           type="password"
           minLength={8}
-          className="border-input bg-background rounded-md border px-2 py-1.5"
+          className="rounded-md border border-input bg-background px-2 py-1.5"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
         />
@@ -70,5 +77,5 @@ export function SignInForm({
       </Button>
       {error ? <p className="text-destructive">{error}</p> : null}
     </form>
-  )
+  );
 }

@@ -1,14 +1,15 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
-import { NavButton } from "@/components/nav-button"
-import { LocaleSwitcher } from "@/components/locale-switcher"
-import { authClient } from "@/connector"
-import { SessionActions } from "@/features/auth/components/session-actions"
+import { useTranslations } from "next-intl";
+
+import { LocaleSwitcher } from "@/components/locale-switcher";
+import { NavButton } from "@/components/nav-button";
+import { authClient } from "@/connector";
+import { SessionActions } from "@/features/auth/components/session-actions";
 
 export function MarketingHeader() {
-  const t = useTranslations("Nav")
-  const { data } = authClient.useSession()
+  const t = useTranslations("Nav");
+  const { data } = authClient.useSession();
 
   return (
     <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-6 py-4">
@@ -39,5 +40,5 @@ export function MarketingHeader() {
         <LocaleSwitcher />
       </div>
     </header>
-  )
+  );
 }

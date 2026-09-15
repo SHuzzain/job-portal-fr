@@ -1,21 +1,23 @@
-import { getTranslations } from "next-intl/server"
-import { notFound } from "next/navigation"
-import { NavButton } from "@/components/nav-button"
-import { PermissionGate } from "@/features/auth/components/permission-gate"
-import { ApplyForm } from "@/features/applications/components/apply-form"
-import { getVacancy } from "@/features/vacancies/actions/vacancy.query.server"
+import { notFound } from "next/navigation";
+
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { ApplyForm } from "@/features/applications/components/apply-form";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
+import { getVacancy } from "@/features/vacancies/actions/vacancy.query.server";
 
 type Props = {
-  params: Promise<{ id: string }>
-}
+  params: Promise<{ id: string }>;
+};
 
 export default async function JobDetailPage({ params }: Props) {
-  const t = await getTranslations("JobDetail")
-  const { id } = await params
-  const vacancy = await getVacancy(id).catch(() => null)
+  const t = await getTranslations("JobDetail");
+  const { id } = await params;
+  const vacancy = await getVacancy(id).catch(() => null);
 
   if (!vacancy) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -35,5 +37,5 @@ export default async function JobDetailPage({ params }: Props) {
         <ApplyForm vacancy={vacancy} />
       </PermissionGate>
     </div>
-  )
+  );
 }

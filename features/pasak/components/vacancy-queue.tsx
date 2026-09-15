@@ -1,32 +1,35 @@
-"use client"
+"use client";
 
-import { useQuery } from "@tanstack/react-query"
-import { useTranslations } from "next-intl"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { useReviewVacancy, useSetVacancyStatus } from "../actions/pasak.mutate"
-import { pendingVacanciesQueryOptions } from "../queries/options"
-import { ReviewCommentsModal } from "./review-comments-modal"
+import { useState } from "react";
+
+import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+
+import { useReviewVacancy, useSetVacancyStatus } from "../actions/pasak.mutate";
+import { pendingVacanciesQueryOptions } from "../queries/options";
+import { ReviewCommentsModal } from "./review-comments-modal";
 
 export function VacancyQueue() {
-  const t = useTranslations("Pasak")
-  const setStatus = useSetVacancyStatus()
-  const review = useReviewVacancy()
-  const [returnId, setReturnId] = useState<string | null>(null)
-  const [comments, setComments] = useState("")
-  const { data, isPending, isError } = useQuery(pendingVacanciesQueryOptions())
+  const t = useTranslations("Pasak");
+  const setStatus = useSetVacancyStatus();
+  const review = useReviewVacancy();
+  const [returnId, setReturnId] = useState<string | null>(null);
+  const [comments, setComments] = useState("");
+  const { data, isPending, isError } = useQuery(pendingVacanciesQueryOptions());
 
   if (isPending) {
-    return <p className="text-sm text-muted-foreground">…</p>
+    return <p className="text-sm text-muted-foreground">…</p>;
   }
 
   if (isError || !data?.length) {
     return (
       <p className="text-sm text-muted-foreground">{t("vacanciesEmpty")}</p>
-    )
+    );
   }
 
-  const busy = setStatus.isPending || review.isPending
+  const busy = setStatus.isPending || review.isPending;
 
   return (
     <div className="grid gap-3">
@@ -63,8 +66,8 @@ export function VacancyQueue() {
               variant="secondary"
               disabled={busy}
               onClick={() => {
-                setComments("")
-                setReturnId(vacancy.id)
+                setComments("");
+                setReturnId(vacancy.id);
               }}
             >
               {t("returnForCorrection")}
@@ -86,7 +89,7 @@ export function VacancyQueue() {
         onCancel={() => setReturnId(null)}
         onConfirm={() => {
           if (!returnId || !comments.trim()) {
-            return
+            return;
           }
           review.mutate(
             {
@@ -95,9 +98,9 @@ export function VacancyQueue() {
               comments: comments.trim(),
             },
             { onSuccess: () => setReturnId(null) }
-          )
+          );
         }}
       />
     </div>
-  )
+  );
 }

@@ -1,30 +1,32 @@
-"use client"
+"use client";
 
-import { useQuery } from "@tanstack/react-query"
-import { useTranslations } from "next-intl"
-import { Button } from "@/components/ui/button"
-import { NavButton } from "@/components/nav-button"
-import { tvetErrorMessage, useUpdateRfp } from "../actions/tvet.mutate"
-import { rfpsQueryOptions, sessionsQueryOptions } from "../queries/options"
-import { CreateSessionForm } from "./create-session-form"
+import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
+
+import { NavButton } from "@/components/nav-button";
+import { Button } from "@/components/ui/button";
+
+import { tvetErrorMessage, useUpdateRfp } from "../actions/tvet.mutate";
+import { rfpsQueryOptions, sessionsQueryOptions } from "../queries/options";
+import { CreateSessionForm } from "./create-session-form";
 
 type Props = {
-  rfpId: string
-}
+  rfpId: string;
+};
 
 export function RfpDetail({ rfpId }: Props) {
-  const t = useTranslations("TvetPage")
-  const updateRfp = useUpdateRfp()
-  const rfps = useQuery(rfpsQueryOptions())
-  const sessions = useQuery(sessionsQueryOptions(rfpId))
-  const rfp = rfps.data?.find((item) => item.id === rfpId)
+  const t = useTranslations("TvetPage");
+  const updateRfp = useUpdateRfp();
+  const rfps = useQuery(rfpsQueryOptions());
+  const sessions = useQuery(sessionsQueryOptions(rfpId));
+  const rfp = rfps.data?.find((item) => item.id === rfpId);
 
   if (rfps.isPending || sessions.isPending) {
-    return <p className="text-muted-foreground text-sm">…</p>
+    return <p className="text-sm text-muted-foreground">…</p>;
   }
 
   if (!rfp) {
-    return <p className="text-sm">{t("rfpMissing")}</p>
+    return <p className="text-sm">{t("rfpMissing")}</p>;
   }
 
   return (
@@ -43,7 +45,9 @@ export function RfpDetail({ rfpId }: Props) {
           </Button>
         ) : null}
         {updateRfp.isError ? (
-          <p className="text-destructive">{tvetErrorMessage(updateRfp.error, t("error"))}</p>
+          <p className="text-destructive">
+            {tvetErrorMessage(updateRfp.error, t("error"))}
+          </p>
         ) : null}
       </div>
       {rfp.status === "OPEN" ? <CreateSessionForm rfpId={rfp.id} /> : null}
@@ -75,5 +79,5 @@ export function RfpDetail({ rfpId }: Props) {
         )}
       </div>
     </div>
-  )
+  );
 }

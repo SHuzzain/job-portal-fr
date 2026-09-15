@@ -1,8 +1,10 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
-import { Button } from "@/components/ui/button"
-import type { EligibilityMismatch } from "../eligibility"
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+
+import type { EligibilityMismatch } from "../eligibility";
 
 export function EligibilityWarningModal({
   open,
@@ -11,16 +13,16 @@ export function EligibilityWarningModal({
   onCancel,
   onContinue,
 }: {
-  open: boolean
-  mismatches: EligibilityMismatch[]
-  pending: boolean
-  onCancel: () => void
-  onContinue: () => void
+  open: boolean;
+  mismatches: EligibilityMismatch[];
+  pending: boolean;
+  onCancel: () => void;
+  onContinue: () => void;
 }) {
-  const t = useTranslations("Apply")
+  const t = useTranslations("Apply");
 
   if (!open) {
-    return null
+    return null;
   }
 
   return (
@@ -28,7 +30,7 @@ export function EligibilityWarningModal({
       <div
         role="dialog"
         aria-modal="true"
-        className="bg-background grid w-full max-w-md gap-3 rounded-lg border border-border p-4 shadow-lg text-sm"
+        className="grid w-full max-w-md gap-3 rounded-lg border border-border bg-background p-4 text-sm shadow-lg"
       >
         <h2 className="font-medium">{t("guardrailTitle")}</h2>
         <p className="text-muted-foreground">{t("guardrailHint")}</p>
@@ -43,7 +45,12 @@ export function EligibilityWarningModal({
           ))}
         </ul>
         <div className="flex justify-end gap-2">
-          <Button type="button" variant="outline" disabled={pending} onClick={onCancel}>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={pending}
+            onClick={onCancel}
+          >
             {t("guardrailCancel")}
           </Button>
           <Button type="button" disabled={pending} onClick={onContinue}>
@@ -52,5 +59,5 @@ export function EligibilityWarningModal({
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,7 +1,12 @@
-import { z } from "zod"
+import { z } from "zod";
 
-export const interviewModeSchema = z.enum(["PHYSICAL", "ONLINE"])
-export const interviewStatusSchema = z.enum(["SCHEDULED", "CONFIRMED", "CANCELLED", "COMPLETED"])
+export const interviewModeSchema = z.enum(["PHYSICAL", "ONLINE"]);
+export const interviewStatusSchema = z.enum([
+  "SCHEDULED",
+  "CONFIRMED",
+  "CANCELLED",
+  "COMPLETED",
+]);
 
 export const interviewSchema = z.object({
   id: z.string(),
@@ -14,7 +19,7 @@ export const interviewSchema = z.object({
   notes: z.string().nullable(),
   status: interviewStatusSchema,
   createdAt: z.string(),
-})
+});
 
 export const interviewScheduleSchema = z
   .object({
@@ -28,13 +33,21 @@ export const interviewScheduleSchema = z
   })
   .superRefine((data, ctx) => {
     if (data.mode === "PHYSICAL" && !data.location?.trim()) {
-      ctx.addIssue({ code: "custom", path: ["location"], message: "Location is required" })
+      ctx.addIssue({
+        code: "custom",
+        path: ["location"],
+        message: "Location is required",
+      });
     }
     if (data.mode === "ONLINE" && !data.meetingLink?.trim()) {
-      ctx.addIssue({ code: "custom", path: ["meetingLink"], message: "Meeting link is required" })
+      ctx.addIssue({
+        code: "custom",
+        path: ["meetingLink"],
+        message: "Meeting link is required",
+      });
     }
-  })
+  });
 
-export type Interview = z.infer<typeof interviewSchema>
-export type InterviewSchedule = z.infer<typeof interviewScheduleSchema>
-export type InterviewMode = z.infer<typeof interviewModeSchema>
+export type Interview = z.infer<typeof interviewSchema>;
+export type InterviewSchedule = z.infer<typeof interviewScheduleSchema>;
+export type InterviewMode = z.infer<typeof interviewModeSchema>;

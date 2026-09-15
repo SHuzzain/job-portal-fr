@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "zod";
 
 export const notificationSchema = z.object({
   id: z.string(),
@@ -11,11 +11,11 @@ export const notificationSchema = z.object({
   entityId: z.string().nullable(),
   read: z.boolean(),
   createdAt: z.string(),
-})
+});
 
 export const unreadCountSchema = z.object({
   count: z.number(),
-})
+});
 
-export type Notification = z.infer<typeof notificationSchema>
-export type UnreadCount = z.infer<typeof unreadCountSchema>
+export type Notification = z.infer<typeof notificationSchema>;
+export type UnreadCount = z.infer<typeof unreadCountSchema>;

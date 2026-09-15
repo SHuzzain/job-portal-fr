@@ -1,38 +1,40 @@
-"use client"
+"use client";
 
-import { useFormatter, useTranslations } from "next-intl"
-import { useCallback, useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { authClient } from "@/connector"
-import { useDeviceAccounts } from "@/features/auth/hooks/use-device-accounts"
+import { useCallback, useEffect, useState } from "react";
+
+import { useFormatter, useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+import { authClient } from "@/connector";
+import { useDeviceAccounts } from "@/features/auth/hooks/use-device-accounts";
 import {
-  deviceKindFromUserAgent,
   type DeviceKind,
   type UserSession,
-} from "@/features/auth/lib/sessions"
+  deviceKindFromUserAgent,
+} from "@/features/auth/lib/sessions";
 
-const deviceOrder: DeviceKind[] = ["laptop", "phone", "tablet"]
+const deviceOrder: DeviceKind[] = ["laptop", "phone", "tablet"];
 
 export function SessionManagementPanel() {
-  const t = useTranslations("Settings")
-  const format = useFormatter()
-  const { data } = authClient.useSession()
-  const { signOutCurrent } = useDeviceAccounts()
-  const [sessions, setSessions] = useState<UserSession[]>([])
-  const [isPending, setIsPending] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [pendingToken, setPendingToken] = useState<string | null>(null)
+  const t = useTranslations("Settings");
+  const format = useFormatter();
+  const { data } = authClient.useSession();
+  const { signOutCurrent } = useDeviceAccounts();
+  const [sessions, setSessions] = useState<UserSession[]>([]);
+  const [isPending, setIsPending] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [pendingToken, setPendingToken] = useState<string | null>(null);
 
   const reload = useCallback(async () => {
-    const result = await authClient.listSessions()
+    const result = await authClient.listSessions();
     if (result.error) {
-      setError(t("loadError"))
-      setSessions([])
-      setIsPending(false)
-      return
+      setError(t("loadError"));
+      setSessions([]);
+      setIsPending(false);
+      return;
     }
 
-    const currentToken = data?.session.token
+    const currentToken = data?.session.token;
     setSessions(
       (result.data ?? []).map((session) => ({
         token: session.token,
@@ -42,45 +44,45 @@ export function SessionManagementPanel() {
         expiresAt: new Date(session.expiresAt),
         isCurrent: session.token === currentToken,
         device: deviceKindFromUserAgent(session.userAgent),
-      })),
-    )
-    setError(null)
-    setIsPending(false)
-  }, [data?.session.token, t])
+      }))
+    );
+    setError(null);
+    setIsPending(false);
+  }, [data?.session.token, t]);
 
   useEffect(() => {
-    void reload()
-  }, [reload])
+    void reload();
+  }, [reload]);
 
   async function revoke(session: UserSession) {
     if (!window.confirm(t("confirmRevoke"))) {
-      return
+      return;
     }
 
-    setPendingToken(session.token)
-    setError(null)
+    setPendingToken(session.token);
+    setError(null);
 
     if (session.isCurrent) {
-      const message = await signOutCurrent()
-      setPendingToken(null)
+      const message = await signOutCurrent();
+      setPendingToken(null);
       if (message) {
-        setError(t("revokeError"))
+        setError(t("revokeError"));
       }
-      return
+      return;
     }
 
-    const result = await authClient.revokeSession({ token: session.token })
-    setPendingToken(null)
+    const result = await authClient.revokeSession({ token: session.token });
+    setPendingToken(null);
     if (result.error) {
-      setError(t("revokeError"))
-      return
+      setError(t("revokeError"));
+      return;
     }
 
-    await reload()
+    await reload();
   }
 
   if (isPending) {
-    return <p className="text-muted-foreground text-sm">…</p>
+    return <p className="text-sm text-muted-foreground">…</p>;
   }
 
   const grouped = deviceOrder
@@ -88,17 +90,19 @@ export function SessionManagementPanel() {
       device,
       items: sessions.filter((session) => session.device === device),
     }))
-    .filter((group) => group.items.length > 0)
+    .filter((group) => group.items.length > 0);
 
   return (
     <div className="grid gap-6">
       <div>
         <h2 className="font-medium">{t("sessionsTitle")}</h2>
-        <p className="mt-1 text-sm text-muted-foreground">{t("sessionsHint")}</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {t("sessionsHint")}
+        </p>
       </div>
-      {error ? <p className="text-destructive text-sm">{error}</p> : null}
+      {error ? <p className="text-sm text-destructive">{error}</p> : null}
       {grouped.length === 0 ? (
-        <p className="text-muted-foreground text-sm">{t("emptySessions")}</p>
+        <p className="text-sm text-muted-foreground">{t("emptySessions")}</p>
       ) : (
         grouped.map((group) => (
           <section key={group.device} className="grid gap-3">
@@ -107,17 +111,21 @@ export function SessionManagementPanel() {
               {group.items.map((session) => (
                 <li
                   key={session.token}
-                  className="border-border grid gap-2 rounded-md border p-3 text-sm"
+                  className="grid gap-2 rounded-md border border-border p-3 text-sm"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="grid gap-0.5">
                       <p>
-                        {session.isCurrent ? t("currentSession") : t("otherSession")}
+                        {session.isCurrent
+                          ? t("currentSession")
+                          : t("otherSession")}
                       </p>
-                      <p className="text-muted-foreground text-xs">
-                        {session.ipAddress ? t("ip", { value: session.ipAddress }) : t("ipUnknown")}
+                      <p className="text-xs text-muted-foreground">
+                        {session.ipAddress
+                          ? t("ip", { value: session.ipAddress })
+                          : t("ipUnknown")}
                       </p>
-                      <p className="text-muted-foreground text-xs">
+                      <p className="text-xs text-muted-foreground">
                         {t("created", {
                           value: format.dateTime(session.createdAt, {
                             dateStyle: "medium",
@@ -125,7 +133,7 @@ export function SessionManagementPanel() {
                           }),
                         })}
                       </p>
-                      <p className="text-muted-foreground text-xs">
+                      <p className="text-xs text-muted-foreground">
                         {t("expires", {
                           value: format.dateTime(session.expiresAt, {
                             dateStyle: "medium",
@@ -140,7 +148,9 @@ export function SessionManagementPanel() {
                       disabled={pendingToken === session.token}
                       onClick={() => void revoke(session)}
                     >
-                      {pendingToken === session.token ? t("revoking") : t("revoke")}
+                      {pendingToken === session.token
+                        ? t("revoking")
+                        : t("revoke")}
                     </Button>
                   </div>
                 </li>
@@ -150,5 +160,5 @@ export function SessionManagementPanel() {
         ))
       )}
     </div>
-  )
+  );
 }

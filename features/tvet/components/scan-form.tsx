@@ -1,91 +1,94 @@
-"use client"
+"use client";
 
-import { useQuery } from "@tanstack/react-query"
-import { useTranslations } from "next-intl"
-import { useCallback, useRef, useState } from "react"
-import { NavButton } from "@/components/nav-button"
-import { Button } from "@/components/ui/button"
-import { tvetErrorMessage, useScanSession } from "../actions/tvet.mutate"
-import { myAttendanceQueryOptions } from "../queries/options"
-import { CameraScanner } from "./camera-scanner"
+import { useCallback, useRef, useState } from "react";
 
-type ScanMode = "camera" | "manual"
+import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
+
+import { NavButton } from "@/components/nav-button";
+import { Button } from "@/components/ui/button";
+
+import { tvetErrorMessage, useScanSession } from "../actions/tvet.mutate";
+import { myAttendanceQueryOptions } from "../queries/options";
+import { CameraScanner } from "./camera-scanner";
+
+type ScanMode = "camera" | "manual";
 
 function provideScanFeedback() {
-  if (navigator.vibrate) navigator.vibrate(120)
+  if (navigator.vibrate) navigator.vibrate(120);
 
   try {
-    const audioContext = new AudioContext()
-    const oscillator = audioContext.createOscillator()
-    const gain = audioContext.createGain()
+    const audioContext = new AudioContext();
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
 
-    oscillator.frequency.value = 880
-    gain.gain.setValueAtTime(0.12, audioContext.currentTime)
+    oscillator.frequency.value = 880;
+    gain.gain.setValueAtTime(0.12, audioContext.currentTime);
     gain.gain.exponentialRampToValueAtTime(
       0.001,
       audioContext.currentTime + 0.1
-    )
-    oscillator.connect(gain)
-    gain.connect(audioContext.destination)
-    oscillator.addEventListener("ended", () => void audioContext.close())
+    );
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+    oscillator.addEventListener("ended", () => void audioContext.close());
 
     void audioContext
       .resume()
       .then(() => {
-        oscillator.start()
-        oscillator.stop(audioContext.currentTime + 0.1)
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 0.1);
       })
-      .catch(() => void audioContext.close())
+      .catch(() => void audioContext.close());
   } catch {
     // Audio feedback is optional and can be blocked by browser policy.
   }
 }
 
 export function ScanForm() {
-  const t = useTranslations("TvetScan")
-  const scan = useScanSession()
-  const { mutate, reset } = scan
-  const attendance = useQuery(myAttendanceQueryOptions())
-  const [barcode, setBarcode] = useState("")
-  const [mode, setMode] = useState<ScanMode>("camera")
-  const [cameraUnavailable, setCameraUnavailable] = useState(false)
+  const t = useTranslations("TvetScan");
+  const scan = useScanSession();
+  const { mutate, reset } = scan;
+  const attendance = useQuery(myAttendanceQueryOptions());
+  const [barcode, setBarcode] = useState("");
+  const [mode, setMode] = useState<ScanMode>("camera");
+  const [cameraUnavailable, setCameraUnavailable] = useState(false);
   const [cameraNotice, setCameraNotice] = useState<
     "detected" | "invalid" | null
-  >(null)
-  const [cameraRun, setCameraRun] = useState(0)
-  const detectedBarcodeRef = useRef<string | null>(null)
-  const submittingRef = useRef(false)
+  >(null);
+  const [cameraRun, setCameraRun] = useState(0);
+  const detectedBarcodeRef = useRef<string | null>(null);
+  const submittingRef = useRef(false);
 
   const submitAttendance = useCallback(
     (value: string) => {
-      if (submittingRef.current) return
+      if (submittingRef.current) return;
 
-      const trimmedBarcode = value.trim()
-      if (!trimmedBarcode) return
+      const trimmedBarcode = value.trim();
+      if (!trimmedBarcode) return;
 
-      submittingRef.current = true
+      submittingRef.current = true;
       mutate(
         { barcode: trimmedBarcode },
         {
           onSuccess: () => setBarcode(""),
           onSettled: () => {
-            submittingRef.current = false
+            submittingRef.current = false;
           },
         }
-      )
+      );
     },
     [mutate]
-  )
+  );
 
   const handleCameraUnavailable = useCallback(() => {
-    setCameraUnavailable(true)
-    setCameraNotice(null)
-    setMode("manual")
-  }, [])
+    setCameraUnavailable(true);
+    setCameraNotice(null);
+    setMode("manual");
+  }, []);
 
   const handleInvalidScan = useCallback(() => {
-    setCameraNotice("invalid")
-  }, [])
+    setCameraNotice("invalid");
+  }, []);
 
   const handleDetected = useCallback(
     (detectedBarcode: string) => {
@@ -93,16 +96,16 @@ export function ScanForm() {
         submittingRef.current ||
         detectedBarcodeRef.current === detectedBarcode
       ) {
-        return
+        return;
       }
 
-      detectedBarcodeRef.current = detectedBarcode
-      setCameraNotice("detected")
-      provideScanFeedback()
-      submitAttendance(detectedBarcode)
+      detectedBarcodeRef.current = detectedBarcode;
+      setCameraNotice("detected");
+      provideScanFeedback();
+      submitAttendance(detectedBarcode);
     },
     [submitAttendance]
-  )
+  );
 
   return (
     <div className="grid gap-6 text-sm">
@@ -119,8 +122,8 @@ export function ScanForm() {
           aria-controls="camera-scan-panel"
           disabled={cameraUnavailable}
           onClick={() => {
-            setCameraNotice(null)
-            setMode("camera")
+            setCameraNotice(null);
+            setMode("camera");
           }}
         >
           {t("cameraTab")}
@@ -172,10 +175,10 @@ export function ScanForm() {
               type="button"
               variant="outline"
               onClick={() => {
-                detectedBarcodeRef.current = null
-                setCameraNotice(null)
-                reset()
-                setCameraRun((run) => run + 1)
+                detectedBarcodeRef.current = null;
+                setCameraNotice(null);
+                reset();
+                setCameraRun((run) => run + 1);
               }}
             >
               {t("retryCamera")}
@@ -188,8 +191,8 @@ export function ScanForm() {
           role="tabpanel"
           className="grid max-w-md gap-3"
           onSubmit={(event) => {
-            event.preventDefault()
-            submitAttendance(barcode)
+            event.preventDefault();
+            submitAttendance(barcode);
           }}
         >
           {cameraUnavailable ? (
@@ -275,5 +278,5 @@ export function ScanForm() {
         )}
       </div>
     </div>
-  )
+  );
 }

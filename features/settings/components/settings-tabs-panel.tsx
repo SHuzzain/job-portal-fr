@@ -1,26 +1,29 @@
-"use client"
+"use client";
 
-import { unauthorized } from "next/navigation"
-import { useTranslations } from "next-intl"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { authClient } from "@/connector"
-import { MultiSessionPanel } from "./multi-session-panel"
-import { SessionManagementPanel } from "./session-management-panel"
+import { unauthorized } from "next/navigation";
+import { useState } from "react";
 
-const tabs = ["sessions", "accounts"] as const
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+import { authClient } from "@/connector";
+
+import { MultiSessionPanel } from "./multi-session-panel";
+import { SessionManagementPanel } from "./session-management-panel";
+
+const tabs = ["sessions", "accounts"] as const;
 
 export function SettingsTabsPanel() {
-  const t = useTranslations("Settings")
-  const { data, isPending } = authClient.useSession()
-  const [tab, setTab] = useState<(typeof tabs)[number]>("sessions")
+  const t = useTranslations("Settings");
+  const { data, isPending } = authClient.useSession();
+  const [tab, setTab] = useState<(typeof tabs)[number]>("sessions");
 
   if (isPending) {
-    return <p className="text-muted-foreground text-sm">…</p>
+    return <p className="text-sm text-muted-foreground">…</p>;
   }
 
   if (!data) {
-    unauthorized()
+    unauthorized();
   }
 
   return (
@@ -40,5 +43,5 @@ export function SettingsTabsPanel() {
 
       {tab === "sessions" ? <SessionManagementPanel /> : <MultiSessionPanel />}
     </div>
-  )
+  );
 }

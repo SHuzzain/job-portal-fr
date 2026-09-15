@@ -1,10 +1,11 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { PermissionGate } from "@/features/auth/components/permission-gate"
-import { VacancyQueue } from "@/features/pasak/components/vacancy-queue"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
+import { VacancyQueue } from "@/features/pasak/components/vacancy-queue";
 
 export default async function VacancyApprovalsPage() {
-  const t = await getTranslations("Pasak")
+  const t = await getTranslations("Pasak");
 
   return (
     <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
@@ -23,5 +24,5 @@ export default async function VacancyApprovalsPage() {
         <VacancyQueue />
       </PermissionGate>
     </div>
-  )
+  );
 }

@@ -1,1 +1,1 @@
-export { default } from "@/features/companies/pages/register-company-page"
+export { default } from "@/features/companies/pages/register-company-page";

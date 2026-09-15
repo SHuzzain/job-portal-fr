@@ -1,1 +1,1 @@
-export { default } from "@/features/tvet-claims/pages/pasak-claim-approvals-page"
+export { default } from "@/features/tvet-claims/pages/pasak-claim-approvals-page";

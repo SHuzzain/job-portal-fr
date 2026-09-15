@@ -1,1 +1,1 @@
-export { default } from "@/features/access/pages/employer-access-page"
+export { default } from "@/features/access/pages/employer-access-page";

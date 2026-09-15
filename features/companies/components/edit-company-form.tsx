@@ -1,58 +1,65 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
-import { useRouter } from "@/i18n/navigation"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { authClient } from "@/connector"
-import { companyCreateSchema } from "../schema"
-import { useResubmitCompany } from "../actions/company.mutate"
+import { useState } from "react";
 
-export function EditCompanyForm({ organizationId }: { organizationId: string }) {
-  const t = useTranslations("Company")
-  const router = useRouter()
-  const { data: organizations, isPending } = authClient.useListOrganizations()
-  const company = organizations?.find((item) => item.id === organizationId)
-  const resubmit = useResubmitCompany()
-  const [name, setName] = useState<string | null>(null)
-  const [ssmNumber, setSsmNumber] = useState<string | null>(null)
-  const [ssmDocumentUrl, setSsmDocumentUrl] = useState<string | null>(null)
-  const [legalName, setLegalName] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [pending, setPending] = useState(false)
-  const [success, setSuccess] = useState(false)
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+import { authClient } from "@/connector";
+import { useRouter } from "@/i18n/navigation";
+
+import { useResubmitCompany } from "../actions/company.mutate";
+import { companyCreateSchema } from "../schema";
+
+export function EditCompanyForm({
+  organizationId,
+}: {
+  organizationId: string;
+}) {
+  const t = useTranslations("Company");
+  const router = useRouter();
+  const { data: organizations, isPending } = authClient.useListOrganizations();
+  const company = organizations?.find((item) => item.id === organizationId);
+  const resubmit = useResubmitCompany();
+  const [name, setName] = useState<string | null>(null);
+  const [ssmNumber, setSsmNumber] = useState<string | null>(null);
+  const [ssmDocumentUrl, setSsmDocumentUrl] = useState<string | null>(null);
+  const [legalName, setLegalName] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   if (isPending) {
-    return <p className="text-muted-foreground text-sm">…</p>
+    return <p className="text-sm text-muted-foreground">…</p>;
   }
 
   if (!company) {
-    return <p className="text-muted-foreground text-sm">{t("empty")}</p>
+    return <p className="text-sm text-muted-foreground">{t("empty")}</p>;
   }
 
-  const currentName = name ?? company.name
-  const currentSsm = ssmNumber ?? company.ssmNumber ?? ""
-  const currentUrl = ssmDocumentUrl ?? company.ssmDocumentUrl ?? ""
-  const currentLegal = legalName ?? company.legalName ?? ""
+  const currentName = name ?? company.name;
+  const currentSsm = ssmNumber ?? company.ssmNumber ?? "";
+  const currentUrl = ssmDocumentUrl ?? company.ssmDocumentUrl ?? "";
+  const currentLegal = legalName ?? company.legalName ?? "";
 
   return (
     <form
       className="grid max-w-md gap-3 text-sm"
       onSubmit={async (event) => {
-        event.preventDefault()
-        setError(null)
-        setSuccess(false)
+        event.preventDefault();
+        setError(null);
+        setSuccess(false);
         const parsed = companyCreateSchema.safeParse({
           name: currentName,
           ssmNumber: currentSsm,
           ssmDocumentUrl: currentUrl,
           legalName: currentLegal || undefined,
-        })
+        });
         if (!parsed.success) {
-          setError(t("invalid"))
-          return
+          setError(t("invalid"));
+          return;
         }
-        setPending(true)
+        setPending(true);
         const result = await authClient.organization.update({
           organizationId,
           data: {
@@ -64,20 +71,20 @@ export function EditCompanyForm({ organizationId }: { organizationId: string }) 
             website: company.website ?? "",
             address: company.address ?? "",
           },
-        })
+        });
         if (result.error) {
-          setPending(false)
-          setError(result.error.message ?? t("resubmitError"))
-          return
+          setPending(false);
+          setError(result.error.message ?? t("resubmitError"));
+          return;
         }
         try {
-          await resubmit.mutateAsync(organizationId)
-          setSuccess(true)
-          router.push("/employer")
+          await resubmit.mutateAsync(organizationId);
+          setSuccess(true);
+          router.push("/employer");
         } catch {
-          setError(t("resubmitError"))
+          setError(t("resubmitError"));
         } finally {
-          setPending(false)
+          setPending(false);
         }
       }}
     >
@@ -90,7 +97,7 @@ export function EditCompanyForm({ organizationId }: { organizationId: string }) 
         <span>{t("name")}</span>
         <input
           required
-          className="border-input bg-background rounded-md border px-2 py-1.5"
+          className="rounded-md border border-input bg-background px-2 py-1.5"
           value={currentName}
           onChange={(event) => setName(event.target.value)}
         />
@@ -99,7 +106,7 @@ export function EditCompanyForm({ organizationId }: { organizationId: string }) 
         <span>{t("ssmNumber")}</span>
         <input
           required
-          className="border-input bg-background rounded-md border px-2 py-1.5"
+          className="rounded-md border border-input bg-background px-2 py-1.5"
           value={currentSsm}
           onChange={(event) => setSsmNumber(event.target.value)}
         />
@@ -109,7 +116,7 @@ export function EditCompanyForm({ organizationId }: { organizationId: string }) 
         <input
           required
           type="url"
-          className="border-input bg-background rounded-md border px-2 py-1.5"
+          className="rounded-md border border-input bg-background px-2 py-1.5"
           value={currentUrl}
           onChange={(event) => setSsmDocumentUrl(event.target.value)}
         />
@@ -117,7 +124,7 @@ export function EditCompanyForm({ organizationId }: { organizationId: string }) 
       <label className="grid gap-1">
         <span>{t("legalName")}</span>
         <input
-          className="border-input bg-background rounded-md border px-2 py-1.5"
+          className="rounded-md border border-input bg-background px-2 py-1.5"
           value={currentLegal}
           onChange={(event) => setLegalName(event.target.value)}
         />
@@ -128,5 +135,5 @@ export function EditCompanyForm({ organizationId }: { organizationId: string }) 
       {success ? <p>{t("resubmitSuccess")}</p> : null}
       {error ? <p className="text-destructive">{error}</p> : null}
     </form>
-  )
+  );
 }

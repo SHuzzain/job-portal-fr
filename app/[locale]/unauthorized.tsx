@@ -1,13 +1,14 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
-import { LocaleSwitcher } from "@/components/locale-switcher"
-import { NavButton } from "@/components/nav-button"
-import { usePathname } from "@/i18n/navigation"
+import { useTranslations } from "next-intl";
+
+import { LocaleSwitcher } from "@/components/locale-switcher";
+import { NavButton } from "@/components/nav-button";
+import { usePathname } from "@/i18n/navigation";
 
 export default function UnauthorizedPage() {
-  const t = useTranslations("Auth")
-  const pathname = usePathname()
+  const t = useTranslations("Auth");
+  const pathname = usePathname();
 
   return (
     <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
@@ -30,5 +31,5 @@ export default function UnauthorizedPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

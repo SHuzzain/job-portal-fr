@@ -1,12 +1,14 @@
-"use client"
+"use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { apiClient } from "@/connector/client"
-import { applicationKeys } from "@/features/applications/queries/keys"
-import type { Interview, InterviewSchedule } from "../schema"
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { apiClient } from "@/connector/client";
+import { applicationKeys } from "@/features/applications/queries/keys";
+
+import type { Interview, InterviewSchedule } from "../schema";
 
 export function useScheduleInterview() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (body: InterviewSchedule) =>
@@ -15,7 +17,7 @@ export function useScheduleInterview() {
         body,
       }),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: applicationKeys.all })
+      await queryClient.invalidateQueries({ queryKey: applicationKeys.all });
     },
-  })
+  });
 }

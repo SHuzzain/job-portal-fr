@@ -1,20 +1,22 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
-import { authClient } from "@/connector"
-import { ReturnedCompanyBanner } from "./returned-company-banner"
+import { useTranslations } from "next-intl";
+
+import { authClient } from "@/connector";
+
+import { ReturnedCompanyBanner } from "./returned-company-banner";
 
 export function CompanySwitcher() {
-  const t = useTranslations("Company")
-  const { data: organizations, isPending } = authClient.useListOrganizations()
-  const { data: active } = authClient.useActiveOrganization()
+  const t = useTranslations("Company");
+  const { data: organizations, isPending } = authClient.useListOrganizations();
+  const { data: active } = authClient.useActiveOrganization();
 
   if (isPending) {
-    return <p className="text-muted-foreground text-sm">…</p>
+    return <p className="text-sm text-muted-foreground">…</p>;
   }
 
   if (!organizations?.length) {
-    return <p className="text-muted-foreground text-sm">{t("empty")}</p>
+    return <p className="text-sm text-muted-foreground">{t("empty")}</p>;
   }
 
   return (
@@ -23,12 +25,12 @@ export function CompanySwitcher() {
       <label className="grid gap-1 text-sm">
         <span>{t("active")}</span>
         <select
-          className="border-input bg-background rounded-md border px-2 py-1.5"
+          className="rounded-md border border-input bg-background px-2 py-1.5"
           value={active?.id ?? ""}
           onChange={(event) => {
-            const organizationId = event.target.value
+            const organizationId = event.target.value;
             if (organizationId) {
-              void authClient.organization.setActive({ organizationId })
+              void authClient.organization.setActive({ organizationId });
             }
           }}
         >
@@ -41,10 +43,12 @@ export function CompanySwitcher() {
             </option>
           ))}
         </select>
-        {active?.status && active.status !== "APPROVED" && active.status !== "RETURNED_FOR_CORRECTION" ? (
+        {active?.status &&
+        active.status !== "APPROVED" &&
+        active.status !== "RETURNED_FOR_CORRECTION" ? (
           <p className="text-muted-foreground">{t("pendingHint")}</p>
         ) : null}
       </label>
     </div>
-  )
+  );
 }

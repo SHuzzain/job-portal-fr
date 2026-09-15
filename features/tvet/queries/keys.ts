@@ -6,4 +6,4 @@ export const tvetKeys = {
   session: (id: string) => [...tvetKeys.all, "session", id] as const,
   attendance: () => [...tvetKeys.all, "attendance"] as const,
   certificate: (id: string) => [...tvetKeys.all, "certificate", id] as const,
-}
+};

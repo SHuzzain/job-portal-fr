@@ -1,19 +1,20 @@
-import { hasLocale } from "next-intl"
-import { getRequestConfig } from "next-intl/server"
-import { notFound } from "next/navigation"
-import { locale as localeParam } from "next/root-params"
+import { notFound } from "next/navigation";
 
-import { routing } from "./routing"
+import { hasLocale } from "next-intl";
+import { getRequestConfig } from "next-intl/server";
+import { locale as localeParam } from "next/root-params";
+
+import { routing } from "./routing";
 
 export default getRequestConfig(async ({ locale }) => {
   if (!locale) {
-    const paramValue = await localeParam()
+    const paramValue = await localeParam();
     if (hasLocale(routing.locales, paramValue)) {
-      locale = paramValue
+      locale = paramValue;
     } else if (paramValue) {
-      notFound()
+      notFound();
     } else {
-      locale = routing.defaultLocale
+      locale = routing.defaultLocale;
     }
   }
 
@@ -21,5 +22,5 @@ export default getRequestConfig(async ({ locale }) => {
     locale,
     timeZone: "Asia/Kuala_Lumpur",
     messages: (await import(`../messages/${locale}.json`)).default,
-  }
-})
+  };
+});

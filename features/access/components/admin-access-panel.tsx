@@ -1,16 +1,19 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { PlatformRolesPanel } from "./platform-roles-panel"
-import { PlatformUsersPanel } from "./platform-users-panel"
+import { useState } from "react";
 
-const tabs = ["users", "roles"] as const
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+
+import { PlatformRolesPanel } from "./platform-roles-panel";
+import { PlatformUsersPanel } from "./platform-users-panel";
+
+const tabs = ["users", "roles"] as const;
 
 export function AdminAccessPanel() {
-  const t = useTranslations("Access")
-  const [tab, setTab] = useState<(typeof tabs)[number]>("users")
+  const t = useTranslations("Access");
+  const [tab, setTab] = useState<(typeof tabs)[number]>("users");
 
   return (
     <div className="grid gap-6">
@@ -29,5 +32,5 @@ export function AdminAccessPanel() {
 
       {tab === "users" ? <PlatformUsersPanel /> : <PlatformRolesPanel />}
     </div>
-  )
+  );
 }

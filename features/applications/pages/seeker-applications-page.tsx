@@ -1,10 +1,11 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { PermissionGate } from "@/features/auth/components/permission-gate"
-import { ApplicationList } from "@/features/applications/components/application-list"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { ApplicationList } from "@/features/applications/components/application-list";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
 
 export default async function SeekerApplicationsPage() {
-  const t = await getTranslations("SeekerApplications")
+  const t = await getTranslations("SeekerApplications");
 
   return (
     <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
@@ -21,5 +22,5 @@ export default async function SeekerApplicationsPage() {
         <ApplicationList />
       </PermissionGate>
     </div>
-  )
+  );
 }

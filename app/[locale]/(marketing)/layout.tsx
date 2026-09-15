@@ -1,12 +1,13 @@
-import { getTranslations } from "next-intl/server"
-import { MarketingHeader } from "@/components/marketing-header"
+import { getTranslations } from "next-intl/server";
+
+import { MarketingHeader } from "@/components/marketing-header";
 
 type Props = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 export default async function MarketingLayout({ children }: Props) {
-  const t = await getTranslations("HomePage")
+  const t = await getTranslations("HomePage");
 
   return (
     <div className="flex min-h-svh flex-col">
@@ -16,5 +17,5 @@ export default async function MarketingLayout({ children }: Props) {
         {t("title")}
       </footer>
     </div>
-  )
+  );
 }

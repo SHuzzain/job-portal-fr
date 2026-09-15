@@ -3,24 +3,24 @@ export class ApiError extends Error {
     public status: number,
     message: string
   ) {
-    super(message)
-    this.name = "ApiError"
+    super(message);
+    this.name = "ApiError";
   }
 }
 
 type ClientOptions<TBody> = {
-  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
-  body?: TBody
-  headers?: HeadersInit
-  timeoutMs?: number
-}
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+  body?: TBody;
+  headers?: HeadersInit;
+  timeoutMs?: number;
+};
 
 function apiBase() {
-  const base = process.env.NEXT_PUBLIC_API_URL
+  const base = process.env.NEXT_PUBLIC_API_URL;
   if (!base) {
-    throw new Error("NEXT_PUBLIC_API_URL is not set")
+    throw new Error("NEXT_PUBLIC_API_URL is not set");
   }
-  return base.replace(/\/$/, "")
+  return base.replace(/\/$/, "");
 }
 
 export async function apiClient<TResponse, TBody = undefined>(
@@ -36,22 +36,22 @@ export async function apiClient<TResponse, TBody = undefined>(
       ...options.headers,
     },
     body: options.body === undefined ? undefined : JSON.stringify(options.body),
-  })
+  });
 
   if (response.status === 401) {
-    throw new ApiError(401, "Unauthorized")
+    throw new ApiError(401, "Unauthorized");
   }
 
   if (!response.ok) {
-    const message = await response.text()
-    throw new ApiError(response.status, message || response.statusText)
+    const message = await response.text();
+    throw new ApiError(response.status, message || response.statusText);
   }
 
   if (response.status === 204) {
-    return undefined as TResponse
+    return undefined as TResponse;
   }
 
-  return (await response.json()) as TResponse
+  return (await response.json()) as TResponse;
 }
 
 export async function apiClientBlob(
@@ -61,16 +61,16 @@ export async function apiClientBlob(
   const response = await fetch(`${apiBase()}${path}`, {
     credentials: "include",
     signal: AbortSignal.timeout(timeoutMs),
-  })
+  });
 
   if (response.status === 401) {
-    throw new ApiError(401, "Unauthorized")
+    throw new ApiError(401, "Unauthorized");
   }
 
   if (!response.ok) {
-    const message = await response.text()
-    throw new ApiError(response.status, message || response.statusText)
+    const message = await response.text();
+    throw new ApiError(response.status, message || response.statusText);
   }
 
-  return response.blob()
+  return response.blob();
 }

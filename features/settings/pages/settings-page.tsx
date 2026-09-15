@@ -1,9 +1,10 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { SettingsTabsPanel } from "@/features/settings/components/settings-tabs-panel"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { SettingsTabsPanel } from "@/features/settings/components/settings-tabs-panel";
 
 export default async function SettingsPage() {
-  const t = await getTranslations("Settings")
+  const t = await getTranslations("Settings");
 
   return (
     <div className="mx-auto flex min-h-svh max-w-3xl flex-col gap-6 p-6">
@@ -18,5 +19,5 @@ export default async function SettingsPage() {
       </div>
       <SettingsTabsPanel />
     </div>
-  )
+  );
 }

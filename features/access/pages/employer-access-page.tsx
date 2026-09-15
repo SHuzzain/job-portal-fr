@@ -1,10 +1,11 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { PermissionGate } from "@/features/auth/components/permission-gate"
-import { OrgAccessPanel } from "@/features/access/components/org-access-panel"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { OrgAccessPanel } from "@/features/access/components/org-access-panel";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
 
 export default async function EmployerAccessPage() {
-  const t = await getTranslations("Access")
+  const t = await getTranslations("Access");
 
   return (
     <div className="mx-auto flex min-h-svh max-w-5xl flex-col gap-6 p-6">
@@ -21,5 +22,5 @@ export default async function EmployerAccessPage() {
         <OrgAccessPanel />
       </PermissionGate>
     </div>
-  )
+  );
 }

@@ -1,10 +1,11 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { PermissionGate } from "@/features/auth/components/permission-gate"
-import { TvetCapabilityQueue } from "@/features/pasak/components/tvet-capability-queue"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
+import { TvetCapabilityQueue } from "@/features/pasak/components/tvet-capability-queue";
 
 export default async function TvetCapabilityApprovalsPage() {
-  const t = await getTranslations("Pasak")
+  const t = await getTranslations("Pasak");
 
   return (
     <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
@@ -21,5 +22,5 @@ export default async function TvetCapabilityApprovalsPage() {
         <TvetCapabilityQueue />
       </PermissionGate>
     </div>
-  )
+  );
 }

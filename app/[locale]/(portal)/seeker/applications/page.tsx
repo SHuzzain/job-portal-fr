@@ -1,1 +1,1 @@
-export { default } from "@/features/applications/pages/seeker-applications-page"
+export { default } from "@/features/applications/pages/seeker-applications-page";

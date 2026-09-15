@@ -1,10 +1,11 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { PermissionGate } from "@/features/auth/components/permission-gate"
-import { PasakClaims } from "@/features/tvet-claims/components/pasak-claims"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
+import { PasakClaims } from "@/features/tvet-claims/components/pasak-claims";
 
 export default async function PasakClaimApprovalsPage() {
-  const t = await getTranslations("TvetClaims")
+  const t = await getTranslations("TvetClaims");
 
   return (
     <div className="mx-auto flex min-h-svh max-w-3xl flex-col gap-6 p-6">
@@ -32,5 +33,5 @@ export default async function PasakClaimApprovalsPage() {
         <PasakClaims />
       </PermissionGate>
     </div>
-  )
+  );
 }

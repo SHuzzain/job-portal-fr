@@ -1,15 +1,18 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
-import { useEffect, useRef, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { useRouter } from "@/i18n/navigation"
-import { useDeviceAccounts } from "../hooks/use-device-accounts"
-import { roleLabel } from "../lib/sessions"
+import { useEffect, useRef, useState } from "react";
+
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+import { useRouter } from "@/i18n/navigation";
+
+import { useDeviceAccounts } from "../hooks/use-device-accounts";
+import { roleLabel } from "../lib/sessions";
 
 export function AccountMenu() {
-  const t = useTranslations("Settings")
-  const router = useRouter()
+  const t = useTranslations("Settings");
+  const router = useRouter();
   const {
     accounts,
     atLimit,
@@ -18,53 +21,53 @@ export function AccountMenu() {
     signOutAll,
     signOutCurrent,
     switchAccount,
-  } = useDeviceAccounts()
-  const [open, setOpen] = useState(false)
-  const [pending, setPending] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const rootRef = useRef<HTMLDivElement>(null)
+  } = useDeviceAccounts();
+  const [open, setOpen] = useState(false);
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!open) {
-      return
+      return;
     }
 
     function onPointerDown(event: PointerEvent) {
       if (!rootRef.current?.contains(event.target as Node)) {
-        setOpen(false)
+        setOpen(false);
       }
     }
 
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        setOpen(false)
+        setOpen(false);
       }
     }
 
-    document.addEventListener("pointerdown", onPointerDown)
-    document.addEventListener("keydown", onKeyDown)
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
     return () => {
-      document.removeEventListener("pointerdown", onPointerDown)
-      document.removeEventListener("keydown", onKeyDown)
-    }
-  }, [open])
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
 
   if (!session) {
-    return null
+    return null;
   }
 
-  const otherAccounts = accounts.filter((account) => !account.isActive)
+  const otherAccounts = accounts.filter((account) => !account.isActive);
 
   async function run(action: () => Promise<string | null>, failed: string) {
-    setPending(true)
-    setError(null)
-    const message = await action()
-    setPending(false)
+    setPending(true);
+    setError(null);
+    const message = await action();
+    setPending(false);
     if (message) {
-      setError(failed)
-      return
+      setError(failed);
+      return;
     }
-    setOpen(false)
+    setOpen(false);
   }
 
   return (
@@ -76,8 +79,8 @@ export function AccountMenu() {
         aria-haspopup="menu"
         disabled={isPending}
         onClick={() => {
-          setError(null)
-          setOpen((value) => !value)
+          setError(null);
+          setOpen((value) => !value);
         }}
       >
         {session.user.email}
@@ -85,15 +88,15 @@ export function AccountMenu() {
       {open ? (
         <div
           role="menu"
-          className="border-border bg-background absolute right-0 z-20 mt-1 grid min-w-64 gap-1 rounded-md border p-2 text-xs shadow-sm"
+          className="absolute right-0 z-20 mt-1 grid min-w-64 gap-1 rounded-md border border-border bg-background p-2 text-xs shadow-sm"
         >
           <Button
             size="xs"
             variant="ghost"
             className="justify-start"
             onClick={() => {
-              setOpen(false)
-              router.push("/settings")
+              setOpen(false);
+              router.push("/settings");
             }}
           >
             {t("open")}
@@ -104,19 +107,19 @@ export function AccountMenu() {
             className="justify-start"
             disabled={pending || atLimit}
             onClick={() => {
-              setOpen(false)
-              router.push("/sign-in?addAccount=1&next=/settings")
+              setOpen(false);
+              router.push("/sign-in?addAccount=1&next=/settings");
             }}
           >
             {t("addAccount")}
           </Button>
           {atLimit ? (
-            <p className="text-muted-foreground px-2">{t("accountLimit")}</p>
+            <p className="px-2 text-muted-foreground">{t("accountLimit")}</p>
           ) : null}
 
           {otherAccounts.length > 0 ? (
             <div className="grid gap-1 border-t border-border pt-1">
-              <p className="text-muted-foreground px-2">{t("switchAccount")}</p>
+              <p className="px-2 text-muted-foreground">{t("switchAccount")}</p>
               {otherAccounts.map((account) => (
                 <Button
                   key={account.sessionToken}
@@ -127,15 +130,17 @@ export function AccountMenu() {
                   onClick={() =>
                     void run(
                       () => switchAccount(account.sessionToken),
-                      t("switchError"),
+                      t("switchError")
                     )
                   }
                 >
                   <span className="grid">
                     <span>{account.name}</span>
-                    <span className="text-muted-foreground font-normal">
+                    <span className="font-normal text-muted-foreground">
                       {account.email}
-                      {roleLabel(account.role) ? ` · ${roleLabel(account.role)}` : ""}
+                      {roleLabel(account.role)
+                        ? ` · ${roleLabel(account.role)}`
+                        : ""}
                     </span>
                   </span>
                 </Button>
@@ -151,9 +156,9 @@ export function AccountMenu() {
               disabled={pending}
               onClick={() => {
                 if (!window.confirm(t("confirmSignOutCurrent"))) {
-                  return
+                  return;
                 }
-                void run(signOutCurrent, t("removeError"))
+                void run(signOutCurrent, t("removeError"));
               }}
             >
               {t("signOutCurrent")}
@@ -165,20 +170,20 @@ export function AccountMenu() {
               disabled={pending}
               onClick={() => {
                 if (!window.confirm(t("confirmSignOutAll"))) {
-                  return
+                  return;
                 }
                 void run(async () => {
-                  await signOutAll()
-                  return null
-                }, t("removeError"))
+                  await signOutAll();
+                  return null;
+                }, t("removeError"));
               }}
             >
               {t("signOutAll")}
             </Button>
           </div>
-          {error ? <p className="text-destructive px-2">{error}</p> : null}
+          {error ? <p className="px-2 text-destructive">{error}</p> : null}
         </div>
       ) : null}
     </div>
-  )
+  );
 }

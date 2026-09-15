@@ -1,22 +1,30 @@
-"use client"
+"use client";
 
-import { useQuery } from "@tanstack/react-query"
-import { useTranslations } from "next-intl"
-import { NavButton } from "@/components/nav-button"
-import { InterviewDetails } from "@/features/interviews/components/interview-details"
-import { applicationQueryOptions } from "../queries/options"
-import { ApplicationStatusBadge } from "./application-status-badge"
+import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
-export function ApplicationDetail({ applicationId }: { applicationId: string }) {
-  const t = useTranslations("SeekerApplications")
-  const { data, isPending, isError } = useQuery(applicationQueryOptions(applicationId))
+import { NavButton } from "@/components/nav-button";
+import { InterviewDetails } from "@/features/interviews/components/interview-details";
+
+import { applicationQueryOptions } from "../queries/options";
+import { ApplicationStatusBadge } from "./application-status-badge";
+
+export function ApplicationDetail({
+  applicationId,
+}: {
+  applicationId: string;
+}) {
+  const t = useTranslations("SeekerApplications");
+  const { data, isPending, isError } = useQuery(
+    applicationQueryOptions(applicationId)
+  );
 
   if (isPending) {
-    return <p className="text-muted-foreground text-sm">…</p>
+    return <p className="text-sm text-muted-foreground">…</p>;
   }
 
   if (isError || !data) {
-    return <p className="text-muted-foreground text-sm">{t("missing")}</p>
+    return <p className="text-sm text-muted-foreground">{t("missing")}</p>;
   }
 
   return (
@@ -31,5 +39,5 @@ export function ApplicationDetail({ applicationId }: { applicationId: string }) 
         {t("viewJob")}
       </NavButton>
     </div>
-  )
+  );
 }

@@ -1,1 +1,1 @@
-export { default } from "@/features/auth/pages/sign-up-page"
+export { default } from "@/features/auth/pages/sign-up-page";

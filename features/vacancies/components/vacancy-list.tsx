@@ -1,18 +1,21 @@
-"use client"
+"use client";
 
-import { useQuery } from "@tanstack/react-query"
-import { approvedVacanciesQueryOptions } from "../queries/options"
-import { VacancyCard } from "./vacancy-card"
+import { useQuery } from "@tanstack/react-query";
+
+import { approvedVacanciesQueryOptions } from "../queries/options";
+import { VacancyCard } from "./vacancy-card";
 
 export function VacancyList({ emptyLabel }: { emptyLabel: string }) {
-  const { data, isPending, isError } = useQuery(approvedVacanciesQueryOptions())
+  const { data, isPending, isError } = useQuery(
+    approvedVacanciesQueryOptions()
+  );
 
   if (isPending) {
-    return <p className="text-muted-foreground text-sm">…</p>
+    return <p className="text-sm text-muted-foreground">…</p>;
   }
 
   if (isError || !data?.length) {
-    return <p className="text-muted-foreground text-sm">{emptyLabel}</p>
+    return <p className="text-sm text-muted-foreground">{emptyLabel}</p>;
   }
 
   return (
@@ -21,5 +24,5 @@ export function VacancyList({ emptyLabel }: { emptyLabel: string }) {
         <VacancyCard key={vacancy.id} vacancy={vacancy} />
       ))}
     </div>
-  )
+  );
 }

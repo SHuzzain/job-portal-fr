@@ -1,10 +1,11 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { PermissionGate } from "@/features/auth/components/permission-gate"
-import { RegisterCompanyForm } from "@/features/companies/components/register-company-form"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
+import { RegisterCompanyForm } from "@/features/companies/components/register-company-form";
 
 export default async function RegisterCompanyPage() {
-  const t = await getTranslations("Company")
+  const t = await getTranslations("Company");
 
   return (
     <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
@@ -21,5 +22,5 @@ export default async function RegisterCompanyPage() {
         <RegisterCompanyForm />
       </PermissionGate>
     </div>
-  )
+  );
 }

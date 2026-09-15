@@ -1,16 +1,21 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { SignInForm } from "@/features/auth/components/sign-in-form"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { SignInForm } from "@/features/auth/components/sign-in-form";
 
 type Props = {
-  searchParams: Promise<{ next?: string; addAccount?: string }>
-}
+  searchParams: Promise<{ next?: string; addAccount?: string }>;
+};
 
 export default async function SignInPage({ searchParams }: Props) {
-  const t = await getTranslations("Auth")
-  const { next, addAccount } = await searchParams
-  const addingAccount = addAccount === "1"
-  const nextPath = next?.startsWith("/") ? next : addingAccount ? "/settings" : "/employer"
+  const t = await getTranslations("Auth");
+  const { next, addAccount } = await searchParams;
+  const addingAccount = addAccount === "1";
+  const nextPath = next?.startsWith("/")
+    ? next
+    : addingAccount
+      ? "/settings"
+      : "/employer";
 
   return (
     <div className="flex flex-col gap-6">
@@ -29,5 +34,5 @@ export default async function SignInPage({ searchParams }: Props) {
         </NavButton>
       )}
     </div>
-  )
+  );
 }

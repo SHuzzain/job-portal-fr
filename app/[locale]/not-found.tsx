@@ -1,8 +1,9 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
 
 export default async function NotFoundPage() {
-  const t = await getTranslations("NotFound")
+  const t = await getTranslations("NotFound");
 
   return (
     <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-4 p-6">
@@ -12,5 +13,5 @@ export default async function NotFoundPage() {
         <NavButton href="/">{t("home")}</NavButton>
       </div>
     </div>
-  )
+  );
 }

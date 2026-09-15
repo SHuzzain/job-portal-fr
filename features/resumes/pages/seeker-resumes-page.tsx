@@ -1,10 +1,11 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { PermissionGate } from "@/features/auth/components/permission-gate"
-import { ResumeManager } from "@/features/resumes/components/resume-manager"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
+import { ResumeManager } from "@/features/resumes/components/resume-manager";
 
 export default async function SeekerResumesPage() {
-  const t = await getTranslations("SeekerResumes")
+  const t = await getTranslations("SeekerResumes");
 
   return (
     <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
@@ -21,5 +22,5 @@ export default async function SeekerResumesPage() {
         <ResumeManager />
       </PermissionGate>
     </div>
-  )
+  );
 }

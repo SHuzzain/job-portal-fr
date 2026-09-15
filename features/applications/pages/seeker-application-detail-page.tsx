@@ -1,15 +1,16 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { PermissionGate } from "@/features/auth/components/permission-gate"
-import { ApplicationDetail } from "@/features/applications/components/application-detail"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { ApplicationDetail } from "@/features/applications/components/application-detail";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
 
 type Props = {
-  params: Promise<{ id: string }>
-}
+  params: Promise<{ id: string }>;
+};
 
 export default async function SeekerApplicationDetailPage({ params }: Props) {
-  const t = await getTranslations("SeekerApplications")
-  const { id } = await params
+  const t = await getTranslations("SeekerApplications");
+  const { id } = await params;
 
   return (
     <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
@@ -26,5 +27,5 @@ export default async function SeekerApplicationDetailPage({ params }: Props) {
         <ApplicationDetail applicationId={id} />
       </PermissionGate>
     </div>
-  )
+  );
 }

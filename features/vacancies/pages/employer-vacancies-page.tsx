@@ -1,12 +1,13 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { PermissionGate } from "@/features/auth/components/permission-gate"
-import { CompanySwitcher } from "@/features/companies/components/company-switcher"
-import { StaleSweepButton } from "@/features/applications/components/stale-sweep-button"
-import { EmployerVacancyList } from "@/features/vacancies/components/employer-vacancy-list"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { StaleSweepButton } from "@/features/applications/components/stale-sweep-button";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
+import { CompanySwitcher } from "@/features/companies/components/company-switcher";
+import { EmployerVacancyList } from "@/features/vacancies/components/employer-vacancy-list";
 
 export default async function EmployerVacanciesPage() {
-  const t = await getTranslations("EmployerVacancies")
+  const t = await getTranslations("EmployerVacancies");
 
   return (
     <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
@@ -30,5 +31,5 @@ export default async function EmployerVacanciesPage() {
         <EmployerVacancyList />
       </PermissionGate>
     </div>
-  )
+  );
 }

@@ -1,10 +1,11 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { PermissionGate } from "@/features/auth/components/permission-gate"
-import { ScanForm } from "@/features/tvet/components/scan-form"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
+import { ScanForm } from "@/features/tvet/components/scan-form";
 
 export default async function SeekerScanPage() {
-  const t = await getTranslations("TvetScan")
+  const t = await getTranslations("TvetScan");
 
   return (
     <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
@@ -21,5 +22,5 @@ export default async function SeekerScanPage() {
         <ScanForm />
       </PermissionGate>
     </div>
-  )
+  );
 }

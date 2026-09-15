@@ -1,15 +1,16 @@
-import { getTranslations } from "next-intl/server"
-import { NavButton } from "@/components/nav-button"
-import { PermissionGate } from "@/features/auth/components/permission-gate"
-import { TvetCertificateView } from "@/features/tvet/components/tvet-certificate-view"
+import { getTranslations } from "next-intl/server";
+
+import { NavButton } from "@/components/nav-button";
+import { PermissionGate } from "@/features/auth/components/permission-gate";
+import { TvetCertificateView } from "@/features/tvet/components/tvet-certificate-view";
 
 type Props = {
-  params: Promise<{ id: string }>
-}
+  params: Promise<{ id: string }>;
+};
 
 export default async function TvetCertificatePage({ params }: Props) {
-  const { id } = await params
-  const t = await getTranslations("TvetCertificate")
+  const { id } = await params;
+  const t = await getTranslations("TvetCertificate");
 
   return (
     <div className="mx-auto flex min-h-svh max-w-4xl flex-col gap-6 p-6">
@@ -22,5 +23,5 @@ export default async function TvetCertificatePage({ params }: Props) {
         <TvetCertificateView sessionId={id} />
       </PermissionGate>
     </div>
-  )
+  );
 }

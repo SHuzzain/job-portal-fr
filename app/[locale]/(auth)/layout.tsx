@@ -1,13 +1,14 @@
-import { getTranslations } from "next-intl/server"
-import { LocaleSwitcher } from "@/components/locale-switcher"
-import { NavButton } from "@/components/nav-button"
+import { getTranslations } from "next-intl/server";
+
+import { LocaleSwitcher } from "@/components/locale-switcher";
+import { NavButton } from "@/components/nav-button";
 
 type Props = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 export default async function AuthLayout({ children }: Props) {
-  const t = await getTranslations("Nav")
+  const t = await getTranslations("Nav");
 
   return (
     <div className="flex min-h-svh flex-col">
@@ -21,5 +22,5 @@ export default async function AuthLayout({ children }: Props) {
         {children}
       </main>
     </div>
-  )
+  );
 }

@@ -1,8 +1,8 @@
-import { PortalHeader } from "@/components/portal-header"
+import { PortalHeader } from "@/components/portal-header";
 
 type Props = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 export default function PortalLayout({ children }: Props) {
   return (
@@ -10,5 +10,5 @@ export default function PortalLayout({ children }: Props) {
       <PortalHeader />
       <main className="flex-1">{children}</main>
     </div>
-  )
+  );
 }

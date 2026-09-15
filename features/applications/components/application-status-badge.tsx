@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
+import { useTranslations } from "next-intl";
 
 type Props = {
-  status: string
-}
+  status: string;
+};
 
 export function ApplicationStatusBadge({ status }: Props) {
-  const t = useTranslations("ApplicationStatus")
+  const t = useTranslations("ApplicationStatus");
   const labels = {
     submitted: t("submitted"),
     reviewing: t("reviewing"),
@@ -17,13 +17,14 @@ export function ApplicationStatusBadge({ status }: Props) {
     rejected: t("rejected"),
     hired: t("hired"),
     failed: t("failed"),
-  } as const
-  const key = status === "STALE" || status === "FAILED" ? "failed" : status.toLowerCase()
-  const label = key in labels ? labels[key as keyof typeof labels] : status
+  } as const;
+  const key =
+    status === "STALE" || status === "FAILED" ? "failed" : status.toLowerCase();
+  const label = key in labels ? labels[key as keyof typeof labels] : status;
 
   return (
     <span className="inline-flex rounded-md border border-border px-2 py-0.5 text-xs">
       {label}
     </span>
-  )
+  );
 }

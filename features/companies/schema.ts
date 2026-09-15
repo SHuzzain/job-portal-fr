@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "zod";
 
 export const companyCreateSchema = z.object({
   name: z.string().min(2),
@@ -8,14 +8,14 @@ export const companyCreateSchema = z.object({
   industry: z.string().optional(),
   website: z.string().optional(),
   address: z.string().optional(),
-})
+});
 
-export type CompanyCreate = z.infer<typeof companyCreateSchema>
+export type CompanyCreate = z.infer<typeof companyCreateSchema>;
 
 export function slugFromName(name: string) {
   const base = name
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "")
-  return `${base || "company"}-${crypto.randomUUID().slice(0, 8)}`
+    .replace(/^-|-$/g, "");
+  return `${base || "company"}-${crypto.randomUUID().slice(0, 8)}`;
 }
