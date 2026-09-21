@@ -2,8 +2,6 @@
 
 import { useTranslations } from "next-intl";
 
-import { Button } from "@/components/ui/button";
-
 import type { Interview } from "../schema";
 
 export function InterviewDetails({ interview }: { interview: Interview }) {

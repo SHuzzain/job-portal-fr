@@ -32,7 +32,7 @@ export function MarketingHeader() {
             <NavButton href="/sign-in" variant="ghost">
               {t("signIn")}
             </NavButton>
-            <NavButton href="/sign-up" variant="outline">
+            <NavButton href="/register" variant="outline">
               {t("signUp")}
             </NavButton>
           </>
