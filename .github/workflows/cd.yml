@@ -1,0 +1,87 @@
+name: Job Portal Frontend CD
+
+on:
+  workflow_run:
+    workflows:
+      - Job Portal Frontend CI
+    types:
+      - completed
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: job-portal-fr-cd
+  cancel-in-progress: false
+
+env:
+  PNPM_VERSION: "9"
+  NODE_VERSION: "22.22.3"
+
+jobs:
+  deploy:
+    name: Deploy to production
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.head_branch == 'main' &&
+        github.event.workflow_run.event != 'pull_request'
+      )
+    environment: production
+    steps:
+      - name: Deploy over SSH
+        env:
+          NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL || secrets.NEXT_PUBLIC_API_URL }}
+          NODE_VERSION: ${{ env.NODE_VERSION }}
+          PNPM_VERSION: ${{ env.PNPM_VERSION }}
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.DEPLOY_PORT || 22 }}
+          script_stop: true
+          envs: NEXT_PUBLIC_API_URL,NODE_VERSION,PNPM_VERSION
+          script: |
+            set -euo pipefail
+
+            APP_DIR="${{ secrets.DEPLOY_PATH }}"
+            if [ -z "$APP_DIR" ]; then
+              echo "DEPLOY_PATH secret is required"
+              exit 1
+            fi
+
+            if [ -z "${NEXT_PUBLIC_API_URL:-}" ]; then
+              echo "Set NEXT_PUBLIC_API_URL as a repository variable or secret"
+              exit 1
+            fi
+            export NEXT_PUBLIC_API_URL
+
+            cd "$APP_DIR"
+
+            git fetch origin main
+            git checkout main
+            git reset --hard origin/main
+
+            corepack enable
+            corepack prepare "pnpm@${PNPM_VERSION}" --activate
+
+            export NVM_DIR="$HOME/.nvm"
+            if [ -s "$NVM_DIR/nvm.sh" ]; then
+              . "$NVM_DIR/nvm.sh"
+              nvm install "$NODE_VERSION"
+              nvm use "$NODE_VERSION"
+            fi
+
+            pnpm install --frozen-lockfile
+            pnpm build
+
+            mkdir -p logs
+            if pm2 reload ecosystem.config.cjs --update-env; then
+              :
+            else
+              pnpm pm2:start
+            fi
+            pm2 save
