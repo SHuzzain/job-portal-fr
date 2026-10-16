@@ -25,7 +25,7 @@ export default function UnauthorizedPage() {
           <NavButton href={`/sign-in?next=${encodeURIComponent(pathname)}`}>
             {t("signIn")}
           </NavButton>
-          <NavButton href="/sign-up" variant="outline">
+          <NavButton href="/register" variant="outline">
             {t("signUp")}
           </NavButton>
         </div>

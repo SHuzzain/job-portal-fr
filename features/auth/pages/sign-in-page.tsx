@@ -29,7 +29,7 @@ export default async function SignInPage({ searchParams }: Props) {
       </div>
       <SignInForm addAccount={addingAccount} nextPath={nextPath} />
       {addingAccount ? null : (
-        <NavButton href="/sign-up" variant="outline">
+        <NavButton href="/register" variant="outline">
           {t("needAccount")}
         </NavButton>
       )}
